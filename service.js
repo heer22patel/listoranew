@@ -334,3 +334,60 @@ const svcRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
 
 })();
+
+
+/* ============================================================
+   9. BENTO GRID — Mouse Spotlight + Keyboard Navigation
+   Scoped strictly to .svc-bc cards. No interference with
+   any existing observers or animation layers.
+   ============================================================ */
+(function initBentoGrid() {
+
+    if (!window.matchMedia('(hover: hover)').matches) return;
+
+    var cards = document.querySelectorAll('.svc-bc');
+    if (!cards.length) return;
+
+    cards.forEach(function (card) {
+        var glowEl = card.querySelector('.svc-bc__glow');
+        if (!glowEl) return;
+
+        var rafId  = null;
+        var tx = 50, ty = 50;   /* target position % */
+        var cx = 50, cy = 50;   /* current (lerped) position % */
+
+        function lerp(a, b, t) { return a + (b - a) * t; }
+
+        function tick() {
+            cx = lerp(cx, tx, 0.10);
+            cy = lerp(cy, ty, 0.10);
+            card.style.setProperty('--bx', cx.toFixed(2) + '%');
+            card.style.setProperty('--by', cy.toFixed(2) + '%');
+            rafId = requestAnimationFrame(tick);
+        }
+
+        card.addEventListener('mouseenter', function () {
+            rafId = requestAnimationFrame(tick);
+        });
+
+        card.addEventListener('mousemove', function (e) {
+            var rect = card.getBoundingClientRect();
+            tx = ((e.clientX - rect.left) / rect.width)  * 100;
+            ty = ((e.clientY - rect.top)  / rect.height) * 100;
+        });
+
+        card.addEventListener('mouseleave', function () {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+        });
+
+        /* Keyboard: Enter/Space activates the card's CTA link */
+        card.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                var link = card.querySelector('.svc-bc__cta');
+                if (link) { e.preventDefault(); link.click(); }
+            }
+        });
+    });
+
+})();
