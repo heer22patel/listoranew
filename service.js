@@ -260,3 +260,77 @@ const svcRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     });
 
 })();
+
+
+/* ============================================================
+   8. PREMIUM PACKAGES — entrance stagger + price counter
+   ============================================================ */
+(function initPackages() {
+    if (svcRM) return;
+    if (!('IntersectionObserver' in window)) return;
+
+    /* ── Staggered card entrance ── */
+    var cards = document.querySelectorAll('.pkg-card-v2');
+    if (cards.length) {
+        var pkgObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                var delay = parseInt(entry.target.dataset.delay || '0', 10);
+                setTimeout(function () {
+                    entry.target.classList.add('svc-visible');
+                }, delay);
+                pkgObs.unobserve(entry.target);
+            });
+        }, { threshold: 0.10, rootMargin: '0px 0px -30px 0px' });
+
+        cards.forEach(function (c) { pkgObs.observe(c); });
+    }
+
+    /* ── Animated price counter ── */
+    function countUp(el) {
+        var raw    = el.dataset.target || el.textContent.replace(/,/g, '');
+        var target = parseFloat(raw);
+        if (!target) return;
+        var isSuffix = el.textContent.includes(',');
+        var duration = 1400;
+        var step     = (target / duration) * 16;
+        var current  = 0;
+
+        var timer = setInterval(function () {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            el.textContent = Math.round(current).toLocaleString();
+        }, 16);
+    }
+
+    var priceNums = document.querySelectorAll('.pkg-price-num');
+    if (priceNums.length) {
+        var priceObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                countUp(entry.target);
+                priceObs.unobserve(entry.target);
+            });
+        }, { threshold: 0.5 });
+
+        priceNums.forEach(function (el) {
+            priceObs.observe(el);
+        });
+    }
+
+    /* ── Feature icon micro-hover (desktop) ── */
+    if (window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll('.pkg-card-v2').forEach(function (card) {
+            card.addEventListener('mouseenter', function () {
+                card.style.willChange = 'transform';
+            });
+            card.addEventListener('mouseleave', function () {
+                card.style.willChange = 'auto';
+            });
+        });
+    }
+
+})();

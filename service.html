@@ -682,85 +682,238 @@
 
 
         <!-- ═══════════════════════════════════════════
-             SECTION 7 — SERVICE PACKAGES
+             SECTION 7 — SERVICE PACKAGES (PREMIUM REDESIGN)
         ═══════════════════════════════════════════ -->
-        <section class="packages section-pad" id="packages" aria-labelledby="pkg-heading">
+        <section class="pkg-section" id="packages" aria-labelledby="pkg-heading">
+
+            <!-- Animated background blobs -->
+            <div class="pkg-bg" aria-hidden="true">
+                <div class="pkg-blob pkg-blob--1"></div>
+                <div class="pkg-blob pkg-blob--2"></div>
+                <div class="pkg-blob pkg-blob--3"></div>
+            </div>
+
             <div class="container">
-                <div class="section-header svc-reveal">
+
+                <!-- Section header -->
+                <div class="pkg-header svc-reveal">
                     <span class="section-label">Packages</span>
-                    <h2 class="section-title svc-heading" id="pkg-heading">Choose the Right<br>Growth Package</h2>
-                    <p class="section-sub svc-para">Scalable options for every stage of your real estate career.</p>
+                    <h2 class="section-title svc-heading" id="pkg-heading">
+                        Invest in Growth.Choose Your Package.
+                    </h2>
+                    <p class="section-sub svc-para">
+                        Every package is built exclusively for real estate professionals.
+                        No contracts. Cancel anytime.
+                    </p>
                 </div>
 
-                <div class="packages-grid">
+                <!-- Cards grid -->
+                <div class="pkg-grid">
 
-                    <!-- Starter -->
-                    <article class="pkg-card svc-reveal" data-delay="0">
-                        <span class="pkg-tier">Starter</span>
-                        <div class="pkg-card__header">
-                            <h3>Growth Essentials</h3>
-                            <p>Everything you need to start generating leads and building your online presence.</p>
+                    <!-- ── STARTER ───────────────────────── -->
+                    <article class="pkg-card-v2 pkg-starter svc-reveal" data-delay="0" aria-label="Starter package">
+                        <div class="pkg-card-v2__inner">
+                            <div class="pkg-tier-wrap">
+                                <span class="pkg-tier-badge pkg-tier-badge--starter">
+                                    <i class="fa-solid fa-seedling"></i> Starter
+                                </span>
+                            </div>
+                            <h3 class="pkg-name">Growth Essentials</h3>
+                            <p class="pkg-desc">Start generating leads and building your digital presence with a solid
+                                foundation.</p>
+
+                            <div class="pkg-price-wrap">
+                                <span class="pkg-price-label">Starting at</span>
+                                <div class="pkg-price">
+                                    <span class="pkg-price-dollar">$</span>
+                                    <span class="pkg-price-num" data-target="500">500</span>
+                                    <span class="pkg-price-per">/month</span>
+                                </div>
+                            </div>
+
+                            <ul class="pkg-features">
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-bullseye"></i></span>
+                                    <span>Lead Generation Campaigns</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-gears"></i></span>
+                                    <span>CRM Setup &amp; Basic Automations</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-brands fa-instagram"></i></span>
+                                    <span>Social Media (2 platforms)</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-chart-bar"></i></span>
+                                    <span>Monthly Performance Report</span>
+                                </li>
+                                <li class="pkg-feat--no">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-file-signature"></i></span>
+                                    <span>Transaction Coordination</span>
+                                </li>
+                                <li class="pkg-feat--no">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-globe"></i></span>
+                                    <span>Website Build</span>
+                                </li>
+                                <li class="pkg-feat--no">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-video"></i></span>
+                                    <span>Video Editing</span>
+                                </li>
+                            </ul>
+
+                            <a href="contact.html" class="pkg-cta pkg-cta--outline">
+                                Get Started
+                                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                            </a>
                         </div>
-                        <ul class="pkg-list">
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Lead Generation Campaigns</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> CRM Setup &amp; Basic Automations
-                            </li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Social Media Management (2
-                                platforms)</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Monthly Performance Report</li>
-                            <li class="muted"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Transaction
-                                Coordination</li>
-                            <li class="muted"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Website Build</li>
-                            <li class="muted"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Video Editing</li>
-                        </ul>
-                        <a href="contact.html" class="btn btn--outline btn--full">Get Started <i
-                                class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </article>
 
-                    <!-- Featured -->
-                    <article class="pkg-card pkg-card--featured svc-reveal" data-delay="150">
-                        <div class="pkg-card__badge">Most Popular</div>
-                        <span class="pkg-tier">Professional</span>
-                        <div class="pkg-card__header">
-                            <h3>Total Growth System</h3>
-                            <p>A complete done-for-you system combining marketing, automation, and operations.</p>
+                    <!-- ── PROFESSIONAL (FEATURED) ──────── -->
+                    <article class="pkg-card-v2 pkg-featured svc-reveal" data-delay="120"
+                        aria-label="Professional package — most popular">
+
+                        <!-- Most Popular ribbon -->
+                        <div class="pkg-ribbon" aria-label="Most popular">
+                            <i class="fa-solid fa-fire-flame-curved"></i> Most Popular
                         </div>
-                        <ul class="pkg-list">
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Everything in Starter</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Advanced CRM Automations</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Social Media (4 platforms)</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Transaction Coordination</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Email Marketing Sequences</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Video Editing (4 videos/mo)</li>
-                            <li class="muted"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Custom Website Build
-                            </li>
-                        </ul>
-                        <a href="contact.html" class="btn btn--white btn--full">Get Started <i
-                                class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+
+                        <div class="pkg-card-v2__inner">
+                            <div class="pkg-tier-wrap">
+                                <span class="pkg-tier-badge pkg-tier-badge--pro">
+                                    <i class="fa-solid fa-rocket"></i> Professional
+                                </span>
+                            </div>
+                            <h3 class="pkg-name">Total Growth System</h3>
+                            <p class="pkg-desc">A complete done-for-you system combining marketing, automation, and
+                                operations.</p>
+
+                            <div class="pkg-price-wrap">
+                                <span class="pkg-price-label">Starting at</span>
+                                <div class="pkg-price">
+                                    <span class="pkg-price-dollar">$</span>
+                                    <span class="pkg-price-num" data-target="800">800</span>
+                                    <span class="pkg-price-per">/month</span>
+                                </div>
+                            </div>
+
+                            <ul class="pkg-features">
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span>Everything in Starter</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-robot"></i></span>
+                                    <span>Advanced CRM Automations</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-hashtag"></i></span>
+                                    <span>Social Media (4 platforms)</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-file-signature"></i></span>
+                                    <span>Transaction Coordination</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-envelope-open-text"></i></span>
+                                    <span>Email Marketing Sequences</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-video"></i></span>
+                                    <span>Video Editing (4 videos/month)</span>
+                                </li>
+                                <li class="pkg-feat--no">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-globe"></i></span>
+                                    <span>Custom Website Build</span>
+                                </li>
+                            </ul>
+
+                            <a href="contact.html" class="pkg-cta pkg-cta--primary">
+                                Get Started
+                                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                            </a>
+
+                            <p class="pkg-note">
+                                <i class="fa-solid fa-users" aria-hidden="true"></i>
+                                Trusted by 120+ real estate professionals
+                            </p>
+                        </div>
                     </article>
 
-                    <!-- Premium -->
-                    <article class="pkg-card pkg-card--premium svc-reveal" data-delay="300">
-                        <span class="pkg-tier">Premium</span>
-                        <div class="pkg-card__header">
-                            <h3>Market Domination</h3>
-                            <p>The ultimate growth package for serious agents and top-producing teams.</p>
+                    <!-- ── PREMIUM ───────────────────────── -->
+                    <article class="pkg-card-v2 pkg-premium svc-reveal" data-delay="240" aria-label="Premium package">
+
+                        <!-- Best Value ribbon -->
+                        <div class="pkg-ribbon pkg-ribbon--gold" aria-label="Best value">
+                            <i class="fa-solid fa-crown"></i> Best Value
                         </div>
-                        <ul class="pkg-list">
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Everything in Professional</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Custom Website Build</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Local SEO &amp; Google Business
-                            </li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Dedicated Virtual Assistant</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> MLS Listing Management</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Video Editing (8 videos/mo)</li>
-                            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Weekly Strategy Calls</li>
-                        </ul>
-                        <a href="contact.html" class="btn btn--orange btn--full">Get Started <i
-                                class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+
+                        <div class="pkg-card-v2__inner">
+                            <div class="pkg-tier-wrap">
+                                <span class="pkg-tier-badge pkg-tier-badge--premium">
+                                    <i class="fa-solid fa-crown"></i> Premium
+                                </span>
+                            </div>
+                            <h3 class="pkg-name">Market Domination</h3>
+                            <p class="pkg-desc">The ultimate growth package for serious agents and top-producing teams
+                                ready to dominate.</p>
+
+                            <div class="pkg-price-wrap">
+                                <span class="pkg-price-label">Starting at</span>
+                                <div class="pkg-price">
+                                    <span class="pkg-price-dollar">$</span>
+                                    <span class="pkg-price-num" data-target="1100">1,100</span>
+                                    <span class="pkg-price-per">/month</span>
+                                </div>
+                            </div>
+
+                            <ul class="pkg-features">
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span>Everything in Professional</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-globe"></i></span>
+                                    <span>Custom Website Build</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-brands fa-google"></i></span>
+                                    <span>Local SEO &amp; Google Business</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-user-tie"></i></span>
+                                    <span>Dedicated Virtual Assistant</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-list-ul"></i></span>
+                                    <span>MLS Listing Management</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-video"></i></span>
+                                    <span>Video Editing (8 videos/month)</span>
+                                </li>
+                                <li class="pkg-feat--yes">
+                                    <span class="pkg-feat-icon"><i class="fa-solid fa-phone"></i></span>
+                                    <span>Weekly Strategy Calls</span>
+                                </li>
+                            </ul>
+
+                            <a href="contact.html" class="pkg-cta pkg-cta--outline-gold">
+                                Get Started
+                                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </article>
 
-                </div>
+                </div><!-- /pkg-grid -->
+
+                <!-- Comparison note -->
+                <p class="pkg-compare-note svc-reveal">
+                    Not sure which plan fits you? <a href="contact.html">Book a free 30-min strategy call</a> and we'll
+                    recommend the right package for your goals.
+                </p>
+
+
             </div>
         </section>
 

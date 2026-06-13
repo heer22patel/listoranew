@@ -237,7 +237,7 @@ const isTablet = () => window.innerWidth < 992;
   /* ─── Reduced motion: reveal everything instantly ─── */
   if (reducedMotion) {
     document.querySelectorAll(
-      '.txt-hero-word, .txt-section-heading, .txt-para, .txt-badge-anim'
+      '.txt-hero-word, .txt-section-heading, .txt-para, .txt-badge-anim, .txt-para-word'
     ).forEach(el => {
       el.classList.add('txt-in');
       el.style.opacity = '1';
@@ -336,18 +336,23 @@ const isTablet = () => window.innerWidth < 992;
     headingObserver.observe(h);
   });
 
-  /* ─── STEP 4: Paragraphs — IO triggered, fade-up, SEPARATE observer ─── */
+  /* ─── STEP 4: Paragraphs & card descriptions — IO triggered, word-by-word reveal ─── */
+  /* Same split mechanic as headings but uses .txt-para-word class with
+     softer easing, smaller stagger (40ms), and shorter translateY (60%)
+     so paragraphs feel gentler / more readable than bold headings */
+
   const paraSelectors = [
     '.section-header > p',
     '.hero-content p',
     '.listora-advantage-header p',
     '.timelinepro-card-desc',
-    '.ref-cta-title',
     '.ref-cta-description',
     '.affiliate-content p',
     '.card-desc',
     '.content p',
     '.footer-tagline',
+    '.listora-advantage-card p',
+    '.card-content p',
     /* Service page */
     '.svc-hero__sub',
     '.core-card__desc',
@@ -358,8 +363,6 @@ const isTablet = () => window.innerWidth < 992;
     '.alt-block__content p',
     '.websites-desc',
     '.section-sub',
-    '.why-card__stat',
-    '.tl-step-num',
   ].join(', ');
 
   const paraEls = document.querySelectorAll(paraSelectors);
@@ -367,36 +370,41 @@ const isTablet = () => window.innerWidth < 992;
   const paraObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      const el = entry.target;
-      /* Apply delay based on sibling position for natural stagger */
-      const siblings = Array.from(el.parentElement.children).filter(
+      const el    = entry.target;
+      const words = el.querySelectorAll('.txt-para-word');
+
+      /* Stagger: paragraph index adds a base delay so para fires after heading */
+      const siblings  = Array.from(el.parentElement.children).filter(
         c => c.matches && c.matches(paraSelectors.split(', ').join(', '))
       );
-      const idx = siblings.indexOf(el);
-      const delay = idx >= 0 ? idx * 80 : 0;
+      const paraIdx   = siblings.indexOf(el);
+      const baseDelay = paraIdx >= 0 ? paraIdx * 120 : 0;
 
-      el.style.transitionDelay = `${delay}ms`;
-      el.classList.add('txt-para-in');
+      words.forEach((w, i) => {
+        w.style.transitionDelay = `${baseDelay + i * 40}ms`;
+        w.classList.add('txt-in');
+      });
+
       paraObserver.unobserve(el);
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
 
   paraEls.forEach(el => {
-    /* Only add class if not already animated */
-    if (!el.classList.contains('txt-para')) {
-      el.classList.add('txt-para');
-    }
+    splitHeadingWords(el, 'txt-para-word'); /* reuse same splitter */
     paraObserver.observe(el);
   });
 
-  /* Hero paragraph fires immediately after h1 */
+  /* Hero paragraph fires immediately after h1 words */
   const heroPara = document.querySelector('.hero-content p');
   if (heroPara) {
-    paraObserver.unobserve(heroPara); /* remove from observer */
+    paraObserver.unobserve(heroPara);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        heroPara.style.transitionDelay = '520ms';
-        heroPara.classList.add('txt-para-in');
+        const words = heroPara.querySelectorAll('.txt-para-word');
+        words.forEach((w, i) => {
+          w.style.transitionDelay = `${520 + i * 40}ms`;
+          w.classList.add('txt-in');
+        });
       });
     });
   }
@@ -513,10 +521,10 @@ const isTablet = () => window.innerWidth < 992;
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const idx   = parseInt(entry.target.dataset.index || '0', 10);
-        setTimeout(() => entry.target.classList.add('show'), idx * 90);
+        setTimeout(() => entry.target.classList.add('show'), idx * 110);
         problemObs.unobserve(entry.target);
       });
-    }, { threshold: 0.10 });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
     problemCards.forEach(card => problemObs.observe(card));
   }
 
@@ -991,6 +999,307 @@ const isTablet = () => window.innerWidth < 992;
     setTimeout(() => {
       if (!tp.isOnMobile) { measure(); tp.needUpdate = true; }
     }, 300);
+  });
+
+  /* ── Mobile pause/resume hooks exposed for external use ── */
+  window.__tpMobileTimerKill = function () {
+    if (tp.mobileTimer) {
+      clearInterval(tp.mobileTimer);
+      tp.mobileTimer = null;
+    }
+  };
+
+  window.__tpMobileRestart = function (fromStep) {
+    if (!tp.isOnMobile) return;
+    if (tp.mobileTimer) { clearInterval(tp.mobileTimer); tp.mobileTimer = null; }
+    tp.mobileStep = (fromStep !== undefined) ? fromStep : tp.currentStep;
+    tp.mobileTimer = setInterval(() => {
+      tp.mobileStep++;
+      if (tp.mobileStep >= N) {
+        clearInterval(tp.mobileTimer);
+        tp.mobileTimer = null;
+        tp.mobileStep  = N - 1;
+        return;
+      }
+      measure();
+      updateFill(tp.mobileStep);
+      updateSteps(tp.mobileStep);
+    }, 2000);
+  };
+
+})();
+
+
+/* ============================================================
+   12. PREMIUM MICRO-INTERACTIONS  v2.0
+   ─────────────────────────────────────────────────────────────
+   • Smooth lerp-interpolated 3D tilt on service + advantage cards
+   • will-change cleanup after flip-card entrance
+   ============================================================ */
+
+(function initPremiumReveal() {
+  'use strict';
+
+  if (reducedMotion) return;
+
+  const isDesktop = () => window.innerWidth > 900;
+
+  /* ── Smooth lerp tilt — runs on requestAnimationFrame ── */
+  function attachTilt(card, maxDeg) {
+    if (!maxDeg) maxDeg = 3;
+
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+    let rafId = null;
+    let isHovered = false;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function tick() {
+      currentX = lerp(currentX, targetX, 0.08);
+      currentY = lerp(currentY, targetY, 0.08);
+
+      const dx = Math.abs(currentX - targetX);
+      const dy = Math.abs(currentY - targetY);
+
+      card.style.transform = isHovered
+        ? `translateY(-12px) perspective(900px) rotateX(${currentX}deg) rotateY(${currentY}deg)`
+        : `translateY(${currentX === 0 && currentY === 0 ? '0' : (-12 * (1 - Math.max(dx,dy)/maxDeg)).toFixed(2)}px) perspective(900px) rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+
+      if (dx > 0.005 || dy > 0.005) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        if (!isHovered) {
+          card.style.transform = '';
+          card.style.willChange = 'auto';
+        }
+        rafId = null;
+      }
+    }
+
+    card.addEventListener('mousemove', function(e) {
+      if (!isDesktop()) return;
+      const r  = card.getBoundingClientRect();
+      const x  = (e.clientX - r.left) / r.width  - 0.5;  /* -0.5 → 0.5 */
+      const y  = (e.clientY - r.top)  / r.height - 0.5;
+      targetX  = -y * maxDeg * 2;   /* tilt X (pitch) */
+      targetY  =  x * maxDeg * 2;   /* tilt Y (yaw)   */
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }, { passive: true });
+
+    card.addEventListener('mouseenter', function() {
+      if (!isDesktop()) return;
+      isHovered = true;
+      card.style.willChange = 'transform';
+    }, { passive: true });
+
+    card.addEventListener('mouseleave', function() {
+      isHovered = false;
+      targetX   = 0;
+      targetY   = 0;
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }, { passive: true });
+  }
+
+  /* Apply tilt to cards */
+  document.querySelectorAll('.service-card').forEach(c => attachTilt(c, 3));
+  document.querySelectorAll('.listora-advantage-card').forEach(c => attachTilt(c, 2.5));
+
+  /* ── will-change cleanup after flip-card entrance ── */
+  document.querySelectorAll('.flip-card').forEach(function(card) {
+    if (card.classList.contains('show-card')) {
+      card.style.willChange = 'auto';
+      return;
+    }
+    const obs = new MutationObserver(function() {
+      if (card.classList.contains('show-card')) {
+        setTimeout(function() { card.style.willChange = 'auto'; }, 900);
+        obs.disconnect();
+      }
+    });
+    obs.observe(card, { attributes: true, attributeFilter: ['class'] });
+  });
+
+})();
+
+
+/* ============================================================
+   13. TIMELINE — MOBILE MANUAL NODE SELECTION
+   ─────────────────────────────────────────────────────────────
+   SCOPE: Mobile only (≤768px). Desktop completely untouched.
+
+   HOOKS used (exposed by timelinePro above):
+     window.__tpMobileTimerKill()        — pause autoplay
+     window.__tpMobileRestart(fromStep)  — resume from step N
+
+   FLOW:
+   Tap node → kill timer → switch card + highlight → schedule resume
+   Resume after RESUME_DELAY ms of no new taps
+   ============================================================ */
+
+(function initMobileTimelineNodes() {
+  'use strict';
+
+  const RESUME_DELAY = 12000; /* 12 s inactivity */
+
+  window.addEventListener('load', function () {
+
+    var section = document.getElementById('timelinepro-root');
+    if (!section) return;
+
+    var steps        = Array.from(section.querySelectorAll('.timelinepro-step'));
+    var N            = steps.length;
+    var resumeTimer  = null;
+    var isManualMode = false;
+
+    if (!steps.length) return;
+
+    /* ── Widen tap targets on mobile ── */
+    function enhanceTapTargets() {
+      if (window.innerWidth > 768) return;
+      steps.forEach(function (stepEl) {
+        var nw = stepEl.querySelector('.timelinepro-node-wrap');
+        if (nw && !nw.dataset.tpEnhanced) {
+          nw.dataset.tpEnhanced = '1';
+          nw.setAttribute('role', 'button');
+          nw.setAttribute('tabindex', '0');
+          var idx = parseInt(stepEl.dataset.step || '0', 10);
+          nw.setAttribute('aria-label', 'View step ' + (idx + 1));
+        }
+      });
+    }
+
+    /* ── Switch to a step (reuses existing tp internals via hooks) ── */
+    function goToStep(idx) {
+      /* Kill existing autoplay */
+      if (typeof window.__tpMobileTimerKill === 'function') {
+        window.__tpMobileTimerKill();
+      }
+
+      /* Activate step — tp's updateSteps + switchCard run normally */
+      /* We call them by dispatching on the section element so
+         timelinePro's existing code handles the card animation */
+      section.dispatchEvent(new CustomEvent('tp:goToStep', { detail: { idx: idx } }));
+
+      /* Visual indicator */
+      steps.forEach(function (s) { s.classList.remove('tp-manual-active'); });
+      steps[idx] && steps[idx].classList.add('tp-manual-active');
+
+      isManualMode = true;
+    }
+
+    /* ── Schedule auto-resume ── */
+    function scheduleResume(fromStep) {
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(function () {
+        steps.forEach(function (s) { s.classList.remove('tp-manual-active'); });
+        isManualMode = false;
+        if (typeof window.__tpMobileRestart === 'function') {
+          window.__tpMobileRestart(fromStep);
+        }
+      }, RESUME_DELAY);
+    }
+
+    /* ── Attach tap listeners ── */
+    function attachListeners() {
+      enhanceTapTargets();
+      steps.forEach(function (stepEl) {
+        var nw  = stepEl.querySelector('.timelinepro-node-wrap');
+        var cnt = stepEl.querySelector('.timelinepro-step-content');
+
+        [nw, cnt].forEach(function (target) {
+          if (!target) return;
+          target.addEventListener('click', function () {
+            if (window.innerWidth > 768) return; /* desktop guard */
+            var idx = parseInt(stepEl.dataset.step || '0', 10);
+            goToStep(idx);
+            scheduleResume(idx);
+          });
+          if (target === nw) {
+            target.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                target.click();
+              }
+            });
+          }
+        });
+      });
+    }
+
+    /* Wait for timelinePro to finish initialising */
+    setTimeout(attachListeners, 600);
+
+    /* Re-enhance on resize to mobile */
+    window.addEventListener('resize', debounce(function () {
+      if (window.innerWidth <= 768) enhanceTapTargets();
+      else {
+        /* Went to desktop — clear manual state */
+        clearTimeout(resumeTimer);
+        steps.forEach(function (s) { s.classList.remove('tp-manual-active'); });
+        isManualMode = false;
+      }
+    }, 200), { passive: true });
+
+  });
+
+  /* ── Handle tp:goToStep inside timelinePro's scope ── */
+  /* We do this by appending a listener that calls the exposed hooks */
+  document.addEventListener('DOMContentLoaded', function () {
+    var section = document.getElementById('timelinepro-root');
+    if (!section) return;
+
+    section.addEventListener('tp:goToStep', function (e) {
+      var idx = e.detail.idx;
+      /* The actual card switch is done via the public hooks.
+         updateSteps and switchCard are internal — we trigger them
+         by calling __tpMobileRestart then immediately killing it
+         after one step, or we let the node's active class do the UI
+         and call applyCard via a lightweight reimplementation. */
+      if (typeof window.__tpMobileTimerKill === 'function') {
+        window.__tpMobileTimerKill();
+      }
+      /* Trigger card content update via a minimal reimpl */
+      var cardBody  = document.querySelector('.timelinepro-card-body');
+      var cardTitle = document.getElementById('timelinepro-card-title');
+      var cardDesc  = document.getElementById('timelinepro-card-desc');
+      var fill      = document.getElementById('timelinepro-track-fill');
+      var steps     = Array.from(section.querySelectorAll('.timelinepro-step'));
+      var N         = steps.length;
+
+      var CONTENT = [
+        { title: 'Discovery',        desc: 'We audit your brand, market position, and growth opportunities.' },
+        { title: 'Strategy',         desc: 'We craft a tailored growth strategy and roadmap for your business.' },
+        { title: 'Implementation',   desc: 'We launch websites, ads, content, and automations to drive results.' },
+        { title: 'Optimization',     desc: 'We monitor performance, test, and refine every part of the system.' },
+        { title: 'Scale & Dominate', desc: 'Once the system is proven, we scale traffic, leads, and revenue to maximize long-term growth.' },
+      ];
+
+      /* Update step classes */
+      steps.forEach(function (el, i) {
+        el.classList.remove('timelinepro-active', 'timelinepro-completed');
+        if      (i < idx)  el.classList.add('timelinepro-completed');
+        else if (i === idx) el.classList.add('timelinepro-active');
+      });
+
+      /* Update fill bar */
+      if (fill && N > 1) {
+        fill.style.height = ((idx / (N - 1)) * 100) + '%';
+      }
+
+      /* Fade card content */
+      if (cardBody) {
+        cardBody.classList.add('timelinepro-fade-out');
+        setTimeout(function () {
+          var d = CONTENT[idx];
+          if (d) {
+            if (cardTitle) cardTitle.textContent = d.title;
+            if (cardDesc)  cardDesc.textContent  = d.desc;
+          }
+          cardBody.classList.remove('timelinepro-fade-out');
+        }, 240);
+      }
+    });
   });
 
 })();

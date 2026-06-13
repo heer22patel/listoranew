@@ -569,40 +569,38 @@ a {
 }
 
 /* ============================================================
-   PROBLEM CARD
+   PROBLEM CARD — CURTAIN REVEAL
+   ─────────────────────────────────────────────────────────
+   The pain panel is position:absolute, anchored to the card.
+   It sits BEHIND the card-header (z-index 3) and slides DOWN
+   over the card-body using clip-path — like a curtain dropping.
 
-   Architecture (fixes the overflow clipping bug):
-   ─────────────────────────────────────────────────
-   .problem-card           → overflow: visible  (wrapper, sets stacking context)
-     ├─ .card-header       → z-index: 3  (always on top, the "front face")
-     ├─ .card-body         → z-index: 1  (the hover fill target)
-     │     ::before        → the rising navy fill pseudo-element
-     └─ .pain-panel        → z-index: 2  (drops from top, slides over card-body)
+   Closed: clip-path: inset(0 0 100% 0)  → fully hidden
+   Open:   clip-path: inset(0 0 0% 0)    → fully revealed
 
-   The pain-panel is position:absolute anchored to the card.
-   overflow:visible on the card lets the panel clip above the card
-   while transform:translateY(-100%) hides it. When .is-open is
-   added, translateY(0) slides it flush from the header downward.
-============================================================ */
+   clip-path animates the VISIBLE region from the top down,
+   creating an authentic curtain-drop effect.
+   Arrow points DOWN when closed, UP when open.
+   ============================================================ */
+
 .problem-card {
     position: relative;
     border-radius: var(--radius);
     background: var(--white);
     border: 1.5px solid var(--border);
-
-    /* overflow MUST be visible so pain-panel can animate out from top */
     overflow: visible;
+    /* panel can overlap siblings */
+    z-index: 1;
+    margin-bottom: 32px;
 
+    /* scroll entrance */
     opacity: 0;
     transform: translateY(36px);
     transition:
-        opacity 0.5s ease,
-        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.35s ease,
-        border-color 0.3s ease;
-
-    z-index: 1;
-    margin-bottom: 40px;
+        opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.40s ease;
 }
 
 .problem-card.show {
@@ -610,43 +608,42 @@ a {
     transform: translateY(0);
 }
 
-/* Open card floats above siblings */
 .problem-card.is-open {
     z-index: 10;
+    border-color: rgba(255, 98, 0, 0.28);
+    box-shadow:
+        0 20px 48px rgba(3, 43, 102, 0.12),
+        0 0 0 1px rgba(255, 98, 0, 0.10);
 }
 
-/* Desktop hover lift */
 @media (hover: hover) {
     .problem-card:not(.is-open):hover {
-        transform: translateY(-8px);
+        transform: translateY(-7px);
+        box-shadow:
+            0 20px 48px rgba(3, 43, 102, 0.11),
+            0 0 0 1.5px rgba(255, 98, 0, 0.16);
+        border-color: rgba(255, 98, 0, 0.18);
     }
 }
 
-/* ============================================================
-   CARD HEADER  —  always visible navy bar, z-index 3
-   Sits on top of both card-body and the dropping pain-panel
-============================================================ */
+/* ── Card header — always on top (z-index 3) ── */
 .card-header {
     position: relative;
     z-index: 3;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-
     background: var(--navy);
     padding: 14px 18px;
     border-radius: var(--radius) var(--radius) 0 0;
-
     cursor: pointer;
     user-select: none;
-
-    transition: background 0.3s ease;
+    transition: background 0.40s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .problem-card.is-open .card-header {
-    background: var(--navy-dark);
+    background: #01183a;
 }
 
 .card-header:focus-visible {
@@ -662,7 +659,6 @@ a {
     min-width: 0;
 }
 
-/* Sequential number badge */
 .card-num {
     font-size: 10px;
     font-weight: 700;
@@ -676,7 +672,6 @@ a {
 }
 
 .card-header h3 {
-    font-family: 'Poppins', sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--white);
@@ -686,7 +681,7 @@ a {
     text-overflow: ellipsis;
 }
 
-/* Chevron toggle button */
+/* ── Toggle button — DOWN = closed, UP = open ── */
 .toggle-btn {
     display: flex;
     align-items: center;
@@ -698,73 +693,46 @@ a {
     border: 1px solid rgba(255, 255, 255, 0.14);
     flex-shrink: 0;
     transition:
-        background 0.25s ease,
-        border-color 0.25s ease,
-        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        background 0.45s ease,
+        border-color 0.45s ease,
+        transform 0.90s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .toggle-btn i {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.75);
-    transition: color 0.25s ease;
+    transition: color 0.3s ease;
     display: block;
     pointer-events: none;
 }
 
-/* Arrow rotates when open */
+/* Arrow rotates to point UP when panel is open */
 .problem-card.is-open .toggle-btn {
     transform: rotate(180deg);
-    background: rgba(255, 98, 0, 0.25);
-    border-color: rgba(255, 98, 0, 0.45);
+    background: rgba(255, 98, 0, 0.28);
+    border-color: rgba(255, 98, 0, 0.50);
 }
 
 .problem-card.is-open .toggle-btn i {
     color: var(--orange-lt);
 }
 
-/* ============================================================
-   CARD BODY  —  hover fill target, z-index 1
-
-   The ::before pseudo-element IS the rising navy fill.
-   It starts scaleY(0) from the bottom and grows to scaleY(1).
-   overflow:hidden on .card-body clips the fill neatly inside
-   the body without affecting the pain-panel above it.
-============================================================ */
+/* ── Card body — the content visible when closed ── */
 .card-body {
     position: relative;
     z-index: 1;
-
     padding: 24px 20px 26px;
     border-radius: 0 0 var(--radius) var(--radius);
-
-    /* Clip the ::before fill inside the body area only */
-    overflow: hidden;
-
-    /* Solid white bg ensures pain-panel has a clean backdrop */
     background: var(--white);
-    transition: background 0.1s;
+    overflow: hidden;
+    /* soft fade-out when panel covers it */
+    transition: opacity 0.50s ease;
 }
 
-/* The rising fill — navy slides up from the bottom of card-body */
-.card-body::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: white;
-    transform: scaleY(0);
-    transform-origin: bottom center;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    z-index: 0;
-    border-radius: 0 0 calc(var(--radius) - 2px) calc(var(--radius) - 2px);
+.problem-card.is-open .card-body {
+    opacity: 0.15;
 }
 
-@media (hover: hover) {
-    .problem-card:not(.is-open):hover .card-body::before {
-        transform: scaleY(1);
-    }
-}
-
-/* All card-body children sit above the fill */
 .icon-box,
 .card-desc,
 .card-cta {
@@ -772,7 +740,6 @@ a {
     z-index: 1;
 }
 
-/* ── Icon box ── */
 .icon-box {
     width: 52px;
     height: 52px;
@@ -782,122 +749,103 @@ a {
     border-radius: 13px;
     background: rgba(255, 98, 0, 0.08);
     border: 1.5px solid rgba(255, 98, 0, 0.15);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     transition:
-        background 0.4s ease,
-        border-color 0.4s ease,
-        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.45s ease,
+        transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.45s ease;
 }
 
 .icon-box i {
     font-size: 21px;
     color: var(--orange);
-    transition: color 0.35s ease, transform 0.35s ease;
+    transition: color 0.4s ease, transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Hover: icon box flips solid orange, icon turns white */
 @media (hover: hover) {
     .problem-card:not(.is-open):hover .icon-box {
         background: var(--orange);
         border-color: var(--orange);
-        transform: scale(1.07) rotate(-5deg);
+        transform: scale(1.10) translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 98, 0, 0.26);
     }
 
     .problem-card:not(.is-open):hover .icon-box i {
         color: var(--white);
+        transform: scale(1.06);
     }
 }
 
-/* Open state */
-.problem-card.is-open .icon-box {
-    background: rgba(255, 98, 0, 0.12);
-    border-color: rgba(255, 98, 0, 0.28);
-}
-
-/* ── Description ── */
 .card-desc {
     font-size: 13.5px;
-    font-weight: 400;
     line-height: 1.75;
     color: var(--text-body);
-    transition: color 0.35s ease;
 }
 
-
 /* ============================================================
-   PAIN PANEL  —  drops from top, z-index 2
-
-   Key fix: position:absolute with top:0 anchors it to the card.
-   It starts at translateY(-100%) — fully above the card.
-   On .is-open it transitions to translateY(0) sliding DOWN
-   to cover the card-body, stopped by the card-header above.
-
-   The card-header (z-index 3) always sits on top, so the panel
-   appears to slide out FROM UNDER the header bar.
-============================================================ */
+   PAIN PANEL — CURTAIN EFFECT
+   ─────────────────────────────────────────────────────────
+   Anchored top:0 so it starts at the very top of the card
+   (behind the navy header).
+   clip-path controls how much is visible:
+     inset(0 0 100% 0) = nothing visible (curtain fully up)
+     inset(0 0 0%   0) = fully visible   (curtain fully down)
+   The reveal travels from top → bottom = curtain drop.
+   ============================================================ */
 .pain-panel {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-
-    /* Start: fully hidden above */
-    transform: translateY(-100%);
-    opacity: 0;
+    z-index: 2;
+    border-radius: var(--radius);
     pointer-events: none;
 
-    transition:
-        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.35s ease;
-
-    border-radius: var(--radius);
-    overflow: hidden;
-    z-index: 2;
+    /* hidden: clip from bottom — top is revealed first */
+    clip-path: inset(0 0 100% 0 round var(--radius));
+    transition: clip-path 1.0s cubic-bezier(0.76, 0, 0.24, 1);
+    will-change: clip-path;
 }
 
-/* Expanded: slides down flush with the card */
+/* open: curtain fully dropped */
 .problem-card.is-open .pain-panel {
-    transform: translateY(0);
-    opacity: 1;
+    clip-path: inset(0 0 0% 0 round var(--radius));
     pointer-events: auto;
+    will-change: auto;
 }
 
 /* ── Panel inner ── */
 .pain-inner {
-    /* Top padding clears the navy header bar (~52px tall) */
-    padding: 66px 22px 24px;
-    background: var(--navy-dark);
+    /* top padding clears the navy header bar */
+    padding: 58px 20px 24px;
+    background: linear-gradient(160deg, #01183a 0%, #021f4b 60%, #032B66 100%);
     position: relative;
     overflow: hidden;
+    border-radius: var(--radius);
+
+    /* content fades in slightly after curtain starts dropping */
+    opacity: 0;
+    transition: opacity 0.55s ease 0.35s;
 }
 
-/* Subtle texture overlay */
-.pain-inner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(-48deg,
-            transparent 0px, transparent 22px,
-            rgba(255, 255, 255, 0.016) 22px, rgba(255, 255, 255, 0.016) 23px);
-    pointer-events: none;
-    z-index: 0;
+.problem-card.is-open .pain-inner {
+    opacity: 1;
 }
 
-/* Orange glow accent */
+/* orange glow */
 .pain-inner::after {
     content: '';
     position: absolute;
-    width: 220px;
-    height: 220px;
-    top: -80px;
-    right: -60px;
+    width: 260px;
+    height: 260px;
+    top: -90px;
+    right: -50px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 98, 0, 0.14) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(255, 98, 0, 0.18) 0%, transparent 65%);
     pointer-events: none;
-    z-index: 0;
 }
 
-/* Badge */
 .pain-badge {
     position: relative;
     z-index: 1;
@@ -920,32 +868,29 @@ a {
     font-size: 10px;
 }
 
-/* Pain description */
 .pain-inner>p {
     position: relative;
     z-index: 1;
     font-size: 13px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgba(255, 255, 255, 0.80);
     line-height: 1.78;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
-/* Stat row */
 .stat-row {
     position: relative;
     z-index: 1;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 11px 16px;
+    padding: 10px 14px;
     background: rgba(255, 98, 0, 0.09);
-    border: 1px solid rgba(255, 98, 0, 0.20);
+    border: 1px solid rgba(255, 98, 0, 0.18);
     border-radius: 10px;
 }
 
 .stat-row strong {
-    font-size: 1.65rem;
+    font-size: 1.55rem;
     font-weight: 800;
     color: var(--orange);
     line-height: 1;
@@ -954,7 +899,6 @@ a {
 
 .stat-row span {
     font-size: 11.5px;
-    font-weight: 400;
     color: rgba(255, 255, 255, 0.50);
     line-height: 1.45;
 }
@@ -993,9 +937,8 @@ a {
         font-size: 14.5px;
     }
 
-    /* Disable translate entrance on mobile to avoid jitter */
+    /* Scroll entrance on mobile — no translate */
     .problem-card {
-        transform: none;
         transition: opacity 0.5s ease, box-shadow 0.35s ease, border-color 0.3s ease;
     }
 
@@ -1003,9 +946,9 @@ a {
         transform: none;
     }
 
-    /* Suppress hover lift on touch */
     .problem-card:not(.is-open):hover {
         transform: none !important;
+        box-shadow: none !important;
     }
 
     .card-cta {
@@ -3748,58 +3691,63 @@ body.drawer-open {
 
 
 /* ─────────────────────────────────────────────────
-   LAYER 2 — PARAGRAPH FADE-UP
+   LAYER 2 — PARAGRAPH WORD-BY-WORD REVEAL
    ───────────────────────────────────────────────── */
 
 /*
-  Paragraphs use a SMALLER translateY (20px vs 105%) so there
-  is zero visual overlap with the heading animation range.
-  Only opacity + translateY — no scale, no X movement.
+  Paragraphs use the same word-split mechanism as headings
+  but with:
+  - Smaller translateY (70% vs 105%) — softer, more readable
+  - Slightly shorter duration (0.58s vs 0.72s) — lighter feel
+  - Softer easing: cubic-bezier(0.22, 1, 0.36, 1) instead of
+    the iOS spring — graceful, not dramatic
+  - Tighter stagger: 40ms per word vs 55ms for headings
+  These differences make paragraphs clearly feel distinct
+  from headings while staying on the same animation language.
 */
 
-.txt-para {
-    opacity: 0;
-    transform: translateY(20px);
-    will-change: transform, opacity;
-    transition:
-        opacity 0.75s ease,
-        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+.txt-para-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    line-height: inherit;
 }
 
-.txt-para.txt-para-in {
+.txt-para-word {
+    transform: translateY(70%);
+    opacity: 0;
+    will-change: transform, opacity;
+    transition:
+        transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.45s ease;
+}
+
+.txt-para-word.txt-in {
+    transform: translateY(0%);
     opacity: 1;
-    transform: translateY(0);
     will-change: auto;
 }
 
-/* Hero paragraph: slightly delayed to fire after h1 words */
-.hero-content p.txt-para {
-    transition-duration: 0.80s, 0.80s;
+/* Card descriptions: very slightly faster for tight layouts */
+.card-desc .txt-para-word,
+.card-content p .txt-para-word,
+.core-card__desc .txt-para-word,
+.ops-card>p .txt-para-word,
+.why-card p .txt-para-word,
+.pkg-card__header p .txt-para-word,
+.timeline-card p .txt-para-word,
+.listora-advantage-card p .txt-para-word {
+    transition-duration: 0.50s, 0.38s;
 }
 
-/* Comfortable reading: slightly slower, softer easing */
-.section-header>p.txt-para,
-.listora-advantage-header p.txt-para,
-.ref-cta-description.txt-para {
-    transition-duration: 0.85s, 0.85s;
-    transition-timing-function: ease, cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Small descriptive text (card bodies, footers) */
-.card-desc.txt-para,
-.content p.txt-para,
-.footer-tagline.txt-para,
-.timelinepro-card-desc.txt-para,
-/* Service page card text */
-.core-card__desc.txt-para,
-.ops-card>p.txt-para,
-.why-card p.txt-para,
-.pkg-card__header p.txt-para,
-.timeline-card p.txt-para,
-.alt-block__content p.txt-para,
-.websites-desc.txt-para,
-.section-sub.txt-para {
-    transition-duration: 0.65s, 0.65s;
+/* Section subs and larger reading paragraphs: slightly slower */
+.section-header>p .txt-para-word,
+.listora-advantage-header p .txt-para-word,
+.ref-cta-description .txt-para-word,
+.svc-hero__sub .txt-para-word,
+.alt-block__content p .txt-para-word,
+.websites-desc .txt-para-word {
+    transition-duration: 0.62s, 0.48s;
 }
 
 
@@ -3839,6 +3787,7 @@ body.drawer-open {
     .txt-hero-word,
     .txt-section-word,
     .txt-para,
+    .txt-para-word,
     .txt-badge-anim {
         transform: none !important;
         opacity: 1 !important;
@@ -4335,5 +4284,856 @@ body.drawer-open {
 
     .listora-advantage-card:hover {
         box-shadow: var(--shadow-card);
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM ANIMATION UPGRADE  v1.0
+   All rules below are ADDITIVE — no existing rules are modified.
+   Hover blocks are wrapped in @media (hover: hover) to protect
+   touch devices. Complex effects are suppressed at ≤768 px.
+   Only transform & opacity are animated (60 FPS guarantee).
+   ═══════════════════════════════════════════════════════════════ */
+
+
+/* ── 1. SERVICE CARDS — premium hover micro-interactions ────── */
+
+/* Upgrade base transition on the card itself */
+.service-card {
+    transition:
+        transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    /* clips the shimmer sweep */
+    position: relative;
+    /* stacking context for ::before */
+}
+
+/* Shimmer sweep pseudo-element */
+.service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.55) 50%,
+            transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0ms linear;
+    /* instant reset */
+    pointer-events: none;
+    z-index: 2;
+}
+
+@media (hover: hover) {
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow:
+            0 24px 60px rgba(3, 43, 102, 0.15),
+            0 8px 20px rgba(3, 43, 102, 0.08);
+    }
+
+    /* Trigger shimmer on hover */
+    .service-card:hover::before {
+        transform: translateX(120%);
+        transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+}
+
+/* Disable complex hover on mobile */
+@media (max-width: 768px) {
+    .service-card:hover {
+        transform: none !important;
+        box-shadow: var(--shadow-card) !important;
+    }
+
+    .service-card:hover::before {
+        transform: translateX(-120%) !important;
+        transition: none !important;
+    }
+}
+
+
+/* ── 1b. IMAGE zoom upgrade (scale 1.06 + brightness) ───────── */
+
+.card-image img {
+    transition:
+        transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
+        filter 800ms ease;
+    will-change: transform, filter;
+}
+
+@media (hover: hover) {
+    .service-card:hover .card-image img {
+        transform: scale(1.06);
+        filter: brightness(1.05);
+    }
+}
+
+
+/* ── 2. LISTORA ADVANTAGE CARDS — premium hover ─────────────── */
+
+.listora-advantage-card {
+    transition:
+        transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Bottom border accent — starts at width 0, grows on hover */
+.listora-advantage-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--clr-orange-alt), var(--clr-orange-dark));
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
+    transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+    .listora-advantage-card:hover {
+        transform: translateY(-8px);
+        box-shadow:
+            0 28px 64px rgba(3, 43, 102, 0.16),
+            0 10px 24px rgba(3, 43, 102, 0.09);
+    }
+
+    .listora-advantage-card:hover::after {
+        width: 70%;
+    }
+
+    /* Icon animation on hover */
+    .listora-advantage-card:hover .advantage-icon,
+    .listora-advantage-card:hover .icon-wrap,
+    .listora-advantage-card:hover .adv-icon {
+        transform: scale(1.15) rotate(5deg);
+        transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+}
+
+/* Ensure icon containers have a smooth base transition */
+.listora-advantage-card .advantage-icon,
+.listora-advantage-card .icon-wrap,
+.listora-advantage-card .adv-icon {
+    transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+}
+
+
+/* ── 3. FLIP CARDS — entrance stagger improvement ───────────── */
+
+/* Richer entrance start state: translateY + slight scale down */
+.flip-card {
+    opacity: 0;
+    transform: translateY(32px) scale(0.96);
+    will-change: transform, opacity;
+    transition:
+        opacity 550ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flip-card.show-card {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    /* will-change cleaned up by JS after entrance */
+}
+
+
+/* ── 4. PROBLEM CARDS — overrides removed; see main card block above ── */
+/* All problem-card animation logic is now consolidated in the
+   PROBLEM CARD — PREMIUM ANIMATION SYSTEM block in the main stylesheet. */
+.problem-card .icon-box {
+    transition:
+        transform 350ms cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+/* ── 5. NAVBAR — premium frosted-glass scrolled state ───────── */
+
+.navbar {
+    transition:
+        background 400ms cubic-bezier(0.4, 0, 0.2, 1),
+        backdrop-filter 400ms ease,
+        box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 400ms ease;
+}
+
+/* Frosted glass + subtle bottom border when scrolled */
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 1px 0 rgba(3, 43, 102, 0.08), 0 4px 24px rgba(3, 43, 102, 0.06);
+}
+
+
+/* ── 6. BUTTONS — premium shimmer + scale + glow ────────────── */
+
+/* Base: only transform & box-shadow animated, never layout props */
+.subscribe-btn,
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1),
+        background 300ms ease,
+        filter 300ms ease;
+}
+
+/* Shimmer sweep via ::after */
+.subscribe-btn::after,
+.btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.45) 50%,
+            transparent 70%);
+    transform: translateX(-130%);
+    pointer-events: none;
+    transition: transform 0ms linear;
+    /* instant reset */
+}
+
+@media (hover: hover) {
+
+    .subscribe-btn:hover,
+    .btn:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow:
+            0 0 0 0px rgba(255, 102, 0, 0.20),
+            0 8px 24px rgba(255, 102, 0, 0.30),
+            0 4px 10px rgba(255, 102, 0, 0.18);
+    }
+
+    .subscribe-btn:hover::after,
+    .btn:hover::after {
+        transform: translateX(130%);
+        transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+}
+
+/* Disable shimmer on mobile to protect touch UX */
+@media (max-width: 768px) {
+
+    .subscribe-btn::after,
+    .btn::after {
+        display: none;
+    }
+
+    .subscribe-btn:hover,
+    .btn:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}
+
+
+/* ── 10. FOOTER SOCIAL ICONS — premium hover ────────────────── */
+
+.footer-socials a {
+    transition:
+        transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 350ms ease,
+        background 250ms ease;
+}
+
+@media (hover: hover) {
+    .footer-socials a:hover {
+        transform: translateY(-4px) scale(1.1);
+        box-shadow:
+            0 8px 24px rgba(255, 102, 0, 0.40),
+            0 0 0 2px rgba(255, 102, 0, 0.15);
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-socials a:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}
+
+
+/* ── REDUCED MOTION — disable all new animation upgrades ─────── */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .service-card,
+    .service-card::before,
+    .card-image img,
+    .listora-advantage-card,
+    .listora-advantage-card::after,
+    .listora-advantage-card .advantage-icon,
+    .listora-advantage-card .icon-wrap,
+    .listora-advantage-card .adv-icon,
+    .flip-card,
+    .problem-card,
+    .problem-card::before,
+    .problem-card .icon-box,
+    .navbar,
+    .subscribe-btn,
+    .subscribe-btn::after,
+    .btn,
+    .btn::after,
+    .footer-socials a {
+        transition: none !important;
+        transform: none !important;
+        filter: none !important;
+        animation: none !important;
+        will-change: auto !important;
+    }
+}
+
+/* ═══ END PREMIUM ANIMATION UPGRADE ═══ */
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   PREMIUM CARD ANIMATION SYSTEM  v3.0  — Complete Rebuild
+   ───────────────────────────────────────────────────────────────────
+   PHILOSOPHY:
+   • Every property on its own timeline — never bundle transforms
+   • GPU-only: opacity, transform, filter — never layout props
+   • Easing: cubic-bezier(0.22, 1, 0.36, 1) throughout — the "iOS spring"
+   • Depth is created by shadow, not scale — scale stays minimal
+   • Hover effects cascade: card → image → heading → para → cta
+   • Motion is felt, not seen
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────────────────────────
+   0. RESET conflicting overrides from previous blocks
+   ───────────────────────────────────────────────────────────────── */
+.service-card,
+.service-card:hover,
+.service-card::before,
+.card-image img,
+.listora-advantage-card,
+.listora-advantage-card:hover,
+.listora-advantage-card::after,
+.listora-advantage-icon {
+    /* wipe any multi-source transition clashes */
+    animation: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   1. SERVICE CARD — entrance
+   ───────────────────────────────────────────────────────────────── */
+.service-card {
+    /* entrance state */
+    opacity: 0;
+    transform: translateY(56px) scale(0.96);
+
+    /* base transitions (hover + show) */
+    transition:
+        opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.5s ease;
+
+    will-change: transform, opacity;
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.service-card.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    will-change: auto;
+}
+
+/* stagger via data-delay already set in HTML */
+
+/* ─────────────────────────────────────────────────────────────────
+   2. SERVICE CARD — hover (cascade system)
+   ───────────────────────────────────────────────────────────────── */
+@media (hover: hover) {
+
+    /* Card container float */
+    .service-card:hover {
+        transform: translateY(-12px) scale(1.018);
+        box-shadow:
+            0 0 0 1px rgba(255, 98, 0, 0.12),
+            0 8px 20px rgba(3, 43, 102, 0.07),
+            0 24px 56px rgba(3, 43, 102, 0.13),
+            0 40px 80px rgba(3, 43, 102, 0.07);
+        border-color: rgba(255, 98, 0, 0.18);
+        transition:
+            transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.5s ease;
+    }
+
+    /* Image — cinematic slow zoom */
+    .service-card:hover .card-image img {
+        transform: scale(1.08);
+        filter: brightness(1.04) contrast(1.03) saturate(1.05);
+        transition:
+            transform 1.5s cubic-bezier(0.22, 1, 0.36, 1),
+            filter 1.2s ease;
+    }
+
+    /* Heading — float up */
+    .service-card:hover .card-content h3 {
+        transform: translateY(-4px);
+        opacity: 1;
+        transition:
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.08s,
+            opacity 0.5s ease 0.08s;
+    }
+
+    /* Paragraph — float up after heading */
+    .service-card:hover .card-content p {
+        transform: translateY(-5px);
+        opacity: 1;
+        transition:
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.16s,
+            opacity 0.5s ease 0.16s;
+    }
+
+    /* CTA — float up last */
+    .service-card:hover .learn-btn {
+        transform: translateY(-3px);
+        opacity: 1;
+        transition:
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.24s,
+            color 0.3s ease 0.24s;
+    }
+
+    .service-card:hover .learn-btn span {
+        transform: translateX(6px);
+        transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.28s;
+    }
+}
+
+/* base state for hover targets — set initial values */
+.card-content h3,
+.card-content p {
+    transform: translateY(0);
+    opacity: 0.9;
+    transition:
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.4s ease;
+}
+
+.card-image img {
+    transform: scale(1);
+    filter: brightness(1) contrast(1);
+    transition:
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.7s ease;
+    will-change: transform, filter;
+}
+
+.learn-btn {
+    transform: translateY(0);
+    transition:
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        color 0.3s ease;
+}
+
+.learn-btn span {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* shimmer sweep — polish pass */
+.service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(108deg,
+            transparent 28%,
+            rgba(255, 255, 255, 0.50) 50%,
+            transparent 72%);
+    transform: translateX(-130%);
+    transition: transform 0ms linear;
+    /* instant reset off-hover */
+    pointer-events: none;
+    z-index: 3;
+}
+
+@media (hover: hover) {
+    .service-card:hover::before {
+        transform: translateX(130%);
+        transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
+    }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   3. LISTORA ADVANTAGE CARDS — entrance + hover
+   ───────────────────────────────────────────────────────────────── */
+.listora-advantage-card {
+    position: relative;
+    overflow: hidden;
+
+    /* entrance */
+    opacity: 0;
+    transform: translateY(48px) scale(0.97);
+
+    transition:
+        opacity 1.0s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.0s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.45s ease;
+
+    will-change: transform, opacity;
+}
+
+.listora-card-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    will-change: auto;
+}
+
+/* bottom accent line */
+.listora-advantage-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 70%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--clr-orange-alt), var(--clr-orange-dark));
+    border-radius: 2px;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: center;
+}
+
+@media (hover: hover) {
+
+    .listora-advantage-card:hover {
+        transform: translateY(-10px) scale(1.015);
+        box-shadow:
+            0 0 0 1px rgba(255, 90, 0, 0.10),
+            0 20px 48px rgba(3, 43, 102, 0.12),
+            0 36px 72px rgba(3, 43, 102, 0.08);
+        border-color: rgba(255, 90, 0, 0.18);
+        transition:
+            transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.45s ease;
+    }
+
+    .listora-advantage-card:hover::after {
+        transform: translateX(-50%) scaleX(1);
+    }
+
+    /* icon — float + glow */
+    .listora-advantage-card:hover .listora-advantage-icon {
+        transform: translateY(-5px) scale(1.08);
+        box-shadow: 0 12px 28px rgba(3, 43, 102, 0.22);
+        transition:
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s,
+            box-shadow 0.7s ease 0.05s;
+    }
+
+    /* card heading float */
+    .listora-advantage-card:hover h3 {
+        transform: translateY(-3px);
+        transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.10s;
+    }
+
+    /* card para fade clearer */
+    .listora-advantage-card:hover p {
+        opacity: 1;
+        transform: translateY(-2px);
+        transition:
+            transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.16s,
+            opacity 0.5s ease 0.16s;
+    }
+}
+
+/* base states */
+.listora-advantage-icon {
+    transition:
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.55s ease;
+}
+
+.listora-advantage-card h3 {
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.listora-advantage-card p {
+    opacity: 0.85;
+    transform: translateY(0);
+    transition:
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.4s ease;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   4. FLIP CARDS — smoother entrance
+   ───────────────────────────────────────────────────────────────── */
+.flip-card {
+    opacity: 0;
+    transform: translateY(36px) scale(0.97);
+    will-change: transform, opacity;
+    transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flip-card.show-card {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    will-change: auto;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   5. BUTTONS — premium shimmer + float
+   ───────────────────────────────────────────────────────────────── */
+.subscribe-btn,
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        background 0.35s ease,
+        opacity 0.35s ease;
+}
+
+.subscribe-btn::after,
+.btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(108deg,
+            transparent 28%,
+            rgba(255, 255, 255, 0.40) 50%,
+            transparent 72%);
+    transform: translateX(-130%);
+    pointer-events: none;
+    transition: transform 0ms linear;
+}
+
+@media (hover: hover) {
+
+    .subscribe-btn:hover,
+    .btn:hover {
+        transform: translateY(-3px) scale(1.015);
+        box-shadow:
+            0 6px 20px rgba(255, 102, 0, 0.22),
+            0 12px 36px rgba(255, 102, 0, 0.14);
+    }
+
+    .subscribe-btn:hover::after,
+    .btn:hover::after {
+        transform: translateX(130%);
+        transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   6. NAVBAR — frosted glass
+   ───────────────────────────────────────────────────────────────── */
+.navbar {
+    transition:
+        background 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        backdrop-filter 0.55s ease,
+        box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    box-shadow:
+        0 1px 0 rgba(3, 43, 102, 0.06),
+        0 4px 24px rgba(3, 43, 102, 0.05);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   7. FOOTER SOCIAL ICONS
+   ───────────────────────────────────────────────────────────────── */
+.footer-socials a {
+    transition:
+        transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.55s ease,
+        background 0.35s ease,
+        border-color 0.35s ease;
+}
+
+@media (hover: hover) {
+    .footer-socials a:hover {
+        transform: translateY(-5px) scale(1.08);
+        box-shadow:
+            0 8px 22px rgba(255, 102, 0, 0.32),
+            0 0 0 2px rgba(255, 102, 0, 0.12);
+    }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   8. MOBILE OVERRIDES — preserve premium feel, reduce motion 50%
+   ───────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+    .service-card,
+    .listora-advantage-card,
+    .flip-card {
+        transition-duration: 0.75s, 0.75s, 0.5s, 0.35s !important;
+    }
+
+    .service-card:hover,
+    .listora-advantage-card:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 12px 32px rgba(3, 43, 102, 0.10) !important;
+    }
+
+    .service-card::before,
+    .subscribe-btn::after,
+    .btn::after {
+        display: none;
+    }
+
+    .service-card:hover .card-image img {
+        transform: scale(1.03) !important;
+        transition-duration: 0.9s !important;
+    }
+
+    .service-card:hover .card-content h3,
+    .service-card:hover .card-content p,
+    .service-card:hover .learn-btn {
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .footer-socials a:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────
+   9. REDUCED MOTION — all premium upgrades silenced
+   ───────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+    .service-card,
+    .service-card::before,
+    .service-card:hover,
+    .card-image img,
+    .card-content h3,
+    .card-content p,
+    .learn-btn,
+    .learn-btn span,
+    .listora-advantage-card,
+    .listora-advantage-card::after,
+    .listora-advantage-icon,
+    .listora-advantage-card h3,
+    .listora-advantage-card p,
+    .flip-card,
+    .subscribe-btn,
+    .subscribe-btn::after,
+    .btn,
+    .btn::after,
+    .navbar,
+    .footer-socials a {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+        filter: none !important;
+        will-change: auto !important;
+    }
+
+    .service-card,
+    .listora-advantage-card,
+    .flip-card {
+        opacity: 1 !important;
+    }
+}
+
+/* ═══ END PREMIUM CARD ANIMATION SYSTEM v3.0 ═══ */
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TIMELINE — MOBILE MANUAL NODE SELECTION
+   All rules scoped to max-width: 768px — desktop unchanged.
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+    /* ── Larger tap target on node-wrap ── */
+    .timelinepro-node-wrap {
+        padding: 10px;
+        margin: -10px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Step content also tappable ── */
+    .timelinepro-step-content {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Manual-active node: orange glow ring ── */
+    .timelinepro-step.tp-manual-active .timelinepro-node {
+        border-color: var(--tp-orange);
+        background: var(--tp-orange);
+        box-shadow:
+            0 0 0 4px rgba(232, 112, 58, 0.22),
+            0 0 14px rgba(232, 112, 58, 0.40);
+        transition:
+            border-color 0.35s ease,
+            background 0.35s ease,
+            box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .timelinepro-step.tp-manual-active .timelinepro-node::after {
+        background: var(--clr-white);
+        transform: scale(0.45);
+    }
+
+    /* ── Manual-active step number and title ── */
+    .timelinepro-step.tp-manual-active .timelinepro-step-num {
+        color: var(--tp-orange);
+        font-weight: 700;
+    }
+
+    .timelinepro-step.tp-manual-active .timelinepro-step-title {
+        opacity: 1;
+        color: var(--tp-orange);
+    }
+
+    .timelinepro-step.tp-manual-active .timelinepro-step-desc {
+        opacity: 0.9;
+    }
+
+    /* ── Smooth fill bar transition on manual jump ── */
+    .timelinepro-track-fill {
+        transition: height 0.55s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    }
+
+    /* ── Card body fade transition — same as desktop ── */
+    .timelinepro-card-body {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .timelinepro-card-body.timelinepro-fade-out {
+        opacity: 0;
+        transform: translateY(6px);
     }
 }
