@@ -1,0 +1,2672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="MLS Listing Management services by Listora Digital Media — professional property listing creation, optimization, and maintenance so real estate professionals can focus on closing deals.">
+    <title>MLS Listing Management | Listora Digital Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        :root {
+            --navy: #032B66;
+            --navy-deep: #021f4b;
+            --navy-mid: #1a2353;
+            --orange: #FF6600;
+            --orange-dark: #e05500;
+            --orange-soft: #f26b2c;
+            --white: #ffffff;
+            --bg-light: #f4f7fc;
+            --bg-soft: #f0f4fb;
+            --text-muted: #64748B;
+            --border: #dde5f4;
+            --shadow-sm: 0 4px 16px rgba(3, 43, 102, .07);
+            --shadow-md: 0 8px 32px rgba(3, 43, 102, .11);
+            --shadow-lg: 0 20px 56px rgba(3, 43, 102, .15);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --ease: cubic-bezier(.22, 1, .36, 1);
+            --spring: cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 15px
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--navy);
+            background: #fff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased
+        }
+
+        img {
+            max-width: 100%;
+            display: block
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        ul {
+            list-style: none
+        }
+
+        /* ── BACK BUTTON ── */
+        .back-btn {
+            position: fixed;
+            top: 22px;
+            left: 22px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 9px 18px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--navy);
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: transform .5s var(--ease), box-shadow .5s var(--ease), background .3s ease;
+        }
+
+        .back-btn i {
+            transition: transform .4s var(--ease)
+        }
+
+        .back-btn:hover {
+            transform: translateX(-4px);
+            background: #fff;
+            box-shadow: var(--shadow-md)
+        }
+
+        .back-btn:hover i {
+            transform: translateX(-3px)
+        }
+
+        /* ── LAYOUT ── */
+        .container {
+            width: 90%;
+            max-width: 1180px;
+            margin: 0 auto
+        }
+
+        .section-pad {
+            padding: 90px 0
+        }
+
+        /* ── REVEAL ANIMATIONS ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-32px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0)
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(32px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0)
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(.94);
+            transition: opacity .8s var(--ease), transform .8s var(--ease);
+            will-change: transform, opacity
+        }
+
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        [data-delay="50"] {
+            transition-delay: .05s
+        }
+
+        [data-delay="100"] {
+            transition-delay: .10s
+        }
+
+        [data-delay="150"] {
+            transition-delay: .15s
+        }
+
+        [data-delay="200"] {
+            transition-delay: .20s
+        }
+
+        [data-delay="250"] {
+            transition-delay: .25s
+        }
+
+        [data-delay="300"] {
+            transition-delay: .30s
+        }
+
+        [data-delay="400"] {
+            transition-delay: .40s
+        }
+
+        [data-delay="500"] {
+            transition-delay: .50s
+        }
+
+        /* ── WORD ANIM ── */
+        .word-anim .w {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: bottom;
+            line-height: 1.15
+        }
+
+        .word-anim .wi {
+            display: inline-block;
+            transform: translateY(105%);
+            opacity: 0;
+            transition: transform .68s cubic-bezier(.16, 1, .3, 1), opacity .48s ease;
+            will-change: transform, opacity
+        }
+
+        .word-anim.fired .wi {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        /* ── PARA ANIM ── */
+        .para-anim .pw {
+            display: inline-block;
+            transform: translateY(65%);
+            opacity: 0;
+            transition: transform .55s var(--ease), opacity .42s ease;
+            will-change: transform, opacity
+        }
+
+        .para-anim.fired .pw {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        /* ── BADGE ANIM ── */
+        .badge-anim {
+            opacity: 0;
+            transform: translateY(10px) scale(.93);
+            transition: opacity .45s ease, transform .52s var(--spring);
+            will-change: transform, opacity
+        }
+
+        .badge-anim.fired {
+            opacity: 1;
+            transform: translateY(0) scale(1)
+        }
+
+        /* ── IMG REVEAL ── */
+        .img-reveal {
+            opacity: 0;
+            transform: scale(.95);
+            transition: opacity .9s var(--ease), transform .9s var(--ease);
+            will-change: transform, opacity
+        }
+
+        .img-reveal.visible {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        /* ── SECTION LABEL ── */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 98, 0, .08);
+            color: var(--orange);
+            border: 1px solid rgba(255, 98, 0, .18);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        /* ── TYPOGRAPHY ── */
+        .section-title {
+            font-size: clamp(24px, 3.8vw, 42px);
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--navy);
+            letter-spacing: -.015em;
+            margin-bottom: 12px
+        }
+
+        .section-sub {
+            font-size: 15px;
+            line-height: 1.82;
+            color: var(--text-muted);
+            max-width: 660px
+        }
+
+        .section-sub.center {
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .accent {
+            color: var(--orange)
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 26px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: transform .55s var(--ease), box-shadow .55s var(--ease), background .3s ease;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(108deg, transparent 30%, rgba(255, 255, 255, .4) 50%, transparent 70%);
+            transform: translateX(-130%);
+            transition: transform 0ms linear;
+            pointer-events: none
+        }
+
+        .btn:hover::after {
+            transform: translateX(130%);
+            transition: transform 650ms var(--ease)
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange);
+            box-shadow: 0 6px 22px rgba(255, 98, 0, .28)
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-dark);
+            transform: translateY(-3px) scale(1.015);
+            box-shadow: 0 12px 32px rgba(255, 98, 0, .36)
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border-color: var(--border)
+        }
+
+        .btn-outline:hover {
+            border-color: var(--navy);
+            background: var(--bg-light);
+            transform: translateY(-2px)
+        }
+
+        .btn-white {
+            background: #fff;
+            color: var(--navy);
+            border-color: #fff
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px) scale(1.015);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .18)
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes blobDrift {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(24px, -18px) scale(1.06)
+            }
+        }
+
+        @keyframes floatY {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-12px)
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: .6
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        /* ══════════════════════════════════════════════════
+   1. HERO
+══════════════════════════════════════════════════ */
+        .hero {
+            min-height: 92vh;
+            display: flex;
+            align-items: center;
+            background:
+                radial-gradient(ellipse 90% 65% at 8% 8%, rgba(3, 43, 102, .09) 0%, transparent 60%),
+                radial-gradient(ellipse 70% 55% at 92% 92%, rgba(255, 98, 0, .07) 0%, transparent 55%),
+                linear-gradient(155deg, #eef3fb 0%, #ffffff 45%, #f8faff 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 130px 0 90px;
+        }
+
+        .hero-bg-dots {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, rgba(3, 43, 102, .05) 1px, transparent 1px);
+            background-size: 28px 28px
+        }
+
+        .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none
+        }
+
+        .hero-blob--1 {
+            width: 560px;
+            height: 560px;
+            top: -160px;
+            right: -120px;
+            background: radial-gradient(circle, rgba(3, 43, 102, .11) 0%, transparent 70%);
+            animation: blobDrift 18s ease-in-out infinite alternate
+        }
+
+        .hero-blob--2 {
+            width: 400px;
+            height: 400px;
+            bottom: -130px;
+            left: -90px;
+            background: radial-gradient(circle, rgba(255, 98, 0, .09) 0%, transparent 70%);
+            animation: blobDrift 14s ease-in-out infinite alternate-reverse
+        }
+
+        .hero-blob--3 {
+            width: 260px;
+            height: 260px;
+            top: 50%;
+            left: 35%;
+            background: radial-gradient(circle, rgba(3, 43, 102, .06) 0%, transparent 70%);
+            animation: blobDrift 22s ease-in-out infinite alternate
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 60px;
+            align-items: center
+        }
+
+        .hero-content {
+            max-width: 580px
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 98, 0, .08);
+            color: var(--orange);
+            border: 1px solid rgba(255, 98, 0, .20);
+            border-radius: 50px;
+            padding: 7px 18px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: fadeUp .8s var(--ease) .1s both
+        }
+
+        .hero-title {
+            font-size: clamp(34px, 5vw, 60px);
+            font-weight: 800;
+            line-height: 1.08;
+            color: var(--navy);
+            letter-spacing: -.022em;
+            margin-bottom: 18px;
+            animation: fadeUp .85s var(--ease) .2s both
+        }
+
+        .hero-sub {
+            font-size: 15.5px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 480px;
+            animation: fadeUp .85s var(--ease) .3s both
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            animation: fadeUp .85s var(--ease) .4s both
+        }
+
+        .hero-trust {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 26px;
+            flex-wrap: wrap;
+            animation: fadeUp .85s var(--ease) .5s both
+        }
+
+        .trust-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted)
+        }
+
+        .trust-pill i {
+            color: var(--orange);
+            font-size: 12px
+        }
+
+        .trust-div {
+            width: 1px;
+            height: 16px;
+            background: var(--border)
+        }
+
+        /* Hero visual */
+        .hero-visual {
+            position: relative;
+            animation: fadeUp .9s var(--ease) .25s both
+        }
+
+        .hero-card-main {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(3, 43, 102, .04);
+            padding: 30px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero-card-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--orange) 40%, rgba(255, 98, 0, .5), transparent)
+        }
+
+        .hero-va-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--navy), #0a3a8f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 24px rgba(3, 43, 102, .28);
+            animation: floatY 4s ease-in-out infinite
+        }
+
+        .hero-card-main h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 5px
+        }
+
+        .hero-card-main>p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 20px
+        }
+
+        .va-task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            margin-bottom: 20px
+        }
+
+        .va-task {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 13px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--navy);
+            transition: border-color .3s ease, transform .45s var(--ease)
+        }
+
+        .va-task:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(3px)
+        }
+
+        .va-task i {
+            color: var(--orange);
+            font-size: 11px;
+            width: 14px;
+            flex-shrink: 0
+        }
+
+        .hero-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(3, 43, 102, .05);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--navy);
+            width: 100%
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34, 197, 94, .5);
+            animation: pulseGlow 2s ease-in-out infinite;
+            flex-shrink: 0
+        }
+
+        .float-chip {
+            position: absolute;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, .95);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--navy);
+            white-space: nowrap;
+            box-shadow: var(--shadow-md)
+        }
+
+        .float-chip i {
+            color: var(--orange);
+            font-size: 10px
+        }
+
+        .chip-top {
+            top: -16px;
+            right: 16px;
+            animation: floatY 3.5s ease-in-out infinite alternate
+        }
+
+        .chip-bot {
+            bottom: -16px;
+            left: 16px;
+            animation: floatY 4.5s ease-in-out infinite alternate-reverse
+        }
+
+        /* ══════════════════════════════════════════════════
+   2. METRICS STRIP
+══════════════════════════════════════════════════ */
+        .metrics-strip {
+            background: var(--navy);
+            padding: 0
+        }
+
+        .metrics-inner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-left: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .metric-col {
+            padding: 36px 28px;
+            border-right: 1px solid rgba(255, 255, 255, .08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: background .4s ease
+        }
+
+        .metric-col::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), transparent);
+            transform: scaleX(0);
+            transition: transform .5s var(--ease)
+        }
+
+        .metric-col:hover {
+            background: rgba(255, 255, 255, .04)
+        }
+
+        .metric-col:hover::before {
+            transform: scaleX(1)
+        }
+
+        .metric-num {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--orange);
+            font-variant-numeric: tabular-nums;
+            display: block;
+            line-height: 1;
+            margin-bottom: 6px
+        }
+
+        .metric-lbl {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, .75);
+            margin-bottom: 3px
+        }
+
+        .metric-sub {
+            font-size: 10.5px;
+            color: rgba(255, 255, 255, .40)
+        }
+
+        /* ══════════════════════════════════════════════════
+   3. OVERVIEW
+══════════════════════════════════════════════════ */
+        .overview {
+            background: #fff
+        }
+
+        .overview-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: start
+        }
+
+        .overview-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 13px
+        }
+
+        .overview-text p strong {
+            color: var(--navy);
+            font-weight: 600
+        }
+
+        .ov-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 24px
+        }
+
+        .ov-pill {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 14px 16px;
+            background: var(--bg-light);
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            transition: border-color .35s ease, transform .5s var(--ease), background .35s ease
+        }
+
+        .ov-pill:hover {
+            border-color: rgba(255, 98, 0, .22);
+            background: rgba(255, 98, 0, .03);
+            transform: translateX(5px)
+        }
+
+        .ov-ico {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255, 98, 0, .09);
+            border: 1px solid rgba(255, 98, 0, .16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--orange);
+            flex-shrink: 0;
+            transition: background .4s var(--ease), transform .5s var(--spring)
+        }
+
+        .ov-pill:hover .ov-ico {
+            background: var(--orange);
+            color: #fff;
+            transform: scale(1.1)
+        }
+
+        .ov-pill strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px
+        }
+
+        .ov-pill span {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55
+        }
+
+        .img-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px
+        }
+
+        .img-block {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border)
+        }
+
+        .img-block img {
+            width: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1.4s var(--ease)
+        }
+
+        .img-block:hover img {
+            transform: scale(1.05)
+        }
+
+        .img-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(3, 43, 102, .88);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, .14);
+            border-radius: 50px;
+            padding: 7px 14px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #fff
+        }
+
+        .img-badge i {
+            color: var(--orange);
+            font-size: 10px
+        }
+
+        /* ══════════════════════════════════════════════════
+   4. BENEFITS
+══════════════════════════════════════════════════ */
+        .benefits {
+            background: var(--bg-light)
+        }
+
+        .benefits-hdr {
+            text-align: center;
+            margin-bottom: 52px
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px
+        }
+
+        .benefit-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 26px 20px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: transform .65s var(--ease), box-shadow .65s var(--ease), border-color .4s ease, opacity .65s ease
+        }
+
+        .benefit-card.visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .benefit-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 55%;
+            height: 2px;
+            background: var(--orange);
+            border-radius: 2px;
+            transition: transform .5s var(--ease)
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(255, 98, 0, .18)
+        }
+
+        .benefit-card:hover::after {
+            transform: translateX(-50%) scaleX(1)
+        }
+
+        .benefit-ico {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: rgba(255, 98, 0, .08);
+            border: 1px solid rgba(255, 98, 0, .14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--orange);
+            margin-bottom: 13px;
+            transition: background .45s var(--ease), transform .55s var(--spring)
+        }
+
+        .benefit-card:hover .benefit-ico {
+            background: var(--orange);
+            color: #fff;
+            transform: scale(1.1) translateY(-2px)
+        }
+
+        .benefit-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 7px;
+            line-height: 1.3
+        }
+
+        .benefit-card p {
+            font-size: 12.5px;
+            line-height: 1.7;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   5. PROBLEMS + SOLUTION
+══════════════════════════════════════════════════ */
+        .problems {
+            background: #fff
+        }
+
+        .problems-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center
+        }
+
+        .problems-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 22px
+        }
+
+        .problem-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 9px
+        }
+
+        .problem-chip {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px 15px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: border-color .3s ease, transform .45s var(--ease)
+        }
+
+        .problem-chip:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(4px)
+        }
+
+        .problem-chip i {
+            color: var(--orange);
+            font-size: 13px;
+            flex-shrink: 0
+        }
+
+        .problem-chip span {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--navy)
+        }
+
+        .solution-box {
+            background: linear-gradient(145deg, var(--navy), #041f50);
+            border-radius: var(--radius-lg);
+            padding: 34px 30px;
+            color: #fff;
+            position: relative;
+            overflow: hidden
+        }
+
+        .solution-box::after {
+            content: '';
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -80px;
+            right: -60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 98, 0, .18) 0%, transparent 65%);
+            pointer-events: none
+        }
+
+        .solution-box h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1
+        }
+
+        .solution-box p {
+            font-size: 13.5px;
+            line-height: 1.78;
+            color: rgba(255, 255, 255, .68);
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 1
+        }
+
+        .solution-box .btn-primary {
+            position: relative;
+            z-index: 1
+        }
+
+        .sol-img {
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1
+        }
+
+        .sol-img img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block
+        }
+
+        /* ══════════════════════════════════════════════════
+   6. WHAT'S INCLUDED
+══════════════════════════════════════════════════ */
+        .included {
+            background: var(--bg-light)
+        }
+
+        .included-hdr {
+            text-align: center;
+            margin-bottom: 52px
+        }
+
+        .included-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px
+        }
+
+        .included-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 28px 24px;
+            transition: transform .65s var(--ease), box-shadow .65s var(--ease)
+        }
+
+        .included-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md)
+        }
+
+        .inc-ico {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(3, 43, 102, .08), rgba(3, 43, 102, .04));
+            border: 1px solid rgba(3, 43, 102, .10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 15px;
+            transition: background .45s var(--ease), color .35s ease, transform .55s var(--spring)
+        }
+
+        .included-card:hover .inc-ico {
+            background: var(--navy);
+            color: #fff;
+            transform: scale(1.08)
+        }
+
+        .included-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px
+        }
+
+        .inc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+
+        .inc-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--text-muted)
+        }
+
+        .inc-list li i {
+            color: var(--orange);
+            font-size: 11px;
+            margin-top: 2px;
+            flex-shrink: 0
+        }
+
+        /* ══════════════════════════════════════════════════
+   7. WHY TRUST
+══════════════════════════════════════════════════ */
+        .trust {
+            background: #fff
+        }
+
+        .trust-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: start
+        }
+
+        .trust-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 22px
+        }
+
+        .trust-feats {
+            display: flex;
+            flex-direction: column;
+            gap: 13px
+        }
+
+        .trust-feat {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 15px 16px;
+            background: var(--bg-light);
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            transition: border-color .35s ease, transform .5s var(--ease)
+        }
+
+        .trust-feat:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(5px)
+        }
+
+        .tfi {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: rgba(255, 98, 0, .09);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--orange);
+            flex-shrink: 0
+        }
+
+        .trust-feat strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px
+        }
+
+        .trust-feat span {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55
+        }
+
+        .trust-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .trust-card {
+            background: var(--bg-light);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px 17px;
+            transition: transform .5s var(--ease), box-shadow .5s var(--ease)
+        }
+
+        .trust-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-sm)
+        }
+
+        .tc-icon {
+            font-size: 22px;
+            color: var(--orange);
+            margin-bottom: 9px
+        }
+
+        .trust-card h5 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 5px
+        }
+
+        .trust-card p {
+            font-size: 12px;
+            line-height: 1.62;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   8. PROCESS
+══════════════════════════════════════════════════ */
+        .process {
+            background: var(--bg-light)
+        }
+
+        .process-hdr {
+            text-align: center;
+            margin-bottom: 56px
+        }
+
+        .process-img-banner {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 48px;
+            position: relative
+        }
+
+        .process-img-banner img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block
+        }
+
+        .process-img-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(3, 43, 102, .45), transparent 60%);
+            pointer-events: none
+        }
+
+        .process-img-text {
+            position: absolute;
+            top: 50%;
+            left: 32px;
+            transform: translateY(-50%);
+            color: #fff;
+            z-index: 2
+        }
+
+        .process-img-text h4 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px
+        }
+
+        .process-img-text p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, .75)
+        }
+
+        .process-timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 26px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--navy), rgba(3, 43, 102, .1));
+            border-radius: 2px
+        }
+
+        .process-step {
+            display: flex;
+            gap: 26px;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            position: relative
+        }
+
+        .process-step:last-child {
+            margin-bottom: 0
+        }
+
+        .ps-dot {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 16px rgba(3, 43, 102, .22);
+            transition: background .4s ease, transform .5s var(--ease), box-shadow .4s ease
+        }
+
+        .process-step.ps-active .ps-dot,
+        .process-step:hover .ps-dot {
+            background: var(--orange);
+            transform: scale(1.12);
+            box-shadow: 0 6px 20px rgba(255, 98, 0, .32)
+        }
+
+        .ps-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
+            padding: 22px 24px;
+            flex: 1;
+            transition: box-shadow .55s var(--ease), border-color .4s ease, transform .55s var(--ease)
+        }
+
+        .process-step.ps-active .ps-card,
+        .process-step:hover .ps-card {
+            border-color: rgba(255, 98, 0, .28);
+            box-shadow: 0 6px 28px rgba(255, 98, 0, .09);
+            transform: translateX(4px)
+        }
+
+        .ps-num {
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 5px;
+            display: block
+        }
+
+        .ps-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
+
+        .ps-card p {
+            font-size: 13px;
+            line-height: 1.72;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   9. FAQ
+══════════════════════════════════════════════════ */
+        .faq-sec {
+            background: #fff
+        }
+
+        .faq-inner {
+            max-width: 760px;
+            margin: 0 auto
+        }
+
+        .faq-hdr {
+            text-align: center;
+            margin-bottom: 42px
+        }
+
+        .faq-list {
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border)
+        }
+
+        .faq-item:last-child {
+            border-bottom: none
+        }
+
+        .faq-q {
+            width: 100%;
+            background: #fff;
+            border: none;
+            padding: 19px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            text-align: left;
+            gap: 16px;
+            transition: background .3s ease;
+            font-family: 'Poppins', sans-serif
+        }
+
+        .faq-q:hover {
+            background: var(--bg-light)
+        }
+
+        .faq-q[aria-expanded="true"] {
+            background: rgba(3, 43, 102, .04)
+        }
+
+        .faq-q span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy)
+        }
+
+        .faq-ico {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 98, 0, .08);
+            border: 1px solid rgba(255, 98, 0, .18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: var(--orange);
+            transition: transform .5s var(--spring), background .3s ease
+        }
+
+        .faq-q[aria-expanded="true"] .faq-ico {
+            transform: rotate(45deg);
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange)
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 22px;
+            background: #fff;
+            transition: max-height .45s var(--ease), padding .35s ease
+        }
+
+        .faq-a.open {
+            max-height: 280px;
+            padding: 0 22px 18px
+        }
+
+        .faq-a p {
+            font-size: 13.5px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            padding-top: 4px
+        }
+
+        /* ══════════════════════════════════════════════════
+   10. CTA
+══════════════════════════════════════════════════ */
+        .cta-sec {
+            padding: 80px 0
+        }
+
+        .cta-box {
+            background: linear-gradient(150deg, var(--navy) 0%, #041f50 55%, #021540 100%);
+            border-radius: 30px;
+            padding: 72px 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(3, 43, 102, .25)
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, .04) 1px, transparent 1px);
+            background-size: 26px 26px;
+            pointer-events: none
+        }
+
+        .cta-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 18%;
+            right: 18%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), rgba(255, 98, 0, .6), var(--orange), transparent)
+        }
+
+        .cta-o1 {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            top: -120px;
+            left: -80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 98, 0, .14) 0%, transparent 65%);
+            filter: blur(58px);
+            pointer-events: none
+        }
+
+        .cta-o2 {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            bottom: -70px;
+            right: -50px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(3, 43, 102, .35) 0%, transparent 65%);
+            filter: blur(58px);
+            pointer-events: none
+        }
+
+        .cta-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 98, 0, .18);
+            color: #ff9a30;
+            border: 1px solid rgba(255, 98, 0, .30);
+            border-radius: 50px;
+            padding: 5px 17px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1
+        }
+
+        .cta-title {
+            font-size: clamp(24px, 3.8vw, 42px);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.13;
+            letter-spacing: -.015em;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+            max-width: 620px
+        }
+
+        .cta-sub {
+            font-size: 14.5px;
+            line-height: 1.85;
+            color: rgba(255, 255, 255, .62);
+            margin-bottom: 34px;
+            position: relative;
+            z-index: 1;
+            max-width: 540px
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1
+        }
+
+        /* ══════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════ */
+        @media(max-width:1280px) {
+            .hero-inner {
+                grid-template-columns: 1.1fr .9fr;
+                gap: 48px
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:1024px) {
+
+            .hero-inner,
+            .overview-inner,
+            .problems-inner,
+            .trust-inner {
+                grid-template-columns: 1fr;
+                gap: 48px
+            }
+
+            .metrics-inner {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .img-stack {
+                flex-direction: row
+            }
+
+            .img-stack .img-block {
+                flex: 1
+            }
+        }
+
+        @media(max-width:768px) {
+            .section-pad {
+                padding: 70px 0
+            }
+
+            .hero {
+                padding: 100px 0 64px;
+                min-height: auto
+            }
+
+            .hero-inner {
+                gap: 36px
+            }
+
+            .hero-title {
+                font-size: clamp(30px, 8vw, 44px)
+            }
+
+            .float-chip {
+                display: none
+            }
+
+            .metrics-inner {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .metric-col {
+                padding: 26px 18px
+            }
+
+            .metric-num {
+                font-size: 1.9rem
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px
+            }
+
+            .included-grid {
+                grid-template-columns: 1fr
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr
+            }
+
+            .cta-box {
+                padding: 48px 26px
+            }
+
+            .img-stack {
+                flex-direction: column
+            }
+
+            .process-timeline::before {
+                left: 22px
+            }
+
+            .ps-dot {
+                width: 44px;
+                height: 44px;
+                font-size: 16px
+            }
+        }
+
+        @media(max-width:520px) {
+
+            .hero-actions,
+            .cta-actions {
+                flex-direction: column;
+                align-items: stretch
+            }
+
+            .btn {
+                justify-content: center
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr
+            }
+
+            .metrics-inner {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media(max-width:380px) {
+            .metrics-inner {
+                grid-template-columns: 1fr
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            .hero-blob,
+            .float-chip,
+            .status-dot,
+            .hero-va-avatar {
+                animation: none !important
+            }
+
+            .reveal,
+            .reveal-left,
+            .reveal-right,
+            .reveal-scale,
+            .word-anim .wi,
+            .para-anim .pw,
+            .badge-anim,
+            .benefit-card,
+            .img-reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+                will-change: auto !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACK BUTTON -->
+    <button class="back-btn" onclick="history.length>1?history.back():location.href='service.html'"
+        aria-label="Go back">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+
+
+    <!-- ══════════════════════════════════════════════════
+     1. HERO
+══════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-h1">
+        <div class="hero-bg-dots" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--1" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--2" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--3" aria-hidden="true"></div>
+
+        <div class="container">
+            <div class="hero-inner">
+
+                <!-- Left -->
+                <div class="hero-content">
+                    <div class="hero-eyebrow badge-anim">
+                        <i class="fa-solid fa-house-chimney"></i> MLS Listing Management
+                    </div>
+                    <h1 class="hero-title word-anim" id="hero-h1">
+                        Less Admin.<br><span class="accent">More Closed Deals.</span>
+                    </h1>
+                    <p class="hero-sub para-anim">
+                        At Listora Digital Media, we handle the time-consuming details of MLS listing management so
+                        real estate professionals can focus on what they do best — building relationships, serving
+                        clients, and closing deals.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="contact.html" class="btn btn-primary">
+                            <i class="fa-solid fa-calendar-check"></i> Book a Free Consultation
+                        </a>
+                        <a href="#overview" class="btn btn-outline">
+                            <i class="fa-solid fa-circle-info"></i> Learn More
+                        </a>
+                    </div>
+                    <div class="hero-trust">
+                        <div class="trust-pill"><i class="fa-solid fa-shield-halved"></i> Compliance-Focused</div>
+                        <div class="trust-div" aria-hidden="true"></div>
+                        <div class="trust-pill"><i class="fa-solid fa-bolt"></i> Fast Turnaround</div>
+                        <div class="trust-div" aria-hidden="true"></div>
+                        <div class="trust-pill"><i class="fa-solid fa-gem"></i> Detail-Driven Quality</div>
+                    </div>
+                </div>
+
+                <!-- Right -->
+                <div class="hero-visual">
+                    <div class="float-chip chip-top" aria-hidden="true">
+                        <i class="fa-solid fa-bolt"></i> Listings Managed This Week: 24
+                    </div>
+
+                    <div class="hero-card-main">
+                        <div class="hero-va-avatar"><i class="fa-solid fa-house-chimney"></i></div>
+                        <h3>Your MLS Management Team</h3>
+                        <p>Dedicated specialists keeping your listings accurate, optimized, and market-ready — so you
+                            never miss an opportunity.</p>
+
+                        <div class="va-task-list">
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Listing data entered &amp; verified
+                            </div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Photos &amp; media uploaded</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Descriptions formatted &amp;
+                                optimized</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Compliance review completed</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Status &amp; price changes applied
+                            </div>
+                        </div>
+
+                        <div class="hero-status">
+                            <div class="status-dot" aria-hidden="true"></div>
+                            Your listings are being managed right now
+                        </div>
+                    </div>
+
+                    <div class="float-chip chip-bot" aria-hidden="true">
+                        <i class="fa-solid fa-arrow-trend-up"></i> Listing Errors Down 100%
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     2. METRICS STRIP
+══════════════════════════════════════════════════ -->
+    <section class="metrics-strip" aria-label="Key performance metrics">
+        <div class="container">
+            <div class="metrics-inner">
+                <div class="metric-col reveal" data-delay="0">
+                    <span class="metric-num" data-target="100" data-suffix="%">100%</span>
+                    <div class="metric-lbl">Listing Accuracy</div>
+                    <div class="metric-sub">every detail checked before publishing</div>
+                </div>
+                <div class="metric-col reveal" data-delay="100">
+                    <span class="metric-num" data-target="48" data-suffix="h">48h</span>
+                    <div class="metric-lbl">Avg. Turnaround Time</div>
+                    <div class="metric-sub">fast delivery, no quality compromise</div>
+                </div>
+                <div class="metric-col reveal" data-delay="200">
+                    <span class="metric-num" data-target="10" data-suffix="+">10+</span>
+                    <div class="metric-lbl">Deliverables Per Listing</div>
+                    <div class="metric-sub">data, media, compliance &amp; more</div>
+                </div>
+                <div class="metric-col reveal" data-delay="300">
+                    <span class="metric-num" data-target="0" data-suffix=" errors">0 errors</span>
+                    <div class="metric-lbl">Quality Assurance Goal</div>
+                    <div class="metric-sub">every listing reviewed before it goes live</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     3. OVERVIEW
+══════════════════════════════════════════════════ -->
+    <section class="overview section-pad" id="overview" aria-labelledby="ov-h2">
+        <div class="container">
+            <div class="overview-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-magnifying-glass"></i> What Is
+                        It?</span>
+                    <h2 class="section-title word-anim" id="ov-h2">What is MLS Listing Management?</h2>
+                    <div class="overview-text">
+                        <p class="para-anim">MLS Listing Management is the process of <strong>creating, updating,
+                                optimizing, and maintaining property listings</strong> across Multiple Listing Services
+                            to ensure maximum visibility, accuracy, and compliance.</p>
+                        <p class="para-anim">At Listora Digital Media, we handle every time-consuming detail of listing
+                            management — from data entry and photo uploads to compliance reviews and status changes —
+                            <strong>so real estate professionals can focus on building relationships and closing
+                                deals.</strong></p>
+                        <p class="para-anim">A well-managed MLS listing not only improves visibility but also creates a
+                            stronger first impression that attracts more qualified buyers and reflects your professional
+                            standard.</p>
+                    </div>
+                    <a href="contact.html" class="btn btn-primary reveal" data-delay="300" style="margin-top:22px">
+                        <i class="fa-solid fa-arrow-right"></i> Get Started Today
+                    </a>
+
+                    <div class="ov-pills">
+                        <div class="ov-pill reveal" data-delay="0">
+                            <div class="ov-ico"><i class="fa-solid fa-signal"></i></div>
+                            <div><strong>Maximum Property Visibility</strong><span>Optimized listings that stand out in
+                                    search results and attract more qualified buyer inquiries.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="100">
+                            <div class="ov-ico"><i class="fa-solid fa-clock"></i></div>
+                            <div><strong>Hours of Admin Time Saved</strong><span>Stop spending valuable hours on data
+                                    entry and updates — redirect that time to revenue-generating work.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="200">
+                            <div class="ov-ico"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div><strong>Compliance You Can Count On</strong><span>Every listing reviewed against MLS
+                                    requirements — protecting your professional reputation at every step.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="300">
+                            <div class="ov-ico"><i class="fa-solid fa-gem"></i></div>
+                            <div><strong>Consistent Professional Quality</strong><span>Every property presented to the
+                                    same high standard — accurate, polished, and market-ready every time.</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right">
+                    <div class="img-stack">
+                        <div class="img-block reveal-scale">
+                            <img src="s5.png" alt="MLS listing management and property data entry" loading="lazy"
+                                style="height:280px">
+                            <div class="img-badge"><i class="fa-solid fa-house-chimney"></i> Professional Listing
+                                Management</div>
+                        </div>
+                        <div class="img-block reveal-scale" data-delay="100">
+                            <img src="s6.png" alt="Real estate MLS optimization and compliance" loading="lazy"
+                                style="height:200px">
+                            <div class="img-badge"><i class="fa-solid fa-shield-halved"></i> Compliance &amp; Quality
+                                Assured</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     4. BENEFITS
+══════════════════════════════════════════════════ -->
+    <section class="benefits section-pad" aria-labelledby="ben-h2">
+        <div class="container">
+            <div class="benefits-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-star"></i> What's In It For You?</span>
+                <h2 class="section-title word-anim" id="ben-h2">What Professional Listing Management<br>Does for Your
+                    Business</h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">Every property listing represents an
+                    opportunity to generate interest, inquiries, and sales — a polished listing helps you stand out in a
+                    highly competitive market.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-signal"></i></div>
+                    <h4>Increase Property Visibility</h4>
+                    <p>Optimized listings rank higher in MLS search results, putting your properties in front of more
+                        qualified buyers.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-user-check"></i></div>
+                    <h4>Attract More Qualified Buyers</h4>
+                    <p>Accurate, complete, and well-presented listings draw serious buyers who are ready to act.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-gem"></i></div>
+                    <h4>Improve Listing Professionalism</h4>
+                    <p>Every property reflects your brand — polished descriptions, organized data, and high-quality
+                        presentation throughout.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-clock"></i></div>
+                    <h4>Save Hours of Admin Work</h4>
+                    <p>Reclaim the time spent on data entry and updates — redirect your energy to clients,
+                        relationships, and revenue.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-circle-check"></i></div>
+                    <h4>Reduce Errors &amp; Omissions</h4>
+                    <p>Thorough quality checks eliminate data-entry mistakes and compliance gaps before listings go
+                        live.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-eye"></i></div>
+                    <h4>Present Properties Effectively</h4>
+                    <p>Strategic formatting, compelling descriptions, and organized media make every listing impossible
+                        to overlook.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-award"></i></div>
+                    <h4>Enhance Your Reputation</h4>
+                    <p>Consistently professional listings signal credibility and build trust with buyers, sellers, and
+                        fellow agents.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-handshake"></i></div>
+                    <h4>Focus on Closing Deals</h4>
+                    <p>With listing admin handled, you're free to spend your time where it counts — building
+                        relationships and winning business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     5. PROBLEMS WE SOLVE
+══════════════════════════════════════════════════ -->
+    <section class="problems section-pad" aria-labelledby="prob-h2">
+        <div class="container">
+            <div class="problems-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-triangle-exclamation"></i> Pain Points
+                        Solved</span>
+                    <h2 class="section-title word-anim" id="prob-h2">What Problems Does It Solve?</h2>
+                    <p class="problems-text para-anim">Common listing challenges that cost real estate professionals
+                        time, money, and opportunities — all handled by our team.</p>
+                    <div class="problem-chips">
+                        <div class="problem-chip reveal" data-delay="0"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Time-consuming listing updates</span></div>
+                        <div class="problem-chip reveal" data-delay="50"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Inaccurate property information</span></div>
+                        <div class="problem-chip reveal" data-delay="100"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Missed listing deadlines</span></div>
+                        <div class="problem-chip reveal" data-delay="150"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Poor listing presentation</span></div>
+                        <div class="problem-chip reveal" data-delay="200"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Compliance concerns</span></div>
+                        <div class="problem-chip reveal" data-delay="250"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Inconsistent listing quality</span></div>
+                        <div class="problem-chip reveal" data-delay="300"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Administrative overload</span></div>
+                    </div>
+                </div>
+
+                <div class="reveal-right" style="display:flex;flex-direction:column;gap:18px">
+                    <div class="sol-img">
+                        <img src="s7.png" alt="MLS listing management team handling real estate admin" loading="lazy"
+                            style="border-radius:16px">
+                    </div>
+                    <div class="solution-box">
+                        <h3>We Ensure Every Listing Is Professional, Accurate &amp; Market-Ready</h3>
+                        <p>Our MLS management team follows detailed quality-control processes to ensure your listings
+                            remain accurate, compliant, and optimized — giving every property the professional
+                            presentation it deserves.</p>
+                        <a href="contact.html" class="btn btn-primary">
+                            <i class="fa-solid fa-arrow-trend-up"></i> Solve This Now
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     6. WHAT'S INCLUDED
+══════════════════════════════════════════════════ -->
+    <section class="included section-pad" aria-labelledby="inc-h2">
+        <div class="container">
+            <div class="included-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-list-check"></i> Service
+                    Deliverables</span>
+                <h2 class="section-title word-anim" id="inc-h2">Everything That's Included</h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">A complete MLS listing management service
+                    — from initial data entry to ongoing maintenance — handled end to end.</p>
+            </div>
+            <div class="included-grid">
+                <div class="included-card reveal" data-delay="0">
+                    <div class="inc-ico"><i class="fa-solid fa-database"></i></div>
+                    <h4>Listing Data &amp; Entry</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> MLS data entry and updates</li>
+                        <li><i class="fa-solid fa-check"></i> Property information management</li>
+                        <li><i class="fa-solid fa-check"></i> Error correction and quality checks</li>
+                        <li><i class="fa-solid fa-check"></i> Price change and status updates</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="100">
+                    <div class="inc-ico"><i class="fa-solid fa-images"></i></div>
+                    <h4>Media &amp; Presentation</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Photo and media uploads</li>
+                        <li><i class="fa-solid fa-check"></i> Property description formatting</li>
+                        <li><i class="fa-solid fa-check"></i> Listing optimization for visibility</li>
+                        <li><i class="fa-solid fa-check"></i> Professional presentation standards</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="200">
+                    <div class="inc-ico"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h4>Compliance &amp; Quality</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Listing compliance review</li>
+                        <li><i class="fa-solid fa-check"></i> Accuracy verification before publishing</li>
+                        <li><i class="fa-solid fa-check"></i> Compliance-focused workflows</li>
+                        <li><i class="fa-solid fa-check"></i> Consistent quality assurance</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="300">
+                    <div class="inc-ico"><i class="fa-solid fa-arrows-rotate"></i></div>
+                    <h4>Ongoing Maintenance</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Ongoing listing maintenance</li>
+                        <li><i class="fa-solid fa-check"></i> Modification and update management</li>
+                        <li><i class="fa-solid fa-check"></i> Scalable support for growing teams</li>
+                        <li><i class="fa-solid fa-check"></i> Reliable, consistent communication</li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     7. WHY TRUST US
+══════════════════════════════════════════════════ -->
+    <section class="trust section-pad" aria-labelledby="trust-h2">
+        <div class="container">
+            <div class="trust-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-shield-halved"></i> Why Trust
+                        Listora</span>
+                    <h2 class="section-title word-anim" id="trust-h2">Why Should Clients Trust Listora Digital Media?
+                    </h2>
+                    <p class="trust-text para-anim">We understand that every listing directly impacts your brand
+                        reputation and sales opportunities. Our team follows detailed quality-control processes to
+                        ensure your listings remain accurate, professional, and market-ready.</p>
+                    <p class="trust-text para-anim" style="margin-bottom:0">We help ensure your listings represent your
+                        business at the highest professional standard — every property, every time.</p>
+                    <div class="trust-feats" style="margin-top:24px">
+                        <div class="trust-feat reveal" data-delay="0">
+                            <div class="tfi"><i class="fa-solid fa-house-chimney"></i></div>
+                            <div><strong>Real Estate Industry Expertise</strong><span>We understand MLS systems, real
+                                    estate workflows, and the compliance standards that matter to your business.</span>
+                            </div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="100">
+                            <div class="tfi"><i class="fa-solid fa-magnifying-glass"></i></div>
+                            <div><strong>Attention to Detail</strong><span>Every field, photo, and description is
+                                    reviewed carefully — because small errors can have big consequences in real
+                                    estate.</span></div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="200">
+                            <div class="tfi"><i class="fa-solid fa-bolt"></i></div>
+                            <div><strong>Fast Turnaround Times</strong><span>Reliable delivery within agreed timelines —
+                                    so your listings are live and generating interest without delay.</span></div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="300">
+                            <div class="tfi"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                            <div><strong>Scalable for Growing Teams</strong><span>Whether you manage 5 listings or 500,
+                                    our service scales with your business without ever compromising on quality.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right">
+                    <div class="img-block" style="margin-bottom:16px">
+                        <img src="s8.png" alt="Listora Digital Media MLS listing management team" loading="lazy"
+                            style="height:260px;object-fit:cover;width:100%">
+                        <div class="img-badge"><i class="fa-solid fa-users"></i> Your Listing Management Team</div>
+                    </div>
+                    <div class="trust-cards">
+                        <div class="trust-card reveal" data-delay="0">
+                            <div class="tc-icon"><i class="fa-solid fa-circle-check"></i></div>
+                            <h5>Zero-Error Standard</h5>
+                            <p>Every listing reviewed before publishing — accuracy is non-negotiable.</p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="100">
+                            <div class="tc-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <h5>Compliance Focused</h5>
+                            <p>MLS rules and requirements followed precisely on every listing we manage.</p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="200">
+                            <div class="tc-icon"><i class="fa-solid fa-comments"></i></div>
+                            <h5>Reliable Communication</h5>
+                            <p>Clear, consistent updates — you always know exactly where your listings stand.</p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="300">
+                            <div class="tc-icon"><i class="fa-solid fa-gem"></i></div>
+                            <h5>Consistent Quality</h5>
+                            <p>The same high standard applied to every property — no shortcuts, ever.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     8. PROCESS
+══════════════════════════════════════════════════ -->
+    <section class="process section-pad" aria-labelledby="proc-h2">
+        <div class="container">
+            <div class="process-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-diagram-project"></i> How It Works</span>
+                <h2 class="section-title word-anim" id="proc-h2">Our MLS Listing Management Process</h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">A clear 6-step process — from collecting
+                    property details to ongoing maintenance — designed to keep every listing accurate, optimized, and
+                    professionally managed.</p>
+            </div>
+
+            <div class="process-img-banner reveal">
+                <img src="s3.png" alt="MLS listing management workflow and process" loading="lazy">
+                <div class="process-img-text">
+                    <h4>From Property Details to Published Listing — Fast.</h4>
+                    <p>Accurate, compliant, and optimized — every time</p>
+                </div>
+            </div>
+
+            <div class="process-timeline">
+                <div class="process-step reveal" data-delay="0">
+                    <div class="ps-dot"><i class="fa-solid fa-inbox"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 01</span>
+                        <h4>Property Information Collection</h4>
+                        <p>We gather all listing details, media files, and required documentation from you — organizing
+                            everything needed to create an accurate, complete listing from the start.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="100">
+                    <div class="ps-dot"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 02</span>
+                        <h4>Listing Preparation</h4>
+                        <p>Property information is organized, reviewed for completeness, and prepared for entry —
+                            descriptions are formatted, photos are sorted, and all data is checked for accuracy before
+                            anything is entered.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="200">
+                    <div class="ps-dot"><i class="fa-solid fa-house-chimney"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 03</span>
+                        <h4>MLS Entry &amp; Optimization</h4>
+                        <p>Listings are entered accurately into the MLS — data fields completed, photos uploaded,
+                            descriptions formatted, and key details optimized to maximize visibility in search results.
+                        </p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="300">
+                    <div class="ps-dot"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 04</span>
+                        <h4>Quality Assurance Review</h4>
+                        <p>Every listing undergoes a thorough review before going live — accuracy, compliance,
+                            formatting, and completeness are all verified so nothing is published until it meets our
+                            quality standard.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="400">
+                    <div class="ps-dot"><i class="fa-solid fa-arrows-rotate"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 05</span>
+                        <h4>Listing Maintenance</h4>
+                        <p>Price changes, status updates, modifications, and corrections are handled promptly as they
+                            arise — keeping your listings current, accurate, and fully reflective of each property's
+                            status.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="500">
+                    <div class="ps-dot"><i class="fa-solid fa-headset"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 06</span>
+                        <h4>Ongoing Support</h4>
+                        <p>We continue monitoring and maintaining your listings as needed — providing reliable,
+                            consistent support so your MLS presence is always managed to the highest professional
+                            standard.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     9. FAQ
+══════════════════════════════════════════════════ -->
+    <section class="faq-sec section-pad" aria-labelledby="faq-h2">
+        <div class="container">
+            <div class="faq-inner">
+                <div class="faq-hdr">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-circle-question"></i> Common
+                        Questions</span>
+                    <h2 class="section-title word-anim" id="faq-h2">Frequently Asked Questions</h2>
+                </div>
+                <div class="faq-list reveal" data-delay="100">
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>What information do I need to provide for each listing?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>We work with whatever information you can provide — property details, photos, documents,
+                                pricing, and any specific MLS fields you need completed. Our team will guide you through
+                                what's needed and flag anything missing before entry. The more complete the information
+                                you provide, the faster and more accurately we can turn around your listing.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>How quickly can you get a listing live?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Our standard turnaround is 48 hours from receiving complete property information. For
+                                urgent listings, we can accommodate faster timelines where possible — just let us know
+                                your deadline and we'll work with you. We understand that timing is critical in real
+                                estate, and we prioritize reliable, on-schedule delivery every time.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Do you handle ongoing updates and changes?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Yes — ongoing maintenance is a core part of our service. Price reductions, status
+                                changes, photo updates, description edits, and any other modifications are all handled
+                                promptly. You simply send us the update and we take care of the rest, ensuring your
+                                listings always reflect the latest and most accurate information.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>How do you ensure compliance with MLS rules?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Our team follows compliance-focused workflows built around MLS requirements, ensuring
+                                every listing meets the rules and standards of your specific MLS. Every listing goes
+                                through a compliance review before it's published — checking required fields, photo
+                                guidelines, description standards, and any board-specific rules that apply to your
+                                listings.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Can you support a large volume of listings?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Absolutely. Our service is designed to scale with your business — whether you're managing
+                                a handful of listings or a high-volume portfolio across multiple agents. We provide
+                                consistent quality at any volume, making us a reliable partner for individual agents,
+                                teams, and growing brokerages alike.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Will I need to provide MLS login access?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>To enter and manage listings directly on your behalf, we typically require access to your
+                                MLS account or a team-level login. We take data security seriously and work within the
+                                access protocols you're comfortable with. If direct access isn't preferred, we can also
+                                provide you with completed data ready to enter — we're flexible based on your workflow.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     10. CTA
+══════════════════════════════════════════════════ -->
+    <section class="cta-sec" aria-labelledby="cta-h2">
+        <div class="container">
+            <div class="cta-box reveal">
+                <div class="cta-o1" aria-hidden="true"></div>
+                <div class="cta-o2" aria-hidden="true"></div>
+                <span class="cta-label"><i class="fa-solid fa-house-chimney"></i> Streamline Your Listing
+                    Management</span>
+                <h2 class="cta-title word-anim" id="cta-h2">Ready to Streamline Your Listing Management?</h2>
+                <p class="cta-sub para-anim">Stop spending valuable time managing listings manually. Let Listora Digital
+                    Media ensure your properties are accurately presented, professionally managed, and optimized for
+                    success.</p>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn btn-white">
+                        <i class="fa-solid fa-calendar-check"></i> Schedule a Free Consultation Today
+                    </a>
+                    <a href="service.html" class="btn btn-outline"
+                        style="border-color:rgba(255,255,255,.30);color:rgba(255,255,255,.85)">
+                        <i class="fa-solid fa-arrow-left"></i> All Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        'use strict';
+
+        const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ── 1. Generic scroll reveal ── */
+        (function () {
+            if (RM) return;
+            const els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.img-reveal');
+            if (!els.length || !('IntersectionObserver' in window)) { els.forEach(e => { e.style.opacity = '1'; e.style.transform = 'none' }); return }
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const d = parseInt(e.target.dataset.delay || '0', 10);
+                    setTimeout(() => e.target.classList.add('visible'), d);
+                    io.unobserve(e.target);
+                });
+            }, { threshold: .10, rootMargin: '0px 0px -36px 0px' });
+            els.forEach(e => io.observe(e));
+        })();
+
+        /* ── 2. Word-by-word heading animation ── */
+        (function () {
+            if (RM) return;
+            function splitWords(el) {
+                if (el.dataset.wsplit) return;
+                el.dataset.wsplit = '1';
+                const label = el.textContent.trim();
+                const nodes = Array.from(el.childNodes);
+                el.innerHTML = '';
+                nodes.forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        node.textContent.split(/(\s+)/).forEach(chunk => {
+                            if (/^\s+$/.test(chunk)) { el.appendChild(document.createTextNode(chunk)) }
+                            else if (chunk.length) {
+                                const w = document.createElement('span'); w.className = 'w';
+                                const wi = document.createElement('span'); wi.className = 'wi'; wi.textContent = chunk;
+                                w.appendChild(wi); el.appendChild(w);
+                            }
+                        });
+                    } else { el.appendChild(node.cloneNode(true)); }
+                });
+                if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', label);
+            }
+            function stagger(el) {
+                const inners = el.querySelectorAll('.wi');
+                let d = 0;
+                inners.forEach(w => { w.style.transitionDelay = d.toFixed(3) + 's'; d += 0.068 });
+            }
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add('fired'); io.unobserve(e.target) });
+            }, { threshold: .15, rootMargin: '0px 0px -30px 0px' });
+            document.querySelectorAll('.word-anim').forEach(el => { splitWords(el); stagger(el); io.observe(el) });
+        })();
+
+        /* ── 3. Paragraph word animation ── */
+        (function () {
+            if (RM) return;
+            function splitPara(el) {
+                if (el.dataset.psplit) return;
+                el.dataset.psplit = '1';
+                const words = el.textContent.split(/(\s+)/);
+                el.innerHTML = '';
+                let d = 0.04;
+                words.forEach(chunk => {
+                    if (/^\s+$/.test(chunk)) { el.appendChild(document.createTextNode(chunk)) }
+                    else if (chunk.length) {
+                        const pw = document.createElement('span'); pw.className = 'pw';
+                        pw.style.transitionDelay = d.toFixed(3) + 's'; pw.textContent = chunk;
+                        el.appendChild(pw); d += 0.026;
+                    }
+                });
+            }
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add('fired'); io.unobserve(e.target) });
+            }, { threshold: .10, rootMargin: '0px 0px -20px 0px' });
+            document.querySelectorAll('.para-anim').forEach(el => { splitPara(el); io.observe(el) });
+        })();
+
+        /* ── 4. Badge animation ── */
+        (function () {
+            if (RM) return;
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add('fired'); io.unobserve(e.target) });
+            }, { threshold: .2, rootMargin: '0px 0px -10px 0px' });
+            document.querySelectorAll('.badge-anim').forEach(el => io.observe(el));
+        })();
+
+        /* ── 5. Benefit card stagger ── */
+        (function () {
+            if (RM) return;
+            const cards = document.querySelectorAll('.benefit-card');
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const idx = Array.from(cards).indexOf(e.target);
+                    setTimeout(() => e.target.classList.add('visible'), idx * 60);
+                    io.unobserve(e.target);
+                });
+            }, { threshold: .10, rootMargin: '0px 0px -30px 0px' });
+            cards.forEach(c => io.observe(c));
+        })();
+
+        /* ── 6. Animated counters ── */
+        (function () {
+            if (RM) return;
+            document.querySelectorAll('[data-target]').forEach(el => {
+                const target = parseFloat(el.dataset.target);
+                const suffix = el.dataset.suffix || '';
+                if (isNaN(target)) return;
+                const io = new IntersectionObserver(entries => {
+                    entries.forEach(e => {
+                        if (!e.isIntersecting) return;
+                        io.unobserve(el);
+                        let val = 0;
+                        const step = (target / 1100) * 16;
+                        const isF = String(target).includes('.');
+                        const timer = setInterval(() => {
+                            val += step;
+                            if (val >= target) { val = target; clearInterval(timer) }
+                            el.textContent = (isF ? val.toFixed(1) : Math.round(val)) + suffix;
+                        }, 16);
+                    });
+                }, { threshold: .5 });
+                io.observe(el);
+            });
+        })();
+
+        /* ── 7. Process active step ── */
+        (function () {
+            const steps = document.querySelectorAll('.process-step');
+            if (!steps.length || !('IntersectionObserver' in window)) return;
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { steps.forEach(s => s.classList.remove('ps-active')); e.target.classList.add('ps-active') }
+                });
+            }, { threshold: .55, rootMargin: '-15% 0px -40% 0px' });
+            steps.forEach(s => io.observe(s));
+        })();
+
+        /* ── 8. FAQ accordion ── */
+        (function () {
+            document.querySelectorAll('.faq-q').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const isOpen = this.getAttribute('aria-expanded') === 'true';
+                    document.querySelectorAll('.faq-q').forEach(b => {
+                        b.setAttribute('aria-expanded', 'false');
+                        const a = b.nextElementSibling; if (a) a.classList.remove('open');
+                    });
+                    if (!isOpen) {
+                        this.setAttribute('aria-expanded', 'true');
+                        const ans = this.nextElementSibling; if (ans) ans.classList.add('open');
+                    }
+                });
+            });
+        })();
+
+        /* ── 9. Button ripple ── */
+        (function () {
+            const s = document.createElement('style');
+            s.textContent = '@keyframes rip{from{transform:scale(0);opacity:.7}to{transform:scale(3.5);opacity:0}}';
+            document.head.appendChild(s);
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    const r = document.createElement('span');
+                    r.style.cssText = `position:absolute;border-radius:50%;background:rgba(255,255,255,.22);width:80px;height:80px;transform:scale(0);pointer-events:none;z-index:10;animation:rip .65s ease-out forwards;left:${e.offsetX - 40}px;top:${e.offsetY - 40}px`;
+                    this.appendChild(r); setTimeout(() => r.remove(), 700);
+                });
+            });
+        })();
+
+        /* ── 10. Hero word & para animation on load ── */
+        (function () {
+            if (RM) return;
+            const hw = document.querySelector('.hero .word-anim');
+            if (hw) setTimeout(() => hw.classList.add('fired'), 300);
+            const hp = document.querySelector('.hero .para-anim');
+            if (hp) setTimeout(() => hp.classList.add('fired'), 500);
+            const hb = document.querySelector('.hero .badge-anim');
+            if (hb) setTimeout(() => hb.classList.add('fired'), 100);
+        })();
+    </script>
+</body>
+
+</html>

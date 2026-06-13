@@ -1,0 +1,2657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="CRM Management & Automation services by Listora Digital Media — professional CRM setup, workflow automation, and ongoing optimization so businesses can operate efficiently and grow faster.">
+    <title>CRM Management & Automation | Listora Digital Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        :root {
+            --navy: #032B66;
+            --navy-deep: #021f4b;
+            --navy-mid: #1a2353;
+            --orange: #FF6600;
+            --orange-dark: #e05500;
+            --orange-soft: #f26b2c;
+            --white: #ffffff;
+            --bg-light: #f4f7fc;
+            --bg-soft: #f0f4fb;
+            --text-muted: #64748B;
+            --border: #dde5f4;
+            --shadow-sm: 0 4px 16px rgba(3, 43, 102, .07);
+            --shadow-md: 0 8px 32px rgba(3, 43, 102, .11);
+            --shadow-lg: 0 20px 56px rgba(3, 43, 102, .15);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --ease: cubic-bezier(.22, 1, .36, 1);
+            --spring: cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 15px
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--navy);
+            background: #fff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased
+        }
+
+        img {
+            max-width: 100%;
+            display: block
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        ul {
+            list-style: none
+        }
+
+        /* ── BACK BUTTON ── */
+        .back-btn {
+            position: fixed;
+            top: 22px;
+            left: 22px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 9px 18px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--navy);
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: transform .5s var(--ease), box-shadow .5s var(--ease), background .3s ease;
+        }
+
+        .back-btn i {
+            transition: transform .4s var(--ease)
+        }
+
+        .back-btn:hover {
+            transform: translateX(-4px);
+            background: #fff;
+            box-shadow: var(--shadow-md)
+        }
+
+        .back-btn:hover i {
+            transform: translateX(-3px)
+        }
+
+        /* ── LAYOUT ── */
+        .container {
+            width: 90%;
+            max-width: 1180px;
+            margin: 0 auto
+        }
+
+        .section-pad {
+            padding: 90px 0
+        }
+
+        /* ── REVEAL ANIMATIONS ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-32px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0)
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(32px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0)
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(.94);
+            transition: opacity .8s var(--ease), transform .8s var(--ease);
+            will-change: transform, opacity
+        }
+
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        [data-delay="50"] {
+            transition-delay: .05s
+        }
+
+        [data-delay="100"] {
+            transition-delay: .10s
+        }
+
+        [data-delay="150"] {
+            transition-delay: .15s
+        }
+
+        [data-delay="200"] {
+            transition-delay: .20s
+        }
+
+        [data-delay="250"] {
+            transition-delay: .25s
+        }
+
+        [data-delay="300"] {
+            transition-delay: .30s
+        }
+
+        [data-delay="400"] {
+            transition-delay: .40s
+        }
+
+        [data-delay="500"] {
+            transition-delay: .50s
+        }
+
+        /* ── WORD ANIM ── */
+        .word-anim .w {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: bottom;
+            line-height: 1.15
+        }
+
+        .word-anim .wi {
+            display: inline-block;
+            transform: translateY(105%);
+            opacity: 0;
+            transition: transform .68s cubic-bezier(.16, 1, .3, 1), opacity .48s ease;
+            will-change: transform, opacity
+        }
+
+        .word-anim.fired .wi {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        /* ── PARA ANIM ── */
+        .para-anim .pw {
+            display: inline-block;
+            transform: translateY(65%);
+            opacity: 0;
+            transition: transform .55s var(--ease), opacity .42s ease;
+            will-change: transform, opacity
+        }
+
+        .para-anim.fired .pw {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        /* ── BADGE ANIM ── */
+        .badge-anim {
+            opacity: 0;
+            transform: translateY(10px) scale(.93);
+            transition: opacity .45s ease, transform .52s var(--spring);
+            will-change: transform, opacity
+        }
+
+        .badge-anim.fired {
+            opacity: 1;
+            transform: translateY(0) scale(1)
+        }
+
+        /* ── IMG REVEAL ── */
+        .img-reveal {
+            opacity: 0;
+            transform: scale(.95);
+            transition: opacity .9s var(--ease), transform .9s var(--ease);
+            will-change: transform, opacity
+        }
+
+        .img-reveal.visible {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        /* ── SECTION LABEL ── */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 98, 0, .08);
+            color: var(--orange);
+            border: 1px solid rgba(255, 98, 0, .18);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        /* ── TYPOGRAPHY ── */
+        .section-title {
+            font-size: clamp(24px, 3.8vw, 42px);
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--navy);
+            letter-spacing: -.015em;
+            margin-bottom: 12px
+        }
+
+        .section-sub {
+            font-size: 15px;
+            line-height: 1.82;
+            color: var(--text-muted);
+            max-width: 660px
+        }
+
+        .section-sub.center {
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .accent {
+            color: var(--orange)
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 26px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: transform .55s var(--ease), box-shadow .55s var(--ease), background .3s ease;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(108deg, transparent 30%, rgba(255, 255, 255, .4) 50%, transparent 70%);
+            transform: translateX(-130%);
+            transition: transform 0ms linear;
+            pointer-events: none
+        }
+
+        .btn:hover::after {
+            transform: translateX(130%);
+            transition: transform 650ms var(--ease)
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange);
+            box-shadow: 0 6px 22px rgba(255, 98, 0, .28)
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-dark);
+            transform: translateY(-3px) scale(1.015);
+            box-shadow: 0 12px 32px rgba(255, 98, 0, .36)
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border-color: var(--border)
+        }
+
+        .btn-outline:hover {
+            border-color: var(--navy);
+            background: var(--bg-light);
+            transform: translateY(-2px)
+        }
+
+        .btn-white {
+            background: #fff;
+            color: var(--navy);
+            border-color: #fff
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px) scale(1.015);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .18)
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes blobDrift {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(24px, -18px) scale(1.06)
+            }
+        }
+
+        @keyframes floatY {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-12px)
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: .6
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        /* ══════════════════════════════════════════════════
+   1. HERO
+══════════════════════════════════════════════════ */
+        .hero {
+            min-height: 92vh;
+            display: flex;
+            align-items: center;
+            background:
+                radial-gradient(ellipse 90% 65% at 8% 8%, rgba(3, 43, 102, .09) 0%, transparent 60%),
+                radial-gradient(ellipse 70% 55% at 92% 92%, rgba(255, 98, 0, .07) 0%, transparent 55%),
+                linear-gradient(155deg, #eef3fb 0%, #ffffff 45%, #f8faff 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 130px 0 90px;
+        }
+
+        .hero-bg-dots {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, rgba(3, 43, 102, .05) 1px, transparent 1px);
+            background-size: 28px 28px
+        }
+
+        .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none
+        }
+
+        .hero-blob--1 {
+            width: 560px;
+            height: 560px;
+            top: -160px;
+            right: -120px;
+            background: radial-gradient(circle, rgba(3, 43, 102, .11) 0%, transparent 70%);
+            animation: blobDrift 18s ease-in-out infinite alternate
+        }
+
+        .hero-blob--2 {
+            width: 400px;
+            height: 400px;
+            bottom: -130px;
+            left: -90px;
+            background: radial-gradient(circle, rgba(255, 98, 0, .09) 0%, transparent 70%);
+            animation: blobDrift 14s ease-in-out infinite alternate-reverse
+        }
+
+        .hero-blob--3 {
+            width: 260px;
+            height: 260px;
+            top: 50%;
+            left: 35%;
+            background: radial-gradient(circle, rgba(3, 43, 102, .06) 0%, transparent 70%);
+            animation: blobDrift 22s ease-in-out infinite alternate
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 60px;
+            align-items: center
+        }
+
+        .hero-content {
+            max-width: 580px
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 98, 0, .08);
+            color: var(--orange);
+            border: 1px solid rgba(255, 98, 0, .20);
+            border-radius: 50px;
+            padding: 7px 18px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: fadeUp .8s var(--ease) .1s both
+        }
+
+        .hero-title {
+            font-size: clamp(34px, 5vw, 60px);
+            font-weight: 800;
+            line-height: 1.08;
+            color: var(--navy);
+            letter-spacing: -.022em;
+            margin-bottom: 18px;
+            animation: fadeUp .85s var(--ease) .2s both
+        }
+
+        .hero-sub {
+            font-size: 15.5px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 480px;
+            animation: fadeUp .85s var(--ease) .3s both
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            animation: fadeUp .85s var(--ease) .4s both
+        }
+
+        .hero-trust {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 26px;
+            flex-wrap: wrap;
+            animation: fadeUp .85s var(--ease) .5s both
+        }
+
+        .trust-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted)
+        }
+
+        .trust-pill i {
+            color: var(--orange);
+            font-size: 12px
+        }
+
+        .trust-div {
+            width: 1px;
+            height: 16px;
+            background: var(--border)
+        }
+
+        /* Hero visual */
+        .hero-visual {
+            position: relative;
+            animation: fadeUp .9s var(--ease) .25s both
+        }
+
+        .hero-card-main {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(3, 43, 102, .04);
+            padding: 30px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero-card-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--orange) 40%, rgba(255, 98, 0, .5), transparent)
+        }
+
+        .hero-va-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--navy), #0a3a8f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 24px rgba(3, 43, 102, .28);
+            animation: floatY 4s ease-in-out infinite
+        }
+
+        .hero-card-main h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 5px
+        }
+
+        .hero-card-main>p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 20px
+        }
+
+        .va-task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            margin-bottom: 20px
+        }
+
+        .va-task {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 13px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--navy);
+            transition: border-color .3s ease, transform .45s var(--ease)
+        }
+
+        .va-task:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(3px)
+        }
+
+        .va-task i {
+            color: var(--orange);
+            font-size: 11px;
+            width: 14px;
+            flex-shrink: 0
+        }
+
+        .hero-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(3, 43, 102, .05);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--navy);
+            width: 100%
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34, 197, 94, .5);
+            animation: pulseGlow 2s ease-in-out infinite;
+            flex-shrink: 0
+        }
+
+        .float-chip {
+            position: absolute;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, .95);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--navy);
+            white-space: nowrap;
+            box-shadow: var(--shadow-md)
+        }
+
+        .float-chip i {
+            color: var(--orange);
+            font-size: 10px
+        }
+
+        .chip-top {
+            top: -16px;
+            right: 16px;
+            animation: floatY 3.5s ease-in-out infinite alternate
+        }
+
+        .chip-bot {
+            bottom: -16px;
+            left: 16px;
+            animation: floatY 4.5s ease-in-out infinite alternate-reverse
+        }
+
+        /* ══════════════════════════════════════════════════
+   2. METRICS STRIP
+══════════════════════════════════════════════════ */
+        .metrics-strip {
+            background: var(--navy);
+            padding: 0
+        }
+
+        .metrics-inner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-left: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .metric-col {
+            padding: 36px 28px;
+            border-right: 1px solid rgba(255, 255, 255, .08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: background .4s ease
+        }
+
+        .metric-col::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), transparent);
+            transform: scaleX(0);
+            transition: transform .5s var(--ease)
+        }
+
+        .metric-col:hover {
+            background: rgba(255, 255, 255, .04)
+        }
+
+        .metric-col:hover::before {
+            transform: scaleX(1)
+        }
+
+        .metric-num {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--orange);
+            font-variant-numeric: tabular-nums;
+            display: block;
+            line-height: 1;
+            margin-bottom: 6px
+        }
+
+        .metric-lbl {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, .75);
+            margin-bottom: 3px
+        }
+
+        .metric-sub {
+            font-size: 10.5px;
+            color: rgba(255, 255, 255, .40)
+        }
+
+        /* ══════════════════════════════════════════════════
+   3. OVERVIEW
+══════════════════════════════════════════════════ */
+        .overview {
+            background: #fff
+        }
+
+        .overview-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: start
+        }
+
+        .overview-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 13px
+        }
+
+        .overview-text p strong {
+            color: var(--navy);
+            font-weight: 600
+        }
+
+        .ov-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 24px
+        }
+
+        .ov-pill {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 14px 16px;
+            background: var(--bg-light);
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            transition: border-color .35s ease, transform .5s var(--ease), background .35s ease
+        }
+
+        .ov-pill:hover {
+            border-color: rgba(255, 98, 0, .22);
+            background: rgba(255, 98, 0, .03);
+            transform: translateX(5px)
+        }
+
+        .ov-ico {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255, 98, 0, .09);
+            border: 1px solid rgba(255, 98, 0, .16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--orange);
+            flex-shrink: 0;
+            transition: background .4s var(--ease), transform .5s var(--spring)
+        }
+
+        .ov-pill:hover .ov-ico {
+            background: var(--orange);
+            color: #fff;
+            transform: scale(1.1)
+        }
+
+        .ov-pill strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px
+        }
+
+        .ov-pill span {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55
+        }
+
+        .img-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px
+        }
+
+        .img-block {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border)
+        }
+
+        .img-block img {
+            width: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1.4s var(--ease)
+        }
+
+        .img-block:hover img {
+            transform: scale(1.05)
+        }
+
+        .img-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(3, 43, 102, .88);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, .14);
+            border-radius: 50px;
+            padding: 7px 14px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #fff
+        }
+
+        .img-badge i {
+            color: var(--orange);
+            font-size: 10px
+        }
+
+        /* ══════════════════════════════════════════════════
+   4. BENEFITS
+══════════════════════════════════════════════════ */
+        .benefits {
+            background: var(--bg-light)
+        }
+
+        .benefits-hdr {
+            text-align: center;
+            margin-bottom: 52px
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px
+        }
+
+        .benefit-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 26px 20px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: transform .65s var(--ease), box-shadow .65s var(--ease), border-color .4s ease, opacity .65s ease
+        }
+
+        .benefit-card.visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .benefit-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 55%;
+            height: 2px;
+            background: var(--orange);
+            border-radius: 2px;
+            transition: transform .5s var(--ease)
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(255, 98, 0, .18)
+        }
+
+        .benefit-card:hover::after {
+            transform: translateX(-50%) scaleX(1)
+        }
+
+        .benefit-ico {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: rgba(255, 98, 0, .08);
+            border: 1px solid rgba(255, 98, 0, .14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--orange);
+            margin-bottom: 13px;
+            transition: background .45s var(--ease), transform .55s var(--spring)
+        }
+
+        .benefit-card:hover .benefit-ico {
+            background: var(--orange);
+            color: #fff;
+            transform: scale(1.1) translateY(-2px)
+        }
+
+        .benefit-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 7px;
+            line-height: 1.3
+        }
+
+        .benefit-card p {
+            font-size: 12.5px;
+            line-height: 1.7;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   5. PROBLEMS + SOLUTION
+══════════════════════════════════════════════════ */
+        .problems {
+            background: #fff
+        }
+
+        .problems-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center
+        }
+
+        .problems-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 22px
+        }
+
+        .problem-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 9px
+        }
+
+        .problem-chip {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px 15px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: border-color .3s ease, transform .45s var(--ease)
+        }
+
+        .problem-chip:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(4px)
+        }
+
+        .problem-chip i {
+            color: var(--orange);
+            font-size: 13px;
+            flex-shrink: 0
+        }
+
+        .problem-chip span {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--navy)
+        }
+
+        .solution-box {
+            background: linear-gradient(145deg, var(--navy), #041f50);
+            border-radius: var(--radius-lg);
+            padding: 34px 30px;
+            color: #fff;
+            position: relative;
+            overflow: hidden
+        }
+
+        .solution-box::after {
+            content: '';
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -80px;
+            right: -60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 98, 0, .18) 0%, transparent 65%);
+            pointer-events: none
+        }
+
+        .solution-box h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1
+        }
+
+        .solution-box p {
+            font-size: 13.5px;
+            line-height: 1.78;
+            color: rgba(255, 255, 255, .68);
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 1
+        }
+
+        .solution-box .btn-primary {
+            position: relative;
+            z-index: 1
+        }
+
+        .sol-img {
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1
+        }
+
+        .sol-img img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block
+        }
+
+        /* ══════════════════════════════════════════════════
+   6. WHAT'S INCLUDED
+══════════════════════════════════════════════════ */
+        .included {
+            background: var(--bg-light)
+        }
+
+        .included-hdr {
+            text-align: center;
+            margin-bottom: 52px
+        }
+
+        .included-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px
+        }
+
+        .included-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 28px 24px;
+            transition: transform .65s var(--ease), box-shadow .65s var(--ease)
+        }
+
+        .included-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md)
+        }
+
+        .inc-ico {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(3, 43, 102, .08), rgba(3, 43, 102, .04));
+            border: 1px solid rgba(3, 43, 102, .10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 15px;
+            transition: background .45s var(--ease), color .35s ease, transform .55s var(--spring)
+        }
+
+        .included-card:hover .inc-ico {
+            background: var(--navy);
+            color: #fff;
+            transform: scale(1.08)
+        }
+
+        .included-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px
+        }
+
+        .inc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+
+        .inc-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--text-muted)
+        }
+
+        .inc-list li i {
+            color: var(--orange);
+            font-size: 11px;
+            margin-top: 2px;
+            flex-shrink: 0
+        }
+
+        /* ══════════════════════════════════════════════════
+   7. WHY TRUST
+══════════════════════════════════════════════════ */
+        .trust {
+            background: #fff
+        }
+
+        .trust-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: start
+        }
+
+        .trust-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 22px
+        }
+
+        .trust-feats {
+            display: flex;
+            flex-direction: column;
+            gap: 13px
+        }
+
+        .trust-feat {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 15px 16px;
+            background: var(--bg-light);
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            transition: border-color .35s ease, transform .5s var(--ease)
+        }
+
+        .trust-feat:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(5px)
+        }
+
+        .tfi {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: rgba(255, 98, 0, .09);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--orange);
+            flex-shrink: 0
+        }
+
+        .trust-feat strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px
+        }
+
+        .trust-feat span {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55
+        }
+
+        .trust-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .trust-card {
+            background: var(--bg-light);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px 17px;
+            transition: transform .5s var(--ease), box-shadow .5s var(--ease)
+        }
+
+        .trust-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-sm)
+        }
+
+        .tc-icon {
+            font-size: 22px;
+            color: var(--orange);
+            margin-bottom: 9px
+        }
+
+        .trust-card h5 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 5px
+        }
+
+        .trust-card p {
+            font-size: 12px;
+            line-height: 1.62;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   8. PROCESS
+══════════════════════════════════════════════════ */
+        .process {
+            background: var(--bg-light)
+        }
+
+        .process-hdr {
+            text-align: center;
+            margin-bottom: 56px
+        }
+
+        .process-img-banner {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 48px;
+            position: relative
+        }
+
+        .process-img-banner img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block
+        }
+
+        .process-img-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(3, 43, 102, .45), transparent 60%);
+            pointer-events: none
+        }
+
+        .process-img-text {
+            position: absolute;
+            top: 50%;
+            left: 32px;
+            transform: translateY(-50%);
+            color: #fff;
+            z-index: 2
+        }
+
+        .process-img-text h4 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px
+        }
+
+        .process-img-text p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, .75)
+        }
+
+        .process-timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 26px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--navy), rgba(3, 43, 102, .1));
+            border-radius: 2px
+        }
+
+        .process-step {
+            display: flex;
+            gap: 26px;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            position: relative
+        }
+
+        .process-step:last-child {
+            margin-bottom: 0
+        }
+
+        .ps-dot {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 16px rgba(3, 43, 102, .22);
+            transition: background .4s ease, transform .5s var(--ease), box-shadow .4s ease
+        }
+
+        .process-step.ps-active .ps-dot,
+        .process-step:hover .ps-dot {
+            background: var(--orange);
+            transform: scale(1.12);
+            box-shadow: 0 6px 20px rgba(255, 98, 0, .32)
+        }
+
+        .ps-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
+            padding: 22px 24px;
+            flex: 1;
+            transition: box-shadow .55s var(--ease), border-color .4s ease, transform .55s var(--ease)
+        }
+
+        .process-step.ps-active .ps-card,
+        .process-step:hover .ps-card {
+            border-color: rgba(255, 98, 0, .28);
+            box-shadow: 0 6px 28px rgba(255, 98, 0, .09);
+            transform: translateX(4px)
+        }
+
+        .ps-num {
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 5px;
+            display: block
+        }
+
+        .ps-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
+
+        .ps-card p {
+            font-size: 13px;
+            line-height: 1.72;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   9. FAQ
+══════════════════════════════════════════════════ */
+        .faq-sec {
+            background: #fff
+        }
+
+        .faq-inner {
+            max-width: 760px;
+            margin: 0 auto
+        }
+
+        .faq-hdr {
+            text-align: center;
+            margin-bottom: 42px
+        }
+
+        .faq-list {
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border)
+        }
+
+        .faq-item:last-child {
+            border-bottom: none
+        }
+
+        .faq-q {
+            width: 100%;
+            background: #fff;
+            border: none;
+            padding: 19px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            text-align: left;
+            gap: 16px;
+            transition: background .3s ease;
+            font-family: 'Poppins', sans-serif
+        }
+
+        .faq-q:hover {
+            background: var(--bg-light)
+        }
+
+        .faq-q[aria-expanded="true"] {
+            background: rgba(3, 43, 102, .04)
+        }
+
+        .faq-q span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy)
+        }
+
+        .faq-ico {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 98, 0, .08);
+            border: 1px solid rgba(255, 98, 0, .18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: var(--orange);
+            transition: transform .5s var(--spring), background .3s ease
+        }
+
+        .faq-q[aria-expanded="true"] .faq-ico {
+            transform: rotate(45deg);
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange)
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 22px;
+            background: #fff;
+            transition: max-height .45s var(--ease), padding .35s ease
+        }
+
+        .faq-a.open {
+            max-height: 280px;
+            padding: 0 22px 18px
+        }
+
+        .faq-a p {
+            font-size: 13.5px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            padding-top: 4px
+        }
+
+        /* ══════════════════════════════════════════════════
+   10. CTA
+══════════════════════════════════════════════════ */
+        .cta-sec {
+            padding: 80px 0
+        }
+
+        .cta-box {
+            background: linear-gradient(150deg, var(--navy) 0%, #041f50 55%, #021540 100%);
+            border-radius: 30px;
+            padding: 72px 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(3, 43, 102, .25)
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, .04) 1px, transparent 1px);
+            background-size: 26px 26px;
+            pointer-events: none
+        }
+
+        .cta-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 18%;
+            right: 18%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), rgba(255, 98, 0, .6), var(--orange), transparent)
+        }
+
+        .cta-o1 {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            top: -120px;
+            left: -80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 98, 0, .14) 0%, transparent 65%);
+            filter: blur(58px);
+            pointer-events: none
+        }
+
+        .cta-o2 {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            bottom: -70px;
+            right: -50px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(3, 43, 102, .35) 0%, transparent 65%);
+            filter: blur(58px);
+            pointer-events: none
+        }
+
+        .cta-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 98, 0, .18);
+            color: #ff9a30;
+            border: 1px solid rgba(255, 98, 0, .30);
+            border-radius: 50px;
+            padding: 5px 17px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1
+        }
+
+        .cta-title {
+            font-size: clamp(24px, 3.8vw, 42px);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.13;
+            letter-spacing: -.015em;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+            max-width: 620px
+        }
+
+        .cta-sub {
+            font-size: 14.5px;
+            line-height: 1.85;
+            color: rgba(255, 255, 255, .62);
+            margin-bottom: 34px;
+            position: relative;
+            z-index: 1;
+            max-width: 540px
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1
+        }
+
+        /* ══════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════ */
+        @media(max-width:1280px) {
+            .hero-inner {
+                grid-template-columns: 1.1fr .9fr;
+                gap: 48px
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:1024px) {
+
+            .hero-inner,
+            .overview-inner,
+            .problems-inner,
+            .trust-inner {
+                grid-template-columns: 1fr;
+                gap: 48px
+            }
+
+            .metrics-inner {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .img-stack {
+                flex-direction: row
+            }
+
+            .img-stack .img-block {
+                flex: 1
+            }
+        }
+
+        @media(max-width:768px) {
+            .section-pad {
+                padding: 70px 0
+            }
+
+            .hero {
+                padding: 100px 0 64px;
+                min-height: auto
+            }
+
+            .hero-inner {
+                gap: 36px
+            }
+
+            .hero-title {
+                font-size: clamp(30px, 8vw, 44px)
+            }
+
+            .float-chip {
+                display: none
+            }
+
+            .metrics-inner {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .metric-col {
+                padding: 26px 18px
+            }
+
+            .metric-num {
+                font-size: 1.9rem
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px
+            }
+
+            .included-grid {
+                grid-template-columns: 1fr
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr
+            }
+
+            .cta-box {
+                padding: 48px 26px
+            }
+
+            .img-stack {
+                flex-direction: column
+            }
+
+            .process-timeline::before {
+                left: 22px
+            }
+
+            .ps-dot {
+                width: 44px;
+                height: 44px;
+                font-size: 16px
+            }
+        }
+
+        @media(max-width:520px) {
+
+            .hero-actions,
+            .cta-actions {
+                flex-direction: column;
+                align-items: stretch
+            }
+
+            .btn {
+                justify-content: center
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr
+            }
+
+            .metrics-inner {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media(max-width:380px) {
+            .metrics-inner {
+                grid-template-columns: 1fr
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            .hero-blob,
+            .float-chip,
+            .status-dot,
+            .hero-va-avatar {
+                animation: none !important
+            }
+
+            .reveal,
+            .reveal-left,
+            .reveal-right,
+            .reveal-scale,
+            .word-anim .wi,
+            .para-anim .pw,
+            .badge-anim,
+            .benefit-card,
+            .img-reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+                will-change: auto !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACK BUTTON -->
+    <button class="back-btn" onclick="history.length>1?history.back():location.href='service.html'"
+        aria-label="Go back">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+
+
+    <!-- ══════════════════════════════════════════════════
+     1. HERO
+══════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-h1">
+        <div class="hero-bg-dots" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--1" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--2" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--3" aria-hidden="true"></div>
+
+        <div class="container">
+            <div class="hero-inner">
+
+                <!-- Left -->
+                <div class="hero-content">
+                    <div class="hero-eyebrow badge-anim">
+                        <i class="fa-solid fa-gears"></i> CRM Management &amp; Automation
+                    </div>
+                    <h1 class="hero-title word-anim" id="hero-h1">
+                        Less Manual Work.<br><span class="accent">More Revenue.</span>
+                    </h1>
+                    <p class="hero-sub para-anim">
+                        At Listora Digital Media, we implement and optimize CRM systems that help businesses organize
+                        customer information, automate repetitive tasks, and operate with the efficiency needed to
+                        grow faster.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="contact.html" class="btn btn-primary">
+                            <i class="fa-solid fa-calendar-check"></i> Book a Free Consultation
+                        </a>
+                        <a href="#overview" class="btn btn-outline">
+                            <i class="fa-solid fa-circle-info"></i> Learn More
+                        </a>
+                    </div>
+                    <div class="hero-trust">
+                        <div class="trust-pill"><i class="fa-solid fa-bolt"></i> Workflow Automation</div>
+                        <div class="trust-div" aria-hidden="true"></div>
+                        <div class="trust-pill"><i class="fa-solid fa-arrow-trend-up"></i> Growth-Focused</div>
+                        <div class="trust-div" aria-hidden="true"></div>
+                        <div class="trust-pill"><i class="fa-solid fa-gem"></i> Scalable Systems</div>
+                    </div>
+                </div>
+
+                <!-- Right -->
+                <div class="hero-visual">
+                    <div class="float-chip chip-top" aria-hidden="true">
+                        <i class="fa-solid fa-bolt"></i> Automations Running: 47
+                    </div>
+
+                    <div class="hero-card-main">
+                        <div class="hero-va-avatar"><i class="fa-solid fa-gears"></i></div>
+                        <h3>Your CRM Automation Team</h3>
+                        <p>Dedicated specialists building smarter workflows, organized pipelines, and automated
+                            follow-ups — so your business runs efficiently without the manual effort.</p>
+
+                        <div class="va-task-list">
+                            <div class="va-task"><i class="fa-solid fa-check"></i> CRM configured &amp; integrated</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Lead pipelines structured</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Email &amp; task automations live
+                            </div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Contact database organized</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Reporting dashboards set up</div>
+                        </div>
+
+                        <div class="hero-status">
+                            <div class="status-dot" aria-hidden="true"></div>
+                            Your automations are running right now
+                        </div>
+                    </div>
+
+                    <div class="float-chip chip-bot" aria-hidden="true">
+                        <i class="fa-solid fa-arrow-trend-up"></i> Manual Tasks Down 80%
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     2. METRICS STRIP
+══════════════════════════════════════════════════ -->
+    <section class="metrics-strip" aria-label="Key performance metrics">
+        <div class="container">
+            <div class="metrics-inner">
+                <div class="metric-col reveal" data-delay="0">
+                    <span class="metric-num" data-target="80" data-suffix="%">80%</span>
+                    <div class="metric-lbl">Reduction in Manual Tasks</div>
+                    <div class="metric-sub">automations handle the repetitive work</div>
+                </div>
+                <div class="metric-col reveal" data-delay="100">
+                    <span class="metric-num" data-target="10" data-suffix="+">10+</span>
+                    <div class="metric-lbl">Deliverables Per Setup</div>
+                    <div class="metric-sub">pipelines, automations, dashboards &amp; more</div>
+                </div>
+                <div class="metric-col reveal" data-delay="200">
+                    <span class="metric-num" data-target="100" data-suffix="%">100%</span>
+                    <div class="metric-lbl">Customized to Your Business</div>
+                    <div class="metric-sub">no templates — built around your workflow</div>
+                </div>
+                <div class="metric-col reveal" data-delay="300">
+                    <span class="metric-num" data-target="0" data-suffix=" missed leads">0 missed leads</span>
+                    <div class="metric-lbl">Our Automation Goal</div>
+                    <div class="metric-sub">every lead captured and followed up automatically</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     3. OVERVIEW
+══════════════════════════════════════════════════ -->
+    <section class="overview section-pad" id="overview" aria-labelledby="ov-h2">
+        <div class="container">
+            <div class="overview-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-magnifying-glass"></i> What Is
+                        It?</span>
+                    <h2 class="section-title word-anim" id="ov-h2">What is CRM Management &amp; Automation?</h2>
+                    <div class="overview-text">
+                        <p class="para-anim">CRM Management &amp; Automation is the process of <strong>implementing,
+                                configuring, and optimizing customer relationship management systems</strong> to
+                            organize data, streamline workflows, and automate the repetitive tasks that slow businesses
+                            down.</p>
+                        <p class="para-anim">At Listora Digital Media, we build CRM systems that work the way your
+                            business works — with automated follow-ups, structured pipelines, and organized customer
+                            data — <strong>so your team can focus on generating revenue instead of managing systems
+                                manually.</strong></p>
+                        <p class="para-anim">A well-implemented CRM doesn't just organize data. It creates the
+                            foundation for consistent communication, faster follow-ups, and scalable growth.</p>
+                    </div>
+                    <a href="contact.html" class="btn btn-primary reveal" data-delay="300" style="margin-top:22px">
+                        <i class="fa-solid fa-arrow-right"></i> Get Started Today
+                    </a>
+
+                    <div class="ov-pills">
+                        <div class="ov-pill reveal" data-delay="0">
+                            <div class="ov-ico"><i class="fa-solid fa-bolt"></i></div>
+                            <div><strong>Automated Follow-Ups</strong><span>Never miss a lead again — automated
+                                    sequences keep your prospects engaged without any manual effort.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="100">
+                            <div class="ov-ico"><i class="fa-solid fa-clock"></i></div>
+                            <div><strong>Hours of Admin Time Saved</strong><span>Stop doing manually what a CRM can do
+                                    automatically — reclaim your team's time for higher-value work.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="200">
+                            <div class="ov-ico"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                            <div><strong>More Sales Opportunities</strong><span>Structured pipelines and timely
+                                    follow-ups mean fewer leads fall through the cracks and more deals get
+                                    closed.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="300">
+                            <div class="ov-ico"><i class="fa-solid fa-gem"></i></div>
+                            <div><strong>Scalable as You Grow</strong><span>Systems built to handle more volume without
+                                    more overhead — your CRM grows with your business.</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right">
+                    <div class="img-stack">
+                        <div class="img-block reveal-scale">
+                            <img src="s5.png" alt="CRM setup and workflow automation" loading="lazy"
+                                style="height:280px">
+                            <div class="img-badge"><i class="fa-solid fa-gears"></i> CRM Setup &amp; Automation</div>
+                        </div>
+                        <div class="img-block reveal-scale" data-delay="100">
+                            <img src="s6.png" alt="Lead pipeline management and CRM optimization" loading="lazy"
+                                style="height:200px">
+                            <div class="img-badge"><i class="fa-solid fa-arrow-trend-up"></i> Pipeline &amp; Growth
+                                Focused</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     4. BENEFITS
+══════════════════════════════════════════════════ */
+    <section class="benefits section-pad" aria-labelledby="ben-h2">
+        <div class="container">
+            <div class="benefits-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-star"></i> What's In It For You?</span>
+                <h2 class="section-title word-anim" id="ben-h2">What Professional CRM Management<br>Does for Your Business</h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">A properly managed CRM can transform the way your business operates — turning scattered data and manual tasks into a streamlined, revenue-generating system.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-funnel-dollar"></i></div>
+                    <h4>Improved Lead Management</h4>
+                    <p>Every lead captured, tracked, and followed up — no more prospects slipping through the cracks of a disorganized process.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-bolt"></i></div>
+                    <h4>Faster Follow-Ups</h4>
+                    <p>Automated sequences ensure prospects hear from you at the right time — faster response rates without adding manual work.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                    <h4>Increased Sales Opportunities</h4>
+                    <p>Structured pipelines and consistent follow-up processes keep more deals moving toward close instead of going cold.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <h4>Better Customer Retention</h4>
+                    <p>Organized customer data and automated touchpoints help you nurture relationships long after the first sale.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-clock"></i></div>
+                    <h4>Reduced Manual Workload</h4>
+                    <p>Automate the repetitive tasks eating into your team's time — data entry, follow-up emails, task creation, and more.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-users"></i></div>
+                    <h4>Enhanced Team Productivity</h4>
+                    <p>When your team isn't buried in admin, they spend their energy on the work that actually drives growth.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-layer-group"></i></div>
+                    <h4>More Organized Operations</h4>
+                    <p>One centralized system for all customer data, communications, and tasks — no more scattered spreadsheets or missed notes.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-expand"></i></div>
+                    <h4>Scalable Growth Systems</h4>
+                    <p>A CRM built for growth handles more volume without more overhead — your systems scale as your business does.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     5. PROBLEMS WE SOLVE
+══════════════════════════════════════════════════ -->
+    <section class="problems section-pad" aria-labelledby="prob-h2">
+        <div class="container">
+            <div class="problems-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-triangle-exclamation"></i> Pain Points
+                        Solved</span>
+                    <h2 class="section-title word-anim" id="prob-h2">What Problems Does It Solve?</h2>
+                    <p class="problems-text para-anim">Common operational challenges that cost businesses time, revenue,
+                        and customer relationships — all addressed by our CRM solutions.</p>
+                    <div class="problem-chips">
+                        <div class="problem-chip reveal" data-delay="0"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Missed leads and lost opportunities</span>
+                        </div>
+                        <div class="problem-chip reveal" data-delay="50"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Poor follow-up processes</span></div>
+                        <div class="problem-chip reveal" data-delay="100"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Disorganized customer data</span></div>
+                        <div class="problem-chip reveal" data-delay="150"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Inefficient manual workflows</span></div>
+                        <div class="problem-chip reveal" data-delay="200"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Repetitive time-consuming tasks</span></div>
+                        <div class="problem-chip reveal" data-delay="250"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Lack of visibility into customer
+                                journeys</span></div>
+                        <div class="problem-chip reveal" data-delay="300"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Lost sales from slow response times</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right" style="display:flex;flex-direction:column;gap:18px">
+                    <div class="sol-img">
+                        <img src="s7.png" alt="CRM automation team building workflows and pipelines" loading="lazy"
+                            style="border-radius:16px">
+                    </div>
+                    <div class="solution-box">
+                        <h3>We Build a Centralized System That Improves Efficiency &amp; Drives Growth</h3>
+                        <p>Our CRM solutions create a single source of truth for your business — organized data,
+                            automated workflows, and structured pipelines that make your team faster and your business
+                            more profitable.</p>
+                        <a href="contact.html" class="btn btn-primary">
+                            <i class="fa-solid fa-arrow-trend-up"></i> Solve This Now
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     6. WHAT'S INCLUDED
+══════════════════════════════════════════════════ -->
+    <section class="included section-pad" aria-labelledby="inc-h2">
+        <div class="container">
+            <div class="included-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-list-check"></i> Service
+                    Deliverables</span>
+                <h2 class="section-title word-anim" id="inc-h2">Everything That's Included</h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">A complete CRM management and automation
+                    service — from initial setup and configuration to ongoing optimization — handled end to end.</p>
+            </div>
+            <div class="included-grid">
+                <div class="included-card reveal" data-delay="0">
+                    <div class="inc-ico"><i class="fa-solid fa-sliders"></i></div>
+                    <h4>CRM Setup &amp; Configuration</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> CRM setup and configuration</li>
+                        <li><i class="fa-solid fa-check"></i> Contact database organization</li>
+                        <li><i class="fa-solid fa-check"></i> Integration support</li>
+                        <li><i class="fa-solid fa-check"></i> Sales process optimization</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="100">
+                    <div class="inc-ico"><i class="fa-solid fa-diagram-project"></i></div>
+                    <h4>Pipeline &amp; Lead Management</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Lead pipeline management</li>
+                        <li><i class="fa-solid fa-check"></i> Workflow automation</li>
+                        <li><i class="fa-solid fa-check"></i> Task automation</li>
+                        <li><i class="fa-solid fa-check"></i> Email automation</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="200">
+                    <div class="inc-ico"><i class="fa-solid fa-chart-line"></i></div>
+                    <h4>Reporting &amp; Visibility</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Reporting dashboards</li>
+                        <li><i class="fa-solid fa-check"></i> Performance tracking setup</li>
+                        <li><i class="fa-solid fa-check"></i> Customer journey visibility</li>
+                        <li><i class="fa-solid fa-check"></i> Data accuracy reviews</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="300">
+                    <div class="inc-ico"><i class="fa-solid fa-arrows-rotate"></i></div>
+                    <h4>Ongoing Maintenance &amp; Growth</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Ongoing CRM maintenance</li>
+                        <li><i class="fa-solid fa-check"></i> Automation refinement</li>
+                        <li><i class="fa-solid fa-check"></i> Scalable support for growing teams</li>
+                        <li><i class="fa-solid fa-check"></i> Reliable, consistent communication</li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     7. WHY TRUST US
+══════════════════════════════════════════════════ -->
+    <section class="trust section-pad" aria-labelledby="trust-h2">
+        <div class="container">
+            <div class="trust-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-shield-halved"></i> Why Trust
+                        Listora</span>
+                    <h2 class="section-title word-anim" id="trust-h2">Why Should Clients Trust Listora Digital Media?
+                    </h2>
+                    <p class="trust-text para-anim">We focus on creating CRM systems that simplify operations and drive
+                        measurable results — not generic setups, but customized workflows built around how your business
+                        actually works.</p>
+                    <p class="trust-text para-anim" style="margin-bottom:0">We help businesses spend less time managing
+                        systems and more time generating revenue.</p>
+                    <div class="trust-feats" style="margin-top:24px">
+                        <div class="trust-feat reveal" data-delay="0">
+                            <div class="tfi"><i class="fa-solid fa-gears"></i></div>
+                            <div><strong>Strategic CRM Implementation</strong><span>We don't just set up software — we
+                                    build systems designed around your sales process and customer journey.</span></div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="100">
+                            <div class="tfi"><i class="fa-solid fa-bolt"></i></div>
+                            <div><strong>Automation Expertise</strong><span>Deep experience building automations that
+                                    actually work — removing manual effort without breaking existing workflows.</span>
+                            </div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="200">
+                            <div class="tfi"><i class="fa-solid fa-sliders"></i></div>
+                            <div><strong>Customized Workflows</strong><span>Every business is different — we build
+                                    workflows that fit yours, not cookie-cutter templates that require
+                                    workarounds.</span></div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="300">
+                            <div class="tfi"><i class="fa-solid fa-expand"></i></div>
+                            <div><strong>Scalable for Growing Teams</strong><span>Whether you have 5 users or 50, our
+                                    CRM solutions scale with your team without compromising on performance.</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right">
+                    <div class="img-block" style="margin-bottom:16px">
+                        <img src="s8.png" alt="Listora Digital Media CRM and automation team" loading="lazy"
+                            style="height:260px;object-fit:cover;width:100%">
+                        <div class="img-badge"><i class="fa-solid fa-users"></i> Your CRM Automation Team</div>
+                    </div>
+                    <div class="trust-cards">
+                        <div class="trust-card reveal" data-delay="0">
+                            <div class="tc-icon"><i class="fa-solid fa-sliders"></i></div>
+                            <h5>Customized Systems</h5>
+                            <p>Built around your specific processes — not generic out-of-the-box configurations.</p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="100">
+                            <div class="tc-icon"><i class="fa-solid fa-bolt"></i></div>
+                            <h5>Automation First</h5>
+                            <p>Every workflow designed to reduce manual effort and maximize team efficiency.</p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="200">
+                            <div class="tc-icon"><i class="fa-solid fa-comments"></i></div>
+                            <h5>Transparent Communication</h5>
+                            <p>Clear updates throughout — you always know what's built, what's live, and what's next.
+                            </p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="300">
+                            <div class="tc-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                            <h5>Growth-Oriented</h5>
+                            <p>Every decision made with one goal in mind — helping your business grow faster.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     8. PROCESS
+══════════════════════════════════════════════════ -->
+    <section class="process section-pad" aria-labelledby="proc-h2">
+        <div class="container">
+            <div class="process-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-diagram-project"></i> How It Works</span>
+                <h2 class="section-title word-anim" id="proc-h2">Our CRM Management &amp; Automation Process</h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">A clear 6-step process — from
+                    understanding your business to ongoing growth support — designed to build a CRM that actually works
+                    for your team.</p>
+            </div>
+
+            <div class="process-img-banner reveal">
+                <img src="s3.png" alt="CRM setup and automation workflow process" loading="lazy">
+                <div class="process-img-text">
+                    <h4>From Business Assessment to Automated Growth — Fast.</h4>
+                    <p>Customized, scalable, and built for your workflow</p>
+                </div>
+            </div>
+
+            <div class="process-timeline">
+                <div class="process-step reveal" data-delay="0">
+                    <div class="ps-dot"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 01</span>
+                        <h4>Business Assessment</h4>
+                        <p>We evaluate your current processes, tools, and requirements — understanding your sales
+                            workflow, customer journey, and the specific challenges your team faces before building
+                            anything.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="100">
+                    <div class="ps-dot"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 02</span>
+                        <h4>CRM Strategy</h4>
+                        <p>A customized CRM structure is planned around your business — pipeline stages, contact
+                            organization, automation logic, and integration requirements are all mapped out before any
+                            setup begins.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="200">
+                    <div class="ps-dot"><i class="fa-solid fa-sliders"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 03</span>
+                        <h4>Setup &amp; Integration</h4>
+                        <p>The CRM is configured and connected — your tools integrated, contacts imported, pipelines
+                            structured, and the system built to reflect the way your team actually works.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="300">
+                    <div class="ps-dot"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 04</span>
+                        <h4>Automation Implementation</h4>
+                        <p>Workflows and automations are created — email sequences, task triggers, follow-up reminders,
+                            and pipeline automations all built to reduce manual effort and keep your business moving.
+                        </p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="400">
+                    <div class="ps-dot"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 05</span>
+                        <h4>Testing &amp; Optimization</h4>
+                        <p>Performance is reviewed and refined — automations tested, workflows adjusted, and the system
+                            optimized to ensure everything runs as intended before full deployment.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="500">
+                    <div class="ps-dot"><i class="fa-solid fa-headset"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 06</span>
+                        <h4>Ongoing Growth Support</h4>
+                        <p>Continuous improvements ensure long-term success — as your business grows and your needs
+                            evolve, we update and expand your CRM to keep it working at its best.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     9. FAQ
+══════════════════════════════════════════════════ -->
+    <section class="faq-sec section-pad" aria-labelledby="faq-h2">
+        <div class="container">
+            <div class="faq-inner">
+                <div class="faq-hdr">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-circle-question"></i> Common
+                        Questions</span>
+                    <h2 class="section-title word-anim" id="faq-h2">Frequently Asked Questions</h2>
+                </div>
+                <div class="faq-list reveal" data-delay="100">
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Which CRM platforms do you work with?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>We work with a range of popular CRM platforms and tailor our approach based on your
+                                business needs. During the initial assessment, we'll discuss which platform best fits
+                                your workflow, existing tools, and growth goals. If you're already using a specific CRM,
+                                we can optimize and build on what you have — no need to start from scratch.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>How long does CRM setup typically take?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Timeline depends on the complexity of your setup and the number of automations required.
+                                A focused setup can be completed in as little as a few days, while more comprehensive
+                                implementations with extensive automation and integrations take longer. We'll give you a
+                                clear timeline after the initial assessment so you know exactly what to expect.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Do you handle the automation setup or just the configuration?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Both. We handle the full implementation — configuration, pipeline setup, contact
+                                organization, and all automation build-out including email sequences, task triggers,
+                                follow-up workflows, and any other automations your business needs. You tell us what you
+                                want to automate, and we build it.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Will my existing data be migrated into the new CRM?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Yes — data migration is part of our setup process. We work with your existing contact
+                                lists, customer data, and any records you need transferred into the new system. Before
+                                migrating anything, we review and clean your data to ensure what goes into the CRM is
+                                accurate and properly organized.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Can you support our team with ongoing CRM maintenance?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Absolutely. Ongoing maintenance is a core part of our service. As your business evolves,
+                                we update automations, refine workflows, add new pipelines, and ensure your CRM
+                                continues to serve your team effectively. You send us what needs updating and we take
+                                care of the rest.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Can you scale the CRM as our team grows?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Yes — scalability is built into how we design every system. Whether you add new team
+                                members, expand into new markets, or increase your lead volume, we build CRM structures
+                                that grow with you. Our ongoing support means we're there to expand and adapt the system
+                                as your needs change over time.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     10. CTA
+══════════════════════════════════════════════════ -->
+    <section class="cta-sec" aria-labelledby="cta-h2">
+        <div class="container">
+            <div class="cta-box reveal">
+                <div class="cta-o1" aria-hidden="true"></div>
+                <div class="cta-o2" aria-hidden="true"></div>
+                <span class="cta-label"><i class="fa-solid fa-gears"></i> Work Smarter, Grow Faster</span>
+                <h2 class="cta-title word-anim" id="cta-h2">Ready to Work Smarter?</h2>
+                <p class="cta-sub para-anim">Automate repetitive tasks, improve customer relationships, and streamline
+                    your operations. Let Listora Digital Media build the CRM system your business needs to grow.</p>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn btn-white">
+                        <i class="fa-solid fa-calendar-check"></i> Book Your Free Consultation Today
+                    </a>
+                    <a href="service.html" class="btn btn-outline"
+                        style="border-color:rgba(255,255,255,.30);color:rgba(255,255,255,.85)">
+                        <i class="fa-solid fa-arrow-left"></i> All Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        'use strict';
+
+        const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ── 1. Generic scroll reveal ── */
+        (function () {
+            if (RM) return;
+            const els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.img-reveal');
+            if (!els.length || !('IntersectionObserver' in window)) { els.forEach(e => { e.style.opacity = '1'; e.style.transform = 'none' }); return }
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const d = parseInt(e.target.dataset.delay || '0', 10);
+                    setTimeout(() => e.target.classList.add('visible'), d);
+                    io.unobserve(e.target);
+                });
+            }, { threshold: .10, rootMargin: '0px 0px -36px 0px' });
+            els.forEach(e => io.observe(e));
+        })();
+
+        /* ── 2. Word-by-word heading animation ── */
+        (function () {
+            if (RM) return;
+            function splitWords(el) {
+                if (el.dataset.wsplit) return;
+                el.dataset.wsplit = '1';
+                const label = el.textContent.trim();
+                const nodes = Array.from(el.childNodes);
+                el.innerHTML = '';
+                nodes.forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        node.textContent.split(/(\s+)/).forEach(chunk => {
+                            if (/^\s+$/.test(chunk)) { el.appendChild(document.createTextNode(chunk)) }
+                            else if (chunk.length) {
+                                const w = document.createElement('span'); w.className = 'w';
+                                const wi = document.createElement('span'); wi.className = 'wi'; wi.textContent = chunk;
+                                w.appendChild(wi); el.appendChild(w);
+                            }
+                        });
+                    } else { el.appendChild(node.cloneNode(true)); }
+                });
+                if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', label);
+            }
+            function stagger(el) {
+                const inners = el.querySelectorAll('.wi');
+                let d = 0;
+                inners.forEach(w => { w.style.transitionDelay = d.toFixed(3) + 's'; d += 0.068 });
+            }
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add('fired'); io.unobserve(e.target) });
+            }, { threshold: .15, rootMargin: '0px 0px -30px 0px' });
+            document.querySelectorAll('.word-anim').forEach(el => { splitWords(el); stagger(el); io.observe(el) });
+        })();
+
+        /* ── 3. Paragraph word animation ── */
+        (function () {
+            if (RM) return;
+            function splitPara(el) {
+                if (el.dataset.psplit) return;
+                el.dataset.psplit = '1';
+                const words = el.textContent.split(/(\s+)/);
+                el.innerHTML = '';
+                let d = 0.04;
+                words.forEach(chunk => {
+                    if (/^\s+$/.test(chunk)) { el.appendChild(document.createTextNode(chunk)) }
+                    else if (chunk.length) {
+                        const pw = document.createElement('span'); pw.className = 'pw';
+                        pw.style.transitionDelay = d.toFixed(3) + 's'; pw.textContent = chunk;
+                        el.appendChild(pw); d += 0.026;
+                    }
+                });
+            }
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add('fired'); io.unobserve(e.target) });
+            }, { threshold: .10, rootMargin: '0px 0px -20px 0px' });
+            document.querySelectorAll('.para-anim').forEach(el => { splitPara(el); io.observe(el) });
+        })();
+
+        /* ── 4. Badge animation ── */
+        (function () {
+            if (RM) return;
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (!e.isIntersecting) return; e.target.classList.add('fired'); io.unobserve(e.target) });
+            }, { threshold: .2, rootMargin: '0px 0px -10px 0px' });
+            document.querySelectorAll('.badge-anim').forEach(el => io.observe(el));
+        })();
+
+        /* ── 5. Benefit card stagger ── */
+        (function () {
+            if (RM) return;
+            const cards = document.querySelectorAll('.benefit-card');
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const idx = Array.from(cards).indexOf(e.target);
+                    setTimeout(() => e.target.classList.add('visible'), idx * 60);
+                    io.unobserve(e.target);
+                });
+            }, { threshold: .10, rootMargin: '0px 0px -30px 0px' });
+            cards.forEach(c => io.observe(c));
+        })();
+
+        /* ── 6. Animated counters ── */
+        (function () {
+            if (RM) return;
+            document.querySelectorAll('[data-target]').forEach(el => {
+                const target = parseFloat(el.dataset.target);
+                const suffix = el.dataset.suffix || '';
+                if (isNaN(target)) return;
+                const io = new IntersectionObserver(entries => {
+                    entries.forEach(e => {
+                        if (!e.isIntersecting) return;
+                        io.unobserve(el);
+                        let val = 0;
+                        const step = (target / 1100) * 16;
+                        const isF = String(target).includes('.');
+                        const timer = setInterval(() => {
+                            val += step;
+                            if (val >= target) { val = target; clearInterval(timer) }
+                            el.textContent = (isF ? val.toFixed(1) : Math.round(val)) + suffix;
+                        }, 16);
+                    });
+                }, { threshold: .5 });
+                io.observe(el);
+            });
+        })();
+
+        /* ── 7. Process active step ── */
+        (function () {
+            const steps = document.querySelectorAll('.process-step');
+            if (!steps.length || !('IntersectionObserver' in window)) return;
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { steps.forEach(s => s.classList.remove('ps-active')); e.target.classList.add('ps-active') }
+                });
+            }, { threshold: .55, rootMargin: '-15% 0px -40% 0px' });
+            steps.forEach(s => io.observe(s));
+        })();
+
+        /* ── 8. FAQ accordion ── */
+        (function () {
+            document.querySelectorAll('.faq-q').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const isOpen = this.getAttribute('aria-expanded') === 'true';
+                    document.querySelectorAll('.faq-q').forEach(b => {
+                        b.setAttribute('aria-expanded', 'false');
+                        const a = b.nextElementSibling; if (a) a.classList.remove('open');
+                    });
+                    if (!isOpen) {
+                        this.setAttribute('aria-expanded', 'true');
+                        const ans = this.nextElementSibling; if (ans) ans.classList.add('open');
+                    }
+                });
+            });
+        })();
+
+        /* ── 9. Button ripple ── */
+        (function () {
+            const s = document.createElement('style');
+            s.textContent = '@keyframes rip{from{transform:scale(0);opacity:.7}to{transform:scale(3.5);opacity:0}}';
+            document.head.appendChild(s);
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    const r = document.createElement('span');
+                    r.style.cssText = `position:absolute;border-radius:50%;background:rgba(255,255,255,.22);width:80px;height:80px;transform:scale(0);pointer-events:none;z-index:10;animation:rip .65s ease-out forwards;left:${e.offsetX - 40}px;top:${e.offsetY - 40}px`;
+                    this.appendChild(r); setTimeout(() => r.remove(), 700);
+                });
+            });
+        })();
+
+        /* ── 10. Hero word & para animation on load ── */
+        (function () {
+            if (RM) return;
+            const hw = document.querySelector('.hero .word-anim');
+            if (hw) setTimeout(() => hw.classList.add('fired'), 300);
+            const hp = document.querySelector('.hero .para-anim');
+            if (hp) setTimeout(() => hp.classList.add('fired'), 500);
+            const hb = document.querySelector('.hero .badge-anim');
+            if (hb) setTimeout(() => hb.classList.add('fired'), 100);
+        })();
+    </script>
+</body>
+
+</html>

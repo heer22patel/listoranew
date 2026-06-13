@@ -1,0 +1,2728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Real Estate Virtual Assistant services by Listora Digital Media — dedicated remote support for agents, brokers, and real estate teams.">
+    <title>Real Estate Virtual Assistant | Listora Digital Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        /* ══════════════════════════════════════════════════
+   DESIGN TOKENS — Listora Brand
+══════════════════════════════════════════════════ */
+        :root {
+            --navy: #032B66;
+            --navy-deep: #021f4b;
+            --navy-mid: #1a2353;
+            --orange: #FF6600;
+            --orange-dark: #e05500;
+            --orange-soft: #f26b2c;
+            --white: #ffffff;
+            --bg-light: #f4f7fc;
+            --bg-soft: #f0f4fb;
+            --text-muted: #64748B;
+            --border: #dde5f4;
+            --shadow-sm: 0 4px 16px rgba(3, 43, 102, .07);
+            --shadow-md: 0 8px 32px rgba(3, 43, 102, .11);
+            --shadow-lg: 0 20px 56px rgba(3, 43, 102, .15);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --ease: cubic-bezier(.22, 1, .36, 1);
+            --spring: cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 15px
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--navy);
+            background: #fff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased
+        }
+
+        img {
+            max-width: 100%;
+            display: block
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        ul {
+            list-style: none
+        }
+
+        /* ── BACK BUTTON ── */
+        .back-btn {
+            position: fixed;
+            top: 22px;
+            left: 22px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 9px 18px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--navy);
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: transform .5s var(--ease), box-shadow .5s var(--ease), background .3s ease;
+        }
+
+        .back-btn i {
+            transition: transform .4s var(--ease)
+        }
+
+        .back-btn:hover {
+            transform: translateX(-4px);
+            background: #fff;
+            box-shadow: var(--shadow-md)
+        }
+
+        .back-btn:hover i {
+            transform: translateX(-3px)
+        }
+
+        /* ── LAYOUT ── */
+        .container {
+            width: 90%;
+            max-width: 1180px;
+            margin: 0 auto
+        }
+
+        .section-pad {
+            padding: 90px 0
+        }
+
+        /* ── REVEAL ANIMATIONS ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-32px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0)
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(32px);
+            transition: opacity .75s var(--ease), transform .75s var(--ease)
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0)
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(.94);
+            transition: opacity .8s var(--ease), transform .8s var(--ease)
+        }
+
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        [data-delay="100"] {
+            transition-delay: .10s
+        }
+
+        [data-delay="200"] {
+            transition-delay: .20s
+        }
+
+        [data-delay="300"] {
+            transition-delay: .30s
+        }
+
+        [data-delay="400"] {
+            transition-delay: .40s
+        }
+
+        [data-delay="500"] {
+            transition-delay: .50s
+        }
+
+        [data-delay="600"] {
+            transition-delay: .60s
+        }
+
+        [data-delay="700"] {
+            transition-delay: .70s
+        }
+
+        [data-delay="800"] {
+            transition-delay: .80s
+        }
+
+        /* ── WORD-BY-WORD HEADING ── */
+        .word-anim .w {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: bottom;
+            line-height: 1.15
+        }
+
+        .word-anim .wi {
+            display: inline-block;
+            transform: translateY(105%);
+            opacity: 0;
+            transition: transform .68s cubic-bezier(.16, 1, .3, 1), opacity .48s ease;
+            will-change: transform, opacity
+        }
+
+        .word-anim.fired .wi {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        /* ── PARA WORD ANIM ── */
+        .para-anim .pw {
+            display: inline-block;
+            transform: translateY(65%);
+            opacity: 0;
+            transition: transform .55s var(--ease), opacity .42s ease;
+            will-change: transform, opacity
+        }
+
+        .para-anim.fired .pw {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        /* ── BADGE ANIM ── */
+        .badge-anim {
+            opacity: 0;
+            transform: translateY(10px) scale(.93);
+            transition: opacity .45s ease, transform .52s var(--spring);
+            will-change: transform, opacity
+        }
+
+        .badge-anim.fired {
+            opacity: 1;
+            transform: translateY(0) scale(1)
+        }
+
+        /* IMAGE REVEAL */
+        .img-reveal {
+            opacity: 0;
+            transform: scale(.95);
+            transition: opacity .9s var(--ease), transform .9s var(--ease);
+            will-change: transform, opacity
+        }
+
+        .img-reveal.visible {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        /* ── SECTION LABEL ── */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 98, 0, .08);
+            color: var(--orange);
+            border: 1px solid rgba(255, 98, 0, .18);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        /* ── TYPOGRAPHY ── */
+        .section-title {
+            font-size: clamp(24px, 3.8vw, 42px);
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--navy);
+            letter-spacing: -.015em;
+            margin-bottom: 12px
+        }
+
+        .section-sub {
+            font-size: 15px;
+            line-height: 1.82;
+            color: var(--text-muted);
+            max-width: 660px
+        }
+
+        .section-sub.center {
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .accent {
+            color: var(--orange)
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 26px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: transform .55s var(--ease), box-shadow .55s var(--ease), background .3s ease;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(108deg, transparent 30%, rgba(255, 255, 255, .4) 50%, transparent 70%);
+            transform: translateX(-130%);
+            transition: transform 0ms linear;
+            pointer-events: none
+        }
+
+        .btn:hover::after {
+            transform: translateX(130%);
+            transition: transform 650ms var(--ease)
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange);
+            box-shadow: 0 6px 22px rgba(255, 98, 0, .28)
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-dark);
+            transform: translateY(-3px) scale(1.015);
+            box-shadow: 0 12px 32px rgba(255, 98, 0, .36)
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border-color: var(--border)
+        }
+
+        .btn-outline:hover {
+            border-color: var(--navy);
+            background: var(--bg-light);
+            transform: translateY(-2px)
+        }
+
+        .btn-white {
+            background: #fff;
+            color: var(--navy);
+            border-color: #fff
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px) scale(1.015);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .18)
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes blobDrift {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(24px, -18px) scale(1.06)
+            }
+        }
+
+        @keyframes floatY {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-12px)
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: .6
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% center
+            }
+
+            100% {
+                background-position: -200% center
+            }
+        }
+
+        @keyframes spinSlow {
+            from {
+                transform: rotate(0deg)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        /* ══════════════════════════════════════════════════
+   1. HERO
+══════════════════════════════════════════════════ */
+        .hero {
+            min-height: 92vh;
+            display: flex;
+            align-items: center;
+            background:
+                radial-gradient(ellipse 90% 65% at 8% 8%, rgba(3, 43, 102, .09) 0%, transparent 60%),
+                radial-gradient(ellipse 70% 55% at 92% 92%, rgba(255, 98, 0, .07) 0%, transparent 55%),
+                linear-gradient(155deg, #eef3fb 0%, #ffffff 45%, #f8faff 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 130px 0 90px;
+        }
+
+        .hero-bg-dots {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, rgba(3, 43, 102, .05) 1px, transparent 1px);
+            background-size: 28px 28px
+        }
+
+        .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none
+        }
+
+        .hero-blob--1 {
+            width: 560px;
+            height: 560px;
+            top: -160px;
+            right: -120px;
+            background: radial-gradient(circle, rgba(3, 43, 102, .11) 0%, transparent 70%);
+            animation: blobDrift 18s ease-in-out infinite alternate
+        }
+
+        .hero-blob--2 {
+            width: 400px;
+            height: 400px;
+            bottom: -130px;
+            left: -90px;
+            background: radial-gradient(circle, rgba(255, 98, 0, .09) 0%, transparent 70%);
+            animation: blobDrift 14s ease-in-out infinite alternate-reverse
+        }
+
+        .hero-blob--3 {
+            width: 260px;
+            height: 260px;
+            top: 50%;
+            left: 35%;
+            background: radial-gradient(circle, rgba(3, 43, 102, .06) 0%, transparent 70%);
+            animation: blobDrift 22s ease-in-out infinite alternate
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 60px;
+            align-items: center
+        }
+
+        .hero-content {
+            max-width: 580px
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 98, 0, .08);
+            color: var(--orange);
+            border: 1px solid rgba(255, 98, 0, .20);
+            border-radius: 50px;
+            padding: 7px 18px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: fadeUp .8s var(--ease) .1s both;
+        }
+
+        .hero-title {
+            font-size: clamp(34px, 5vw, 60px);
+            font-weight: 800;
+            line-height: 1.08;
+            color: var(--navy);
+            letter-spacing: -.022em;
+            margin-bottom: 18px;
+            animation: fadeUp .85s var(--ease) .2s both;
+        }
+
+        .hero-sub {
+            font-size: 15.5px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 480px;
+            animation: fadeUp .85s var(--ease) .3s both
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            animation: fadeUp .85s var(--ease) .4s both
+        }
+
+        .hero-trust {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 26px;
+            flex-wrap: wrap;
+            animation: fadeUp .85s var(--ease) .5s both
+        }
+
+        .trust-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted)
+        }
+
+        .trust-pill i {
+            color: var(--orange);
+            font-size: 12px
+        }
+
+        .trust-div {
+            width: 1px;
+            height: 16px;
+            background: var(--border)
+        }
+
+        /* Hero visual */
+        .hero-visual {
+            position: relative;
+            animation: fadeUp .9s var(--ease) .25s both
+        }
+
+        .hero-card-main {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(3, 43, 102, .04);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--orange) 40%, rgba(255, 98, 0, .5), transparent);
+        }
+
+        .hero-va-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--navy), #0a3a8f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 24px rgba(3, 43, 102, .28);
+            animation: floatY 4s ease-in-out infinite;
+        }
+
+        .hero-card-main h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 5px
+        }
+
+        .hero-card-main>p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 20px
+        }
+
+        .va-task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            margin-bottom: 20px
+        }
+
+        .va-task {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 13px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--navy);
+            transition: border-color .3s ease, transform .45s var(--ease);
+        }
+
+        .va-task:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(3px)
+        }
+
+        .va-task i {
+            color: var(--orange);
+            font-size: 11px;
+            width: 14px;
+            flex-shrink: 0
+        }
+
+        .hero-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(3, 43, 102, .05);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--navy);
+            width: 100%;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34, 197, 94, .5);
+            animation: pulseGlow 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        /* Floating badges */
+        .float-chip {
+            position: absolute;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, .95);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--navy);
+            white-space: nowrap;
+            box-shadow: var(--shadow-md);
+        }
+
+        .float-chip i {
+            color: var(--orange);
+            font-size: 10px
+        }
+
+        .chip-top {
+            top: -16px;
+            right: 16px;
+            animation: floatY 3.5s ease-in-out infinite alternate
+        }
+
+        .chip-bot {
+            bottom: -16px;
+            left: 16px;
+            animation: floatY 4.5s ease-in-out infinite alternate-reverse
+        }
+
+        /* ══════════════════════════════════════════════════
+   2. METRICS STRIP
+══════════════════════════════════════════════════ */
+        .metrics-strip {
+            background: var(--navy);
+            padding: 0
+        }
+
+        .metrics-inner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-left: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .metric-col {
+            padding: 36px 28px;
+            border-right: 1px solid rgba(255, 255, 255, .08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: background .4s ease;
+        }
+
+        .metric-col::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), transparent);
+            transform: scaleX(0);
+            transition: transform .5s var(--ease);
+        }
+
+        .metric-col:hover {
+            background: rgba(255, 255, 255, .04)
+        }
+
+        .metric-col:hover::before {
+            transform: scaleX(1)
+        }
+
+        .metric-num {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--orange);
+            font-variant-numeric: tabular-nums;
+            display: block;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .metric-lbl {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, .75);
+            margin-bottom: 3px
+        }
+
+        .metric-sub {
+            font-size: 10.5px;
+            color: rgba(255, 255, 255, .40)
+        }
+
+        /* ══════════════════════════════════════════════════
+   3. OVERVIEW
+══════════════════════════════════════════════════ */
+        .overview {
+            background: #fff
+        }
+
+        .overview-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: start
+        }
+
+        .overview-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 13px
+        }
+
+        .overview-text p strong {
+            color: var(--navy);
+            font-weight: 600
+        }
+
+        .ov-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 24px
+        }
+
+        .ov-pill {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 14px 16px;
+            background: var(--bg-light);
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            transition: border-color .35s ease, transform .5s var(--ease), background .35s ease;
+        }
+
+        .ov-pill:hover {
+            border-color: rgba(255, 98, 0, .22);
+            background: rgba(255, 98, 0, .03);
+            transform: translateX(5px)
+        }
+
+        .ov-ico {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255, 98, 0, .09);
+            border: 1px solid rgba(255, 98, 0, .16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--orange);
+            flex-shrink: 0;
+            transition: background .4s var(--ease), transform .5s var(--spring);
+        }
+
+        .ov-pill:hover .ov-ico {
+            background: var(--orange);
+            color: #fff;
+            transform: scale(1.1)
+        }
+
+        .ov-pill strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px
+        }
+
+        .ov-pill span {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55
+        }
+
+        /* Image stack */
+        .img-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px
+        }
+
+        .img-block {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        .img-block img {
+            width: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1.4s var(--ease)
+        }
+
+        .img-block:hover img {
+            transform: scale(1.05)
+        }
+
+        .img-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(3, 43, 102, .88);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, .14);
+            border-radius: 50px;
+            padding: 7px 14px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .img-badge i {
+            color: var(--orange);
+            font-size: 10px
+        }
+
+        /* ══════════════════════════════════════════════════
+   4. BENEFITS
+══════════════════════════════════════════════════ */
+        .benefits {
+            background: var(--bg-light)
+        }
+
+        .benefits-hdr {
+            text-align: center;
+            margin-bottom: 52px
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px
+        }
+
+        .benefit-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 26px 20px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: transform .65s var(--ease), box-shadow .65s var(--ease),
+                border-color .4s ease, opacity .65s ease;
+        }
+
+        .benefit-card.visible {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        .benefit-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 55%;
+            height: 2px;
+            background: var(--orange);
+            border-radius: 2px;
+            transition: transform .5s var(--ease);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(255, 98, 0, .18)
+        }
+
+        .benefit-card:hover::after {
+            transform: translateX(-50%) scaleX(1)
+        }
+
+        .benefit-ico {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: rgba(255, 98, 0, .08);
+            border: 1px solid rgba(255, 98, 0, .14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--orange);
+            margin-bottom: 13px;
+            transition: background .45s var(--ease), transform .55s var(--spring);
+        }
+
+        .benefit-card:hover .benefit-ico {
+            background: var(--orange);
+            color: #fff;
+            transform: scale(1.1) translateY(-2px)
+        }
+
+        .benefit-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 7px;
+            line-height: 1.3
+        }
+
+        .benefit-card p {
+            font-size: 12.5px;
+            line-height: 1.7;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   5. PROBLEMS + SOLUTION
+══════════════════════════════════════════════════ */
+        .problems {
+            background: #fff
+        }
+
+        .problems-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center
+        }
+
+        .problems-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 22px
+        }
+
+        .problem-chips {
+            display: flex;
+            flex-direction: column;
+            gap: 9px
+        }
+
+        .problem-chip {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px 15px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: border-color .3s ease, transform .45s var(--ease);
+        }
+
+        .problem-chip:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(4px)
+        }
+
+        .problem-chip i {
+            color: var(--orange);
+            font-size: 13px;
+            flex-shrink: 0
+        }
+
+        .problem-chip span {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--navy)
+        }
+
+        .solution-box {
+            background: linear-gradient(145deg, var(--navy), #041f50);
+            border-radius: var(--radius-lg);
+            padding: 34px 30px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solution-box::after {
+            content: '';
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -80px;
+            right: -60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 98, 0, .18) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .solution-box h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1
+        }
+
+        .solution-box p {
+            font-size: 13.5px;
+            line-height: 1.78;
+            color: rgba(255, 255, 255, .68);
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 1
+        }
+
+        .solution-box .btn-primary {
+            position: relative;
+            z-index: 1
+        }
+
+        .sol-img {
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sol-img img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block
+        }
+
+        /* ══════════════════════════════════════════════════
+   6. WHAT'S INCLUDED
+══════════════════════════════════════════════════ */
+        .included {
+            background: var(--bg-light)
+        }
+
+        .included-hdr {
+            text-align: center;
+            margin-bottom: 52px
+        }
+
+        .included-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px
+        }
+
+        .included-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 28px 24px;
+            transition: transform .65s var(--ease), box-shadow .65s var(--ease);
+        }
+
+        .included-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md)
+        }
+
+        .inc-ico {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(3, 43, 102, .08), rgba(3, 43, 102, .04));
+            border: 1px solid rgba(3, 43, 102, .10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 15px;
+            transition: background .45s var(--ease), color .35s ease, transform .55s var(--spring);
+        }
+
+        .included-card:hover .inc-ico {
+            background: var(--navy);
+            color: #fff;
+            transform: scale(1.08)
+        }
+
+        .included-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px
+        }
+
+        .inc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+
+        .inc-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--text-muted)
+        }
+
+        .inc-list li i {
+            color: var(--orange);
+            font-size: 11px;
+            margin-top: 2px;
+            flex-shrink: 0
+        }
+
+        /* ══════════════════════════════════════════════════
+   7. WHY TRUST
+══════════════════════════════════════════════════ */
+        .trust {
+            background: #fff
+        }
+
+        .trust-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: start
+        }
+
+        .trust-text p {
+            font-size: 14.5px;
+            line-height: 1.88;
+            color: var(--text-muted);
+            margin-bottom: 22px
+        }
+
+        .trust-feats {
+            display: flex;
+            flex-direction: column;
+            gap: 13px
+        }
+
+        .trust-feat {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 15px 16px;
+            background: var(--bg-light);
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            transition: border-color .35s ease, transform .5s var(--ease);
+        }
+
+        .trust-feat:hover {
+            border-color: rgba(255, 98, 0, .22);
+            transform: translateX(5px)
+        }
+
+        .tfi {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: rgba(255, 98, 0, .09);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--orange);
+            flex-shrink: 0;
+        }
+
+        .trust-feat strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px
+        }
+
+        .trust-feat span {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55
+        }
+
+        .trust-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .trust-card {
+            background: var(--bg-light);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px 17px;
+            transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+        }
+
+        .trust-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-sm)
+        }
+
+        .tc-icon {
+            font-size: 22px;
+            color: var(--orange);
+            margin-bottom: 9px
+        }
+
+        .trust-card h5 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 5px
+        }
+
+        .trust-card p {
+            font-size: 12px;
+            line-height: 1.62;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   8. PROCESS
+══════════════════════════════════════════════════ */
+        .process {
+            background: var(--bg-light)
+        }
+
+        .process-hdr {
+            text-align: center;
+            margin-bottom: 56px
+        }
+
+        .process-img-banner {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 48px;
+            position: relative;
+        }
+
+        .process-img-banner img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block
+        }
+
+        .process-img-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(3, 43, 102, .45), transparent 60%);
+            pointer-events: none;
+        }
+
+        .process-img-text {
+            position: absolute;
+            top: 50%;
+            left: 32px;
+            transform: translateY(-50%);
+            color: #fff;
+            z-index: 2;
+        }
+
+        .process-img-text h4 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px
+        }
+
+        .process-img-text p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, .75)
+        }
+
+        .process-timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 26px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--navy), rgba(3, 43, 102, .1));
+            border-radius: 2px;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 26px;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            position: relative
+        }
+
+        .process-step:last-child {
+            margin-bottom: 0
+        }
+
+        .ps-dot {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 16px rgba(3, 43, 102, .22);
+            transition: background .4s ease, transform .5s var(--ease), box-shadow .4s ease;
+        }
+
+        .process-step.ps-active .ps-dot,
+        .process-step:hover .ps-dot {
+            background: var(--orange);
+            transform: scale(1.12);
+            box-shadow: 0 6px 20px rgba(255, 98, 0, .32)
+        }
+
+        .ps-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
+            padding: 22px 24px;
+            flex: 1;
+            transition: box-shadow .55s var(--ease), border-color .4s ease, transform .55s var(--ease);
+        }
+
+        .process-step.ps-active .ps-card,
+        .process-step:hover .ps-card {
+            border-color: rgba(255, 98, 0, .28);
+            box-shadow: 0 6px 28px rgba(255, 98, 0, .09);
+            transform: translateX(4px)
+        }
+
+        .ps-num {
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 5px;
+            display: block
+        }
+
+        .ps-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
+
+        .ps-card p {
+            font-size: 13px;
+            line-height: 1.72;
+            color: var(--text-muted)
+        }
+
+        /* ══════════════════════════════════════════════════
+   9. FAQ
+══════════════════════════════════════════════════ */
+        .faq-sec {
+            background: #fff
+        }
+
+        .faq-inner {
+            max-width: 760px;
+            margin: 0 auto
+        }
+
+        .faq-hdr {
+            text-align: center;
+            margin-bottom: 42px
+        }
+
+        .faq-list {
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border)
+        }
+
+        .faq-item:last-child {
+            border-bottom: none
+        }
+
+        .faq-q {
+            width: 100%;
+            background: #fff;
+            border: none;
+            padding: 19px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            text-align: left;
+            gap: 16px;
+            transition: background .3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .faq-q:hover {
+            background: var(--bg-light)
+        }
+
+        .faq-q[aria-expanded="true"] {
+            background: rgba(3, 43, 102, .04)
+        }
+
+        .faq-q span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy)
+        }
+
+        .faq-ico {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 98, 0, .08);
+            border: 1px solid rgba(255, 98, 0, .18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: var(--orange);
+            transition: transform .5s var(--spring), background .3s ease;
+        }
+
+        .faq-q[aria-expanded="true"] .faq-ico {
+            transform: rotate(45deg);
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange)
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 22px;
+            background: #fff;
+            transition: max-height .45s var(--ease), padding .35s ease
+        }
+
+        .faq-a.open {
+            max-height: 280px;
+            padding: 0 22px 18px
+        }
+
+        .faq-a p {
+            font-size: 13.5px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            padding-top: 4px
+        }
+
+        /* ══════════════════════════════════════════════════
+   10. CTA
+══════════════════════════════════════════════════ */
+        .cta-sec {
+            padding: 80px 0
+        }
+
+        .cta-box {
+            background: linear-gradient(150deg, var(--navy) 0%, #041f50 55%, #021540 100%);
+            border-radius: 30px;
+            padding: 72px 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(3, 43, 102, .25);
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, .04) 1px, transparent 1px);
+            background-size: 26px 26px;
+            pointer-events: none;
+        }
+
+        .cta-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 18%;
+            right: 18%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), rgba(255, 98, 0, .6), var(--orange), transparent);
+        }
+
+        .cta-o1 {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            top: -120px;
+            left: -80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 98, 0, .14) 0%, transparent 65%);
+            filter: blur(58px);
+            pointer-events: none
+        }
+
+        .cta-o2 {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            bottom: -70px;
+            right: -50px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(3, 43, 102, .35) 0%, transparent 65%);
+            filter: blur(58px);
+            pointer-events: none
+        }
+
+        .cta-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 98, 0, .18);
+            color: #ff9a30;
+            border: 1px solid rgba(255, 98, 0, .30);
+            border-radius: 50px;
+            padding: 5px 17px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(24px, 3.8vw, 42px);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.13;
+            letter-spacing: -.015em;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+            max-width: 620px;
+        }
+
+        .cta-sub {
+            font-size: 14.5px;
+            line-height: 1.85;
+            color: rgba(255, 255, 255, .62);
+            margin-bottom: 34px;
+            position: relative;
+            z-index: 1;
+            max-width: 540px
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1
+        }
+
+        /* ══════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════ */
+        @media(max-width:1280px) {
+            .hero-inner {
+                grid-template-columns: 1.1fr .9fr;
+                gap: 48px
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .included-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:1024px) {
+
+            .hero-inner,
+            .overview-inner,
+            .problems-inner,
+            .trust-inner {
+                grid-template-columns: 1fr;
+                gap: 48px
+            }
+
+            .metrics-inner {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .img-stack {
+                flex-direction: row
+            }
+
+            .img-stack .img-block {
+                flex: 1
+            }
+        }
+
+        @media(max-width:768px) {
+            .section-pad {
+                padding: 70px 0
+            }
+
+            .hero {
+                padding: 100px 0 64px;
+                min-height: auto
+            }
+
+            .hero-inner {
+                gap: 36px
+            }
+
+            .hero-title {
+                font-size: clamp(30px, 8vw, 44px)
+            }
+
+            .float-chip {
+                display: none
+            }
+
+            .metrics-inner {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .metric-col {
+                padding: 26px 18px
+            }
+
+            .metric-num {
+                font-size: 1.9rem
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px
+            }
+
+            .included-grid {
+                grid-template-columns: 1fr
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr
+            }
+
+            .cta-box {
+                padding: 48px 26px
+            }
+
+            .img-stack {
+                flex-direction: column
+            }
+
+            .process-timeline::before {
+                left: 22px
+            }
+
+            .ps-dot {
+                width: 44px;
+                height: 44px;
+                font-size: 16px
+            }
+        }
+
+        @media(max-width:520px) {
+
+            .hero-actions,
+            .cta-actions {
+                flex-direction: column;
+                align-items: stretch
+            }
+
+            .btn {
+                justify-content: center
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr
+            }
+
+            .metrics-inner {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media(max-width:380px) {
+            .metrics-inner {
+                grid-template-columns: 1fr
+            }
+
+            .trust-cards {
+                grid-template-columns: 1fr
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            .hero-blob,
+            .float-chip,
+            .status-dot,
+            .hero-va-avatar {
+                animation: none !important
+            }
+
+            .reveal,
+            .reveal-left,
+            .reveal-right,
+            .reveal-scale,
+            .word-anim .wi,
+            .para-anim .pw,
+            .badge-anim,
+            .benefit-card,
+            .img-reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+                will-change: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACK BUTTON -->
+    <button class="back-btn" onclick="history.length>1?history.back():location.href='service.html'"
+        aria-label="Go back">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+
+
+    <!-- ══════════════════════════════════════════════════
+     1. HERO
+══════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-h1">
+        <div class="hero-bg-dots" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--1" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--2" aria-hidden="true"></div>
+        <div class="hero-blob hero-blob--3" aria-hidden="true"></div>
+
+        <div class="container">
+            <div class="hero-inner">
+
+                <!-- Left -->
+                <div class="hero-content">
+                    <div class="hero-eyebrow badge-anim">
+                        <i class="fa-solid fa-user-tie"></i> Virtual Assistant Service
+                    </div>
+                    <h1 class="hero-title word-anim" id="hero-h1">
+                        Reclaim Your Time.<br><span class="accent">Focus on Closing.</span>
+                    </h1>
+                    <p class="hero-sub para-anim">
+                        At Listora Digital Media, our dedicated Real Estate Virtual Assistants handle your daily
+                        operations, admin tasks, lead management, and client communications — so you can focus on what
+                        actually grows your business.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="contact.html" class="btn btn-primary">
+                            <i class="fa-solid fa-calendar-check"></i> Book a Free Discovery Call
+                        </a>
+                        <a href="#overview" class="btn btn-outline">
+                            <i class="fa-solid fa-circle-info"></i> Learn More
+                        </a>
+                    </div>
+                    <div class="hero-trust">
+                        <div class="trust-pill"><i class="fa-solid fa-shield-halved"></i> Real Estate Focused</div>
+                        <div class="trust-div" aria-hidden="true"></div>
+                        <div class="trust-pill"><i class="fa-solid fa-clock"></i> Save 15+ Hrs / Week</div>
+                        <div class="trust-div" aria-hidden="true"></div>
+                        <div class="trust-pill"><i class="fa-solid fa-headset"></i> Dedicated Support</div>
+                    </div>
+                </div>
+
+                <!-- Right -->
+                <div class="hero-visual">
+                    <div class="float-chip chip-top" aria-hidden="true">
+                        <i class="fa-solid fa-bolt"></i> Tasks Completed Today: 24
+                    </div>
+
+                    <div class="hero-card-main">
+                        <div class="hero-va-avatar"><i class="fa-solid fa-user-tie"></i></div>
+                        <h3>Your Virtual Assistant</h3>
+                        <p>A dedicated professional managing your daily real estate operations with precision and
+                            reliability.</p>
+
+                        <div class="va-task-list">
+                            <div class="va-task"><i class="fa-solid fa-check"></i> CRM updated with 8 new leads</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> 5 follow-ups sent this morning</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> 3 appointments scheduled</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Inbox cleared &amp; prioritized</div>
+                            <div class="va-task"><i class="fa-solid fa-check"></i> Listing data updated on MLS</div>
+                        </div>
+
+                        <div class="hero-status">
+                            <div class="status-dot" aria-hidden="true"></div>
+                            Your VA is active and working now
+                        </div>
+                    </div>
+
+                    <div class="float-chip chip-bot" aria-hidden="true">
+                        <i class="fa-solid fa-arrow-trend-up"></i> Productivity Up 42%
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     2. METRICS STRIP
+══════════════════════════════════════════════════ -->
+    <section class="metrics-strip" aria-label="Key performance metrics">
+        <div class="container">
+            <div class="metrics-inner">
+                <div class="metric-col reveal" data-delay="0">
+                    <span class="metric-num" data-target="15" data-suffix="+">15+</span>
+                    <div class="metric-lbl">Hours Saved Weekly</div>
+                    <div class="metric-sub">per agent on average</div>
+                </div>
+                <div class="metric-col reveal" data-delay="100">
+                    <span class="metric-num" data-target="42" data-suffix="%">42%</span>
+                    <div class="metric-lbl">Productivity Increase</div>
+                    <div class="metric-sub">within first 30 days</div>
+                </div>
+                <div class="metric-col reveal" data-delay="200">
+                    <span class="metric-num" data-target="3" data-suffix="x">3x</span>
+                    <div class="metric-lbl">Faster Response Times</div>
+                    <div class="metric-sub">to leads &amp; clients</div>
+                </div>
+                <div class="metric-col reveal" data-delay="300">
+                    <span class="metric-num" data-target="60" data-suffix="%">60%</span>
+                    <div class="metric-lbl">Reduced Admin Load</div>
+                    <div class="metric-sub">freed for revenue work</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     3. OVERVIEW
+══════════════════════════════════════════════════ -->
+    <section class="overview section-pad" id="overview" aria-labelledby="ov-h2">
+        <div class="container">
+            <div class="overview-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-magnifying-glass"></i> What Is
+                        It?</span>
+                    <h2 class="section-title word-anim" id="ov-h2">What is a Real Estate Virtual Assistant?</h2>
+                    <div class="overview-text">
+                        <p class="para-anim">A Real Estate Virtual Assistant is a <strong>dedicated remote
+                                professional</strong> who supports your daily business operations, administrative tasks,
+                            lead management, and client communications.</p>
+                        <p class="para-anim">At Listora Digital Media, our Virtual Assistants help real estate
+                            professionals streamline operations, improve productivity, and <strong>free up valuable
+                                time</strong> for revenue-generating activities.</p>
+                        <p class="para-anim">Your time is your most valuable asset — and our VAs protect it every single
+                            day.</p>
+                    </div>
+                    <a href="contact.html" class="btn btn-primary reveal" data-delay="300" style="margin-top:22px">
+                        <i class="fa-solid fa-arrow-right"></i> Get Started Today
+                    </a>
+
+                    <div class="ov-pills">
+                        <div class="ov-pill reveal" data-delay="0">
+                            <div class="ov-ico"><i class="fa-solid fa-clock"></i></div>
+                            <div><strong>Save Valuable Time</strong><span>Offload repetitive tasks so you can focus on
+                                    what actually closes deals.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="100">
+                            <div class="ov-ico"><i class="fa-solid fa-gears"></i></div>
+                            <div><strong>Streamlined Operations</strong><span>Consistent workflows that keep your
+                                    business running smoothly every day.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="200">
+                            <div class="ov-ico"><i class="fa-solid fa-chart-line"></i></div>
+                            <div><strong>Scale Without Overhead</strong><span>Get the support of a full team member
+                                    without hiring full-time staff.</span></div>
+                        </div>
+                        <div class="ov-pill reveal" data-delay="300">
+                            <div class="ov-ico"><i class="fa-solid fa-users"></i></div>
+                            <div><strong>Extension of Your Team</strong><span>Your VA integrates seamlessly and acts as
+                                    a reliable business partner.</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right">
+                    <div class="img-stack">
+                        <div class="img-block reveal-scale">
+                            <img src="s5.png" alt="Real estate professional using virtual assistant support"
+                                loading="lazy" style="height:280px">
+                            <div class="img-badge"><i class="fa-solid fa-user-tie"></i> Dedicated VA Support</div>
+                        </div>
+                        <div class="img-block reveal-scale" data-delay="100">
+                            <img src="s6.png" alt="Real estate office operations and admin management" loading="lazy"
+                                style="height:200px">
+                            <div class="img-badge"><i class="fa-solid fa-building"></i> Real Estate Focused</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     4. BENEFITS
+══════════════════════════════════════════════════ -->
+    <section class="benefits section-pad" aria-labelledby="ben-h2">
+        <div class="container">
+            <div class="benefits-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-star"></i> What's In It For You?</span>
+                <h2 class="section-title word-anim" id="ben-h2">The Business Impact of a<br>Dedicated Virtual Assistant
+                </h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">You gain the support of an experienced
+                    team member without the costs associated with hiring full-time staff.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-clock"></i></div>
+                    <h4>More Time Closing Deals</h4>
+                    <p>Spend your hours on client relationships and negotiations — not on paperwork and admin tasks.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-regular fa-calendar-check"></i></div>
+                    <h4>Reduce Admin Overload</h4>
+                    <p>Eliminate the bottleneck of administrative work that slows your business growth every single day.
+                    </p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-bolt"></i></div>
+                    <h4>Faster Client Responses</h4>
+                    <p>Improve response times with a dedicated VA monitoring communications and managing follow-ups.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-list-check"></i></div>
+                    <h4>Stay Organized &amp; Efficient</h4>
+                    <p>Every task, deadline, and follow-up is tracked and managed so nothing slips through the cracks.
+                    </p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-rocket"></i></div>
+                    <h4>Scale Without Overhead</h4>
+                    <p>Handle more business volume without the cost of hiring, training, and managing in-house staff.
+                    </p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-chart-line"></i></div>
+                    <h4>Increase Productivity</h4>
+                    <p>Consistent follow-ups, organized data, and managed workflows keep your entire operation moving
+                        forward.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-handshake"></i></div>
+                    <h4>Consistent Follow-Ups</h4>
+                    <p>Never miss a lead opportunity with a VA who proactively manages all follow-up communications.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-ico"><i class="fa-solid fa-building"></i></div>
+                    <h4>Focus on Business Growth</h4>
+                    <p>Shift your attention to high-value activities that drive revenue rather than routine operational
+                        tasks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     5. PROBLEMS WE SOLVE
+══════════════════════════════════════════════════ -->
+    <section class="problems section-pad" aria-labelledby="prob-h2">
+        <div class="container">
+            <div class="problems-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-triangle-exclamation"></i> Pain Points
+                        Solved</span>
+                    <h2 class="section-title word-anim" id="prob-h2">What Problems Does It Solve?</h2>
+                    <p class="problems-text para-anim">Common challenges that slow down real estate professionals — all
+                        eliminated by having a dedicated VA on your side.</p>
+                    <div class="problem-chips">
+                        <div class="problem-chip reveal" data-delay="0"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Administrative overload</span></div>
+                        <div class="problem-chip reveal" data-delay="50"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Missed follow-ups</span></div>
+                        <div class="problem-chip reveal" data-delay="100"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Inconsistent lead management</span></div>
+                        <div class="problem-chip reveal" data-delay="150"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Scheduling conflicts</span></div>
+                        <div class="problem-chip reveal" data-delay="200"><i
+                                class="fa-solid fa-circle-xmark"></i><span>CRM neglect</span></div>
+                        <div class="problem-chip reveal" data-delay="250"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Poor organization</span></div>
+                        <div class="problem-chip reveal" data-delay="300"><i
+                                class="fa-solid fa-circle-xmark"></i><span>Limited time for client acquisition</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right" style="display:flex;flex-direction:column;gap:18px">
+                    <div class="sol-img">
+                        <img src="s7.png" alt="Virtual assistant handling real estate admin tasks" loading="lazy"
+                            style="border-radius:16px">
+                    </div>
+                    <div class="solution-box">
+                        <h3>Our Virtual Assistants Handle This So You Don't Have To</h3>
+                        <p>Our VAs are trained specifically for the real estate industry. They understand your
+                            workflows, your clients, and your business — and they act as a professional extension of
+                            your team from day one.</p>
+                        <a href="contact.html" class="btn btn-primary">
+                            <i class="fa-solid fa-arrow-trend-up"></i> Solve This Now
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     6. WHAT'S INCLUDED
+══════════════════════════════════════════════════ -->
+    <section class="included section-pad" aria-labelledby="inc-h2">
+        <div class="container">
+            <div class="included-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-list-check"></i> Service
+                    Deliverables</span>
+                <h2 class="section-title word-anim" id="inc-h2">Everything That's Included</h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">A comprehensive set of VA services
+                    specifically designed for real estate professionals.</p>
+            </div>
+            <div class="included-grid">
+                <div class="included-card reveal" data-delay="0">
+                    <div class="inc-ico"><i class="fa-regular fa-calendar-check"></i></div>
+                    <h4>Calendar &amp; Appointment Management</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Schedule and confirm appointments</li>
+                        <li><i class="fa-solid fa-check"></i> Manage your calendar efficiently</li>
+                        <li><i class="fa-solid fa-check"></i> Send reminders to clients</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="100">
+                    <div class="inc-ico"><i class="fa-solid fa-users-gear"></i></div>
+                    <h4>Lead Management</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Lead intake and organization</li>
+                        <li><i class="fa-solid fa-check"></i> Follow-up coordination</li>
+                        <li><i class="fa-solid fa-check"></i> Lead status tracking</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="200">
+                    <div class="inc-ico"><i class="fa-solid fa-gears"></i></div>
+                    <h4>CRM Updates</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Data entry and record updates</li>
+                        <li><i class="fa-solid fa-check"></i> Pipeline management</li>
+                        <li><i class="fa-solid fa-check"></i> Contact list maintenance</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="0">
+                    <div class="inc-ico"><i class="fa-solid fa-comments"></i></div>
+                    <h4>Client Communication Support</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Email management and responses</li>
+                        <li><i class="fa-solid fa-check"></i> Client update communications</li>
+                        <li><i class="fa-solid fa-check"></i> Inquiry handling support</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="100">
+                    <div class="inc-ico"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h4>Market Research &amp; Admin</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Property and market research</li>
+                        <li><i class="fa-solid fa-check"></i> Data entry and reporting</li>
+                        <li><i class="fa-solid fa-check"></i> Document preparation support</li>
+                    </div>
+                </div>
+                <div class="included-card reveal" data-delay="200">
+                    <div class="inc-ico"><i class="fa-solid fa-house-chimney-user"></i></div>
+                    <h4>Listing &amp; Follow-Up Assistance</h4>
+                    <div class="inc-list">
+                        <li><i class="fa-solid fa-check"></i> Listing coordination support</li>
+                        <li><i class="fa-solid fa-check"></i> Follow-up sequence management</li>
+                        <li><i class="fa-solid fa-check"></i> Administrative listing tasks</li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     7. WHY TRUST US
+══════════════════════════════════════════════════ -->
+    <section class="trust section-pad" aria-labelledby="trust-h2">
+        <div class="container">
+            <div class="trust-inner">
+
+                <div class="reveal-left">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-shield-halved"></i> Why Trust
+                        Listora</span>
+                    <h2 class="section-title word-anim" id="trust-h2">Why Should Clients Trust Listora Digital Media?
+                    </h2>
+                    <p class="trust-text para-anim">We understand the fast-paced nature of the real estate industry. Our
+                        Virtual Assistants are trained to support agents, brokers, and real estate teams with
+                        efficiency, professionalism, and reliability.</p>
+                    <p class="trust-text para-anim" style="margin-bottom:0">We become a valuable extension of your team
+                        — not just a remote helper.</p>
+                    <div class="trust-feats" style="margin-top:24px">
+                        <div class="trust-feat reveal" data-delay="0">
+                            <div class="tfi"><i class="fa-solid fa-building"></i></div>
+                            <div><strong>Real Estate-Focused Expertise</strong><span>Our VAs understand real estate
+                                    workflows, terminology, and client expectations.</span></div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="100">
+                            <div class="tfi"><i class="fa-solid fa-headset"></i></div>
+                            <div><strong>Dedicated Support</strong><span>A VA assigned exclusively to your business —
+                                    not shared across multiple unrelated clients.</span></div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="200">
+                            <div class="tfi"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div><strong>Confidential Data Handling</strong><span>Your client data and business
+                                    information are always handled with full discretion.</span></div>
+                        </div>
+                        <div class="trust-feat reveal" data-delay="300">
+                            <div class="tfi"><i class="fa-solid fa-rocket"></i></div>
+                            <div><strong>Results-Driven Approach</strong><span>We focus on measurable outcomes that
+                                    directly contribute to your business growth.</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right">
+                    <div class="img-block" style="margin-bottom:16px">
+                        <img src="s8.png" alt="Listora team providing real estate virtual assistant services"
+                            loading="lazy" style="height:260px;object-fit:cover;width:100%">
+                        <div class="img-badge"><i class="fa-solid fa-users"></i> Your Extended Team</div>
+                    </div>
+                    <div class="trust-cards">
+                        <div class="trust-card reveal" data-delay="0">
+                            <div class="tc-icon"><i class="fa-solid fa-comments"></i></div>
+                            <h5>Reliable Communication</h5>
+                            <p>Consistent, proactive updates so you always know tasks are handled.</p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="100">
+                            <div class="tc-icon"><i class="fa-solid fa-gears"></i></div>
+                            <h5>Efficient Workflows</h5>
+                            <p>Proven systems that keep your operations running smoothly every day.</p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="200">
+                            <div class="tc-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                            <h5>Scalable Assistance</h5>
+                            <p>Support grows as your business grows — no hiring headaches.</p>
+                        </div>
+                        <div class="trust-card reveal" data-delay="300">
+                            <div class="tc-icon"><i class="fa-solid fa-star"></i></div>
+                            <h5>Consistent Quality</h5>
+                            <p>Every task completed to a high professional standard, every time.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     8. PROCESS
+══════════════════════════════════════════════════ -->
+    <section class="process section-pad" aria-labelledby="proc-h2">
+        <div class="container">
+            <div class="process-hdr">
+                <span class="section-label badge-anim"><i class="fa-solid fa-diagram-project"></i> How It Works</span>
+                <h2 class="section-title word-anim" id="proc-h2">Our Virtual Assistant Process</h2>
+                <p class="section-sub center para-anim" style="margin-top:8px">A clear 6-step onboarding and execution
+                    process designed to get you results from day one.</p>
+            </div>
+
+            <div class="process-img-banner reveal">
+                <img src="s3.png" alt="Virtual assistant workflow and process" loading="lazy">
+                <div class="process-img-text">
+                    <h4>From Day One — Handled.</h4>
+                    <p>Onboarding to execution in under 7 days</p>
+                </div>
+            </div>
+
+            <div class="process-timeline">
+                <div class="process-step reveal" data-delay="0">
+                    <div class="ps-dot"><i class="fa-solid fa-comments"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 01</span>
+                        <h4>Consultation</h4>
+                        <p>We identify your specific support requirements, business priorities, and daily workflow
+                            challenges to design the right VA solution.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="100">
+                    <div class="ps-dot"><i class="fa-solid fa-map"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 02</span>
+                        <h4>Task Planning</h4>
+                        <p>Workflows and responsibilities are clearly outlined, ensuring your VA knows exactly what to
+                            handle and how to handle it.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="200">
+                    <div class="ps-dot"><i class="fa-solid fa-user-check"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 03</span>
+                        <h4>Assistant Assignment</h4>
+                        <p>A suitable Virtual Assistant with real estate expertise is carefully selected and assigned to
+                            your account.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="300">
+                    <div class="ps-dot"><i class="fa-solid fa-list-check"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 04</span>
+                        <h4>Daily Execution</h4>
+                        <p>Tasks are completed according to your priorities every day — CRM updates, follow-ups,
+                            scheduling, and more.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="400">
+                    <div class="ps-dot"><i class="fa-solid fa-headset"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 05</span>
+                        <h4>Ongoing Support</h4>
+                        <p>Continuous communication, performance monitoring, and proactive updates keep everything
+                            running smoothly.</p>
+                    </div>
+                </div>
+                <div class="process-step reveal" data-delay="500">
+                    <div class="ps-dot"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="ps-card">
+                        <span class="ps-num">Step 06</span>
+                        <h4>Growth &amp; Optimization</h4>
+                        <p>Support scales as your business grows — more tasks, more capacity, and continuous improvement
+                            to maximize your ROI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     9. FAQ
+══════════════════════════════════════════════════ -->
+    <section class="faq-sec section-pad" aria-labelledby="faq-h2">
+        <div class="container">
+            <div class="faq-inner">
+                <div class="faq-hdr">
+                    <span class="section-label badge-anim"><i class="fa-solid fa-circle-question"></i> Common
+                        Questions</span>
+                    <h2 class="section-title word-anim" id="faq-h2">Frequently Asked Questions</h2>
+                </div>
+                <div class="faq-list reveal" data-delay="100">
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>What exactly does a Real Estate Virtual Assistant do?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>A Real Estate VA handles all the administrative and operational tasks that take time away
+                                from closing deals — including CRM updates, lead management, calendar scheduling, email
+                                management, follow-up coordination, data entry, market research, and listing assistance.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>How quickly can my VA get started?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>After our initial consultation and task planning session, your dedicated VA is typically
+                                assigned and operational within 5–7 business days. Our onboarding process is designed to
+                                get you results quickly with minimal disruption.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Is my VA dedicated only to my business?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Yes. Your Virtual Assistant is dedicated to your account and your business priorities.
+                                They are not shared across unrelated clients, which ensures focused attention, deep
+                                understanding of your workflows, and consistent quality of work.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>How do I communicate with my Virtual Assistant?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Communication is set up based on your preferences — email, messaging platforms, video
+                                calls, or project management tools. Your VA will adapt to your existing workflow to
+                                minimize friction and maximize efficiency.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Is my business data kept confidential?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Absolutely. All client data, business information, and communications are handled with
+                                full discretion and professionalism. Our VAs operate under strict confidentiality
+                                standards to protect your business and your clients at all times.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">
+                            <span>Can I scale up the support as my business grows?</span>
+                            <div class="faq-ico"><i class="fa-solid fa-plus"></i></div>
+                        </button>
+                        <div class="faq-a">
+                            <p>Yes. Our Virtual Assistant support is fully scalable. As your business volume increases,
+                                we adjust the scope of tasks, hours, and responsibilities to match your growing needs —
+                                without the complexity of hiring additional full-time staff.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════
+     10. CTA
+══════════════════════════════════════════════════ -->
+    <section class="cta-sec" aria-labelledby="cta-h2">
+        <div class="container">
+            <div class="cta-box reveal">
+                <div class="cta-o1" aria-hidden="true"></div>
+                <div class="cta-o2" aria-hidden="true"></div>
+                <span class="cta-label"><i class="fa-solid fa-clock"></i> Reclaim Your Time</span>
+                <h2 class="cta-title word-anim" id="cta-h2">Ready to Reclaim Your Time?</h2>
+                <p class="cta-sub para-anim">Stop spending valuable hours on repetitive tasks. Let Listora Digital Media
+                    provide professional virtual assistant support so you can focus on growing your real estate
+                    business.</p>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn btn-white">
+                        <i class="fa-solid fa-calendar-check"></i> Book a Free Discovery Call
+                    </a>
+                    <a href="service.html" class="btn btn-outline"
+                        style="border-color:rgba(255,255,255,.30);color:rgba(255,255,255,.85)">
+                        <i class="fa-solid fa-arrow-left"></i> All Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        'use strict';
+
+        const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ── 1. Generic scroll reveal ── */
+        (function () {
+            if (RM) return;
+            const els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.img-reveal');
+            if (!els.length || !('IntersectionObserver' in window)) { els.forEach(e => { e.style.opacity = '1'; e.style.transform = 'none' }); return }
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const d = parseInt(e.target.dataset.delay || '0', 10);
+                    setTimeout(() => e.target.classList.add('visible'), d);
+                    io.unobserve(e.target);
+                });
+            }, { threshold: .10, rootMargin: '0px 0px -36px 0px' });
+            els.forEach(e => io.observe(e));
+        })();
+
+        /* ── 2. Word-by-word heading animation ── */
+        (function () {
+            if (RM) return;
+
+            function splitWords(el) {
+                if (el.dataset.wsplit) return;
+                el.dataset.wsplit = '1';
+                const label = el.textContent.trim();
+                const nodes = Array.from(el.childNodes);
+                el.innerHTML = '';
+                nodes.forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        node.textContent.split(/(\s+)/).forEach(chunk => {
+                            if (/^\s+$/.test(chunk)) { el.appendChild(document.createTextNode(chunk)) }
+                            else if (chunk.length) {
+                                const w = document.createElement('span'); w.className = 'w';
+                                const wi = document.createElement('span'); wi.className = 'wi'; wi.textContent = chunk;
+                                w.appendChild(wi); el.appendChild(w);
+                            }
+                        });
+                    } else { el.appendChild(node.cloneNode(true)); }
+                });
+                if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', label);
+            }
+
+            function stagger(el) {
+                const inners = el.querySelectorAll('.wi');
+                let d = 0;
+                inners.forEach(w => { w.style.transitionDelay = d.toFixed(3) + 's'; d += 0.068 });
+            }
+
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    e.target.classList.add('fired');
+                    io.unobserve(e.target);
+                });
+            }, { threshold: .15, rootMargin: '0px 0px -30px 0px' });
+
+            document.querySelectorAll('.word-anim').forEach(el => {
+                splitWords(el); stagger(el); io.observe(el);
+            });
+        })();
+
+        /* ── 3. Paragraph word animation ── */
+        (function () {
+            if (RM) return;
+
+            function splitPara(el) {
+                if (el.dataset.psplit) return;
+                el.dataset.psplit = '1';
+                const text = el.textContent;
+                const words = text.split(/(\s+)/);
+                el.innerHTML = '';
+                let d = 0.04;
+                words.forEach(chunk => {
+                    if (/^\s+$/.test(chunk)) { el.appendChild(document.createTextNode(chunk)) }
+                    else if (chunk.length) {
+                        const pw = document.createElement('span'); pw.className = 'pw';
+                        pw.style.transitionDelay = d.toFixed(3) + 's'; pw.textContent = chunk;
+                        el.appendChild(pw); d += 0.026;
+                    }
+                });
+            }
+
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    e.target.classList.add('fired');
+                    io.unobserve(e.target);
+                });
+            }, { threshold: .10, rootMargin: '0px 0px -20px 0px' });
+
+            document.querySelectorAll('.para-anim').forEach(el => { splitPara(el); io.observe(el) });
+        })();
+
+        /* ── 4. Badge animation ── */
+        (function () {
+            if (RM) return;
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    e.target.classList.add('fired'); io.unobserve(e.target);
+                });
+            }, { threshold: .2, rootMargin: '0px 0px -10px 0px' });
+            document.querySelectorAll('.badge-anim').forEach(el => io.observe(el));
+        })();
+
+        /* ── 5. Benefit card stagger ── */
+        (function () {
+            if (RM) return;
+            const cards = document.querySelectorAll('.benefit-card');
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const idx = Array.from(cards).indexOf(e.target);
+                    setTimeout(() => e.target.classList.add('visible'), idx * 60);
+                    io.unobserve(e.target);
+                });
+            }, { threshold: .10, rootMargin: '0px 0px -30px 0px' });
+            cards.forEach(c => io.observe(c));
+        })();
+
+        /* ── 6. Animated counters ── */
+        (function () {
+            if (RM) return;
+            document.querySelectorAll('[data-target]').forEach(el => {
+                const target = parseFloat(el.dataset.target);
+                const suffix = el.dataset.suffix || '';
+                if (isNaN(target) || el.textContent.includes('–')) return;
+                const io = new IntersectionObserver(entries => {
+                    entries.forEach(e => {
+                        if (!e.isIntersecting) return;
+                        io.unobserve(el);
+                        let val = 0;
+                        const step = (target / 1100) * 16;
+                        const isF = String(target).includes('.');
+                        const timer = setInterval(() => {
+                            val += step;
+                            if (val >= target) { val = target; clearInterval(timer) }
+                            el.textContent = (isF ? val.toFixed(1) : Math.round(val)) + suffix;
+                        }, 16);
+                    });
+                }, { threshold: .5 });
+                io.observe(el);
+            });
+        })();
+
+        /* ── 7. Process active step ── */
+        (function () {
+            const steps = document.querySelectorAll('.process-step');
+            if (!steps.length || !('IntersectionObserver' in window)) return;
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { steps.forEach(s => s.classList.remove('ps-active')); e.target.classList.add('ps-active') }
+                });
+            }, { threshold: .55, rootMargin: '-15% 0px -40% 0px' });
+            steps.forEach(s => io.observe(s));
+        })();
+
+        /* ── 8. FAQ accordion ── */
+        (function () {
+            document.querySelectorAll('.faq-q').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const isOpen = this.getAttribute('aria-expanded') === 'true';
+                    document.querySelectorAll('.faq-q').forEach(b => {
+                        b.setAttribute('aria-expanded', 'false');
+                        const a = b.nextElementSibling; if (a) a.classList.remove('open');
+                    });
+                    if (!isOpen) {
+                        this.setAttribute('aria-expanded', 'true');
+                        const ans = this.nextElementSibling; if (ans) ans.classList.add('open');
+                    }
+                });
+            });
+        })();
+
+        /* ── 9. Button ripple ── */
+        (function () {
+            const s = document.createElement('style');
+            s.textContent = '@keyframes rip{from{transform:scale(0);opacity:.7}to{transform:scale(3.5);opacity:0}}';
+            document.head.appendChild(s);
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    const r = document.createElement('span');
+                    r.style.cssText = `position:absolute;border-radius:50%;background:rgba(255,255,255,.22);width:80px;height:80px;transform:scale(0);pointer-events:none;z-index:10;animation:rip .65s ease-out forwards;left:${e.offsetX - 40}px;top:${e.offsetY - 40}px`;
+                    this.appendChild(r); setTimeout(() => r.remove(), 700);
+                });
+            });
+        })();
+
+        /* ── 10. Hero word animation on load (immediate) ── */
+        (function () {
+            if (RM) return;
+            const heroWords = document.querySelector('.hero .word-anim');
+            if (heroWords) {
+                setTimeout(() => heroWords.classList.add('fired'), 300);
+            }
+            const heroPara = document.querySelector('.hero .para-anim');
+            if (heroPara) {
+                setTimeout(() => heroPara.classList.add('fired'), 500);
+            }
+            const heroBadge = document.querySelector('.hero .badge-anim');
+            if (heroBadge) {
+                setTimeout(() => heroBadge.classList.add('fired'), 100);
+            }
+        })();
+    </script>
+</body>
+
+</html>
